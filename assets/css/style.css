@@ -27,7 +27,7 @@
     --title-font: 'Lora', serif;
     --biggest-font-size: 1.5rem;
     --h1-font-size: 1.5rem;
-    --h2-fon-size: 1.25rem;
+    --h2-font-size: 1.25rem;
     --h3-font-size: 1rem;
     --normal-font-size: .938rem;
     --small-font-size: .813rem;
@@ -72,7 +72,7 @@ html {
 body {
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
-    background-color: var (--body-color);
+    background-color: var(--body-color);
     color: var(--text-color);
     transition: background .4s; /* for dark mode animation */
 }
@@ -165,7 +165,60 @@ body.dark-theme {
 
 
 /*=============== HOME ===============*/
+.home_container {
+    row-gap: 4rem;
+    padding-top: 2rem;
+}
 
+.home_content {
+    row-gap: 1.5rem;
+}
+
+.home_title {
+    font-size: var(--biggest-font-size);
+    font-weight: var(--font-semi-bold);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.home_subtitle {
+    font-size: var(--h3-font-size);
+    font-weight: var(--font-medium);
+    margin-bottom: 0.75rem;
+}
+
+.home_description {
+    margin-bottom: 2.5rem;
+}
+
+.home_img {
+    justify-self: center;
+}
+
+/* This styles the placeholder box from earlier */
+.home_img div {
+    width: 250px;
+    height: 250px;
+    background: var(--gradient-color);
+    border-radius: 50%; /* Makes it a circle */
+    box-shadow: 0 4px 12 px hsla(207, 65%, 65%, 0.25);
+}
+
+
+/*=============== BUTTONS ==============*/
+.button {
+    display: inline-block;
+    background-color: var(--first-color);
+    color: #fff;
+    padding: 1rem 1.75rem;
+    border-radius: .5rem;
+    font-weight: var(--font-medium);
+    transition: box-shadow .4s;
+}
+
+.button:hover {
+    box-shadow: 0 8px 24px hsla(207, 65%, 65%, .4);
+}
 
 /*=============== SKILLS ===============*/
 
