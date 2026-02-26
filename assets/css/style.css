@@ -175,6 +175,7 @@ body.dark-theme {
 }
 
 .home_title {
+    justify-self: center;
     font-size: var(--biggest-font-size);
     font-weight: var(--font-semi-bold);
     line-height: 1.2;
@@ -182,6 +183,7 @@ body.dark-theme {
 }
 
 .home_subtitle {
+    justify-self: center;
     font-size: var(--h3-font-size);
     font-weight: var(--font-medium);
     margin-bottom: 0.75rem;
