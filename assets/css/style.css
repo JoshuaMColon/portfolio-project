@@ -289,3 +289,18 @@ body.dark-theme {
 
 
 /* For large devices */
+
+/* For tablets and desktops */
+@media screen and (min-wodth: 768px) {
+    .home_container {
+        /* Creates two equal columns: one for text, one for image */
+        grid-template-columns: 1fr 1fr;
+        align-items: center; /* Vertically centers the text and the circle */
+        column-gap: 3rem;
+    }
+
+    /* Text to look better on desktop */
+    .home_content {
+        text-align: left;
+    }
+}
