@@ -170,6 +170,7 @@ body.dark-theme {
     row-gap: 2.5rem; /* Space between the text block and the image */
     padding-top: 2rem;
     justify-content: center; /* Centers the grid itself */
+    text-align: center;
 }
 
 .home_content {
@@ -218,9 +219,10 @@ body.dark-theme {
 .home_img div {
     width: 250px;
     height: 250px;
-    background: var(--gradient-color);
+    background: var(--gradient-color, gray);
     border-radius: 50%; /* Makes it a circle */
     box-shadow: 0 4px 12px hsla(207, 65%, 65%, 0.25);
+    margin: 0 auto;
 }
 
 
