@@ -166,6 +166,7 @@ body.dark-theme {
 
 /*=============== HOME ===============*/
 .home_container {
+    display: grid;
     row-gap: 2.5rem; /* Space between the text block and the image */
     padding-top: 2rem;
     justify-content: center; /* Centers the grid itself */
@@ -191,11 +192,6 @@ body.dark-theme {
 }
 
 /* Biography Alignment */
-.home_container {
-    row-gap: 1.5rem;
-    justify-content: left;
-
-}
 .home_info {
     text-align: left; /* Forces the text inside back to the left */
     max-width: 500px; /* Keeps the paragraph from getting too long */
@@ -224,7 +220,7 @@ body.dark-theme {
     height: 250px;
     background: var(--gradient-color);
     border-radius: 50%; /* Makes it a circle */
-    box-shadow: 0 4px 12 px hsla(207, 65%, 65%, 0.25);
+    box-shadow: 0 4px 12px hsla(207, 65%, 65%, 0.25);
 }
 
 
