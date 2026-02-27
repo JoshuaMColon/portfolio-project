@@ -166,57 +166,36 @@ body.dark-theme {
 
 /*=============== HOME ===============*/
 .home_container {
-    display: grid;
-    row-gap: 2.5rem; /* Space between the text block and the image */
-    padding-top: 2rem;
-    justify-content: center; /* Centers the grid itself */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 3rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3rem;
+}
+
+/* LEFT COLUMN */
+.home_left {
+    flex: 1;
+    text-align: left;
+}
+
+/* CENTER COLUMN */
+.home_center {
+    flex: 1;
     text-align: center;
 }
 
-.home_content {
-    row-gap: 1.5rem;
-    text-align: center; /* Centers the Title, and Subtitle */
-}
-
-.home_title {
-    font-size: var(--biggest-font-size);
-    font-weight: var(--font-semi-bold);
-    line-height: 1.2;
-    margin-bottom: 0.5rem; /* Tightened space to keep subtitle close */
-}
-
-.home_subtitle {
-    display: block; /* Ensures it stays on its own line */
-    font-size: var(--h3-font-size);
-    font-weight: var(--font-medium);
-    margin-bottom: 1.5rem; /* Space before the description starts */
-}
-
-/* Biography Alignment */
-.home_info {
-    text-align: left; /* Forces the text inside back to the left */
-    max-width: 500px; /* Keeps the paragraph from getting too long */
-    margin: 0 auto; /* Centers the bio block itself on the page */
-}
-
-.home_bio-title {
-    font-size: var(--h2-font-size);
-    margin-bottom: 0.75rem;
-    color: var(--title-color);
-}
-
-.home_description {
-    line-height: 1.0;
-    max-width: 400px; /* Keeps the text from stretching too wide */
-    margin-bottom: 2rem;
-}
-
-.home_img {
-    justify-self: center; /* Centers the image circle */
+/* RIGHT COLUMN */
+.home_right {
+    flex: 1;
+    text-align: right;
 }
 
 /* This styles the placeholder box from earlier */
-.home_img div {
+.home_img {
     width: 250px;
     height: 250px;
     background: var(--gradient-color, gray);
@@ -226,6 +205,31 @@ body.dark-theme {
 }
 
 
+.home_stat {
+    margin-bottom: 2rem;
+}
+
+.home_stat h3 {
+    font-size: 2.5rem;
+    font-weight: var(--font-semi-bold);
+    margin-bottom: .25rem;
+}
+
+.home_stat p {
+    color: var(--text-color-light);
+    font-size: var(--small-font-size);
+}
+
+.home_socials a {
+    font-size: 2rem;
+    margin: 0.5rem;
+    color: var(--title-color);
+    transition: .3s;
+}
+
+.home_socials a:hover {
+    color: var(--first-color);
+}
 /*=============== BUTTONS ==============*/
 .button {
     display: inline-block;
