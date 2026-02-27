@@ -176,10 +176,28 @@ body.dark-theme {
     gap: 3rem;
 }
 
+.home_subtitle {
+    margin-bottom: 5rem;
+}
 /* LEFT COLUMN */
 .home_left {
     flex: 1;
+    flex-direction: column;
+    gap: 1.75rem;
     text-align: left;
+}
+
+.home_bio-title {
+    margin-top: 15rem;
+    margin-bottom: 2rem;
+}
+
+.home_services {
+    margin-top: 5rem;
+}
+
+.contact {
+    margin-top: 5rem;
 }
 
 /* CENTER COLUMN */
@@ -191,6 +209,7 @@ body.dark-theme {
 /* RIGHT COLUMN */
 .home_right {
     flex: 1;
+    flex-direction: right;
     text-align: right;
 }
 
@@ -206,13 +225,13 @@ body.dark-theme {
 
 
 .home_stat {
+    margin-top: 10rem;
     margin-bottom: 2rem;
 }
 
 .home_stat h3 {
     font-size: 2.5rem;
     font-weight: var(--font-semi-bold);
-    margin-bottom: .25rem;
 }
 
 .home_stat p {
@@ -222,13 +241,13 @@ body.dark-theme {
 
 .home_socials a {
     font-size: 2rem;
-    margin: 0.5rem;
     color: var(--title-color);
     transition: .3s;
 }
 
 .home_socials a:hover {
     color: var(--first-color);
+    margin-top: 1rem;
 }
 /*=============== BUTTONS ==============*/
 .button {
