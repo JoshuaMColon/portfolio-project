@@ -168,41 +168,36 @@ body.dark-theme {
 .home_container {
     max-width: 1200px;
     margin: 0 auto;
-    padding-top: 3rem;
+    padding-top: 4rem;
 
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 3rem;
+    gap: 4rem;
 }
 
-.home_subtitle {
-    margin-bottom: 5rem;
-}
 /* LEFT COLUMN */
 .home_left {
     flex: 1;
+    display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 2.75rem;
     text-align: left;
 }
 
 .home_bio-title {
-    margin-top: 11rem;
-    margin-bottom: 2rem;
+    font-size: var(--h2-font-size);
+    margin-bottom: .75rem;
 }
 
-.home_services {
-    margin-top: 5rem;
+.home_description {
+    max-width: 420px;
+    line-height: 1.5;
 }
 
+.contact_title, 
 .services_title {
-    margin-bottom: 2rem;
-}
-
-.contact_title {
-    margin-top: 5rem;
-    margin-bottom: 2rem;
+    margin-bottom: .75rem;
 }
 
 /* CENTER COLUMN */
@@ -211,17 +206,15 @@ body.dark-theme {
     text-align: center;
 }
 
-/* RIGHT COLUMN */
-.home_right {
-    flex: 1;
-    flex-direction: column;
-    text-align: right;
-    gap: 1.75rem;
+.home_title {
+    font-size: var(--h1-font-size);
+    margin-bottom: .5rem;
 }
 
-.experience_time {
-    margin-top: 15;
-    margin-bottom: 5;
+.home_subtitle {
+    font-size: var(--h3-font-size);
+    color: var(--text-color-light);
+    margin-bottom: 2rem;
 }
 
 /* This styles the placeholder box from earlier */
@@ -229,20 +222,35 @@ body.dark-theme {
     width: 250px;
     height: 250px;
     background: var(--gradient-color, gray);
-    border-radius: 50%; /* Makes it a circle */
+    border-radius: 10%; /* Makes it a circle */
     box-shadow: 0 4px 12px hsla(207, 65%, 65%, 0.25);
-    margin: 0 auto;
+    margin: 0 auto 2rem auto;
 }
 
+.home_socials a {
+    font-size: 2rem;
+    margin: 0 .5rem;
+    color: var(--title-color);
+    transition: .3s;
+}
 
-.home_stat {
-    margin-top: 10rem;
-    margin-bottom: 2rem;
+.home_socials a:hover {
+    color: var(--first-color);
+}
+
+/* RIGHT COLUMN */
+.home_right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    gap: 3rem;
 }
 
 .home_stat h3 {
     font-size: 2.5rem;
     font-weight: var(--font-semi-bold);
+    margin-bottom: .25rem;
 }
 
 .home_stat p {
@@ -250,16 +258,6 @@ body.dark-theme {
     font-size: var(--small-font-size);
 }
 
-.home_socials a {
-    font-size: 2rem;
-    color: var(--title-color);
-    transition: .3s;
-}
-
-.home_socials a:hover {
-    color: var(--first-color);
-    margin-top: 1rem;
-}
 /*=============== BUTTONS ==============*/
 .button {
     display: inline-block;
@@ -277,6 +275,35 @@ body.dark-theme {
 
 /*=============== SKILLS ===============*/
 
+/* Grid layout for skill cards */
+.skills_grid {
+    display: grid; /* Creates a grid layout */
+    grid-template-columns: repeat9auto-fit, minmax(280px, 1fr);
+    /* auto-fit = automatically fit as many cards as possible
+    minmax = each card is at least 280px wide */
+    gap: 2rem; /* Space between cards */
+    margin-top: 2rem;
+}
+
+/* Individual skill card */
+.skills_card {
+    background: var(--container-color); /* Light background */
+    padding: 2rem;
+    border-radius: 1rem; /* Rounded corners */
+    box-shadow: 0 4px 12px hsla(207, 65%, 65%, 0.15); /* Soft shadow */
+}
+
+/* Skill category title */
+.skills_title {
+    font-size: var(--h2-font-size);
+    margin-bottom: 1rem;
+}
+
+/* Spacing between list items */
+.skills_card ul li {
+    margin-bottom: .5rem;
+    color: var(--text-color);
+}
 
 /* Animation skills */
 
@@ -327,16 +354,23 @@ body.dark-theme {
 /* For large devices */
 
 /* For tablets and desktops */
-@media screen and (min-wodth: 768px) {
+@media screen and (min-width: 900px) {
     .home_container {
+        flex-direction: column;
         /* Creates two equal columns: one for text, one for image */
         grid-template-columns: 1fr 1fr;
-        align-items: center; /* Vertically centers the text and the circle */
-        column-gap: 3rem;
+        text-align: center; /* Vertically centers the text and the circle */
+        gap: 3rem;
     }
 
-    /* Text to look better on desktop */
-    .home_content {
-        text-align: left;
+    .home_left,
+    .home_center,
+    .home_right {
+        text-align: center;
+        align-items: center;
+    }
+
+    .home_right {
+        gap: 2rem;
     }
 }
