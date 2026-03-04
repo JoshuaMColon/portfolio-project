@@ -198,7 +198,7 @@ body.dark-theme {
         width: 88%;
         left: 0;
         right: 0;
-        bottom: 2rem;
+        bottom: -60%;
         margin: 0 auto;
         background-color: var(--body-color);
         box-shadow: 0 4px 20px hsla(207, 24%, 35%, .1);
@@ -209,7 +209,7 @@ body.dark-theme {
 }
 
 .nav_list {
-    grid-template-columns: repear(3, max-content);
+    grid-template-columns: repeat(3, max-content);
     justify-content: center;
     gap: 2rem 3rem;
 }
@@ -242,151 +242,21 @@ body.dark-theme {
 
 
 /* Show menu */
-
+.show-menu {
+    bottom: 2rem;
+}
 
 /* Active link */
 
 
 /*=============== HOME ===============*/
-.home_container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-top: 4rem;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 4rem;
-}
-
-/* LEFT COLUMN */
-.home_left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2.75rem;
-    text-align: left;
-}
-
-.home_bio-title {
-    font-size: var(--h2-font-size);
-    margin-bottom: .75rem;
-}
-
-.home_description {
-    max-width: 420px;
-    line-height: 1.5;
-}
-
-.contact_title, 
-.services_title {
-    margin-bottom: .75rem;
-}
-
-/* CENTER COLUMN */
-.home_center {
-    flex: 1;
-    text-align: center;
-}
-
-.home_title {
-    font-size: var(--h1-font-size);
-    margin-bottom: .5rem;
-}
-
-.home_subtitle {
-    font-size: var(--h3-font-size);
-    color: var(--text-color-light);
-    margin-bottom: 2rem;
-}
-
-/* This styles the placeholder box from earlier */
-.home_img {
-    width: 250px;
-    height: 250px;
-    background: var(--gradient-color, gray);
-    border-radius: 10%; /* Makes it a circle */
-    box-shadow: 0 4px 12px hsla(207, 65%, 65%, 0.25);
-    margin: 0 auto 2rem auto;
-}
-
-.home_socials a {
-    font-size: 2rem;
-    margin: 0 .5rem;
-    color: var(--title-color);
-    transition: .3s;
-}
-
-.home_socials a:hover {
-    color: var(--first-color);
-}
-
-/* RIGHT COLUMN */
-.home_right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-    gap: 3rem;
-}
-
-.home_stat h3 {
-    font-size: 2.5rem;
-    font-weight: var(--font-semi-bold);
-    margin-bottom: .25rem;
-}
-
-.home_stat p {
-    color: var(--text-color-light);
-    font-size: var(--small-font-size);
-}
 
 /*=============== BUTTONS ==============*/
-.button {
-    display: inline-block;
-    background-color: var(--first-color);
-    color: #fff;
-    padding: 1rem 1.75rem;
-    border-radius: .5rem;
-    font-weight: var(--font-medium);
-    transition: box-shadow .4s;
-}
 
-.button:hover {
-    box-shadow: 0 8px 24px hsla(207, 65%, 65%, .4);
-}
 
 /*=============== SKILLS ===============*/
 
-/* Grid layout for skill cards */
-.skills_grid {
-    display: grid; /* Creates a grid layout */
-    grid-template-columns: repeat9auto-fit, minmax(280px, 1fr);
-    /* auto-fit = automatically fit as many cards as possible
-    minmax = each card is at least 280px wide */
-    gap: 2rem; /* Space between cards */
-    margin-top: 2rem;
-}
 
-/* Individual skill card */
-.skills_card {
-    background: var(--container-color); /* Light background */
-    padding: 2rem;
-    border-radius: 1rem; /* Rounded corners */
-    box-shadow: 0 4px 12px hsla(207, 65%, 65%, 0.15); /* Soft shadow */
-}
-
-/* Skill category title */
-.skills_title {
-    font-size: var(--h2-font-size);
-    margin-bottom: 1rem;
-}
-
-/* Spacing between list items */
-.skills_card ul li {
-    margin-bottom: .5rem;
-    color: var(--text-color);
-}
 
 /* Animation skills */
 
