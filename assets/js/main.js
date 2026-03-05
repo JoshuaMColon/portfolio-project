@@ -59,7 +59,14 @@ navLink.forEach(n => n.addEventListener('click', linkAction))
     });
 
 /*=============== SWIPER TESTIMONIAL ===============*/
-
+var swiperTestimonial = new Swiper(".testimonial_container", {
+      grabCursor: true,
+      pagination: {
+        el: ".swiper-pagination",
+        dynamicBullets: true,
+        clickable: true,
+    },
+});
 
 /*=============== EMAIL JS ===============*/
 
