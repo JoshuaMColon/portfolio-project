@@ -556,7 +556,8 @@ body.dark-theme {
 }
 
 .projects_img {
-    width: 250px;
+    display: block;
+    width: 100%;
     border-radius: .75rem;
     margin-bottom: 1.25rem;
 }
@@ -589,7 +590,7 @@ body.dark-theme {
     transform: translateX(.25rem);
 }
 
-/* Swiper class */
+/* Swiper class 
 .projects_container .swiper-button-prev::after,
 .projects_container .swiper-button-next::after {
     content: '';
@@ -612,9 +613,19 @@ body.dark-theme {
 .projects_container .swiper-button-next {
     right: -1rem;
     top: 4.5rem;
+} */
+.projects_container .swiper {
+      width: 300px;
+      height: 300px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -150px;
+      margin-top: -150px;
 }
-
 .projects_container .swiper-slide {
+    background-position: center;
+    background-size: cover;
     margin-bottom: 4.5rem;
 }
 
