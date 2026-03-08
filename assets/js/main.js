@@ -31,12 +31,18 @@ const linkAction = () =>{
 navLink.forEach(n => n.addEventListener('click', linkAction))
 
 /*=============== SWIPER PROJECTS ===============*/
-    var swiperProjects = new Swiper(".projects_container", {
+function initSwiper() {
+
+    const isDesktop = window.innerWidth >= 1200;
+    const cubeSize = isDesktop ? 600 : 300;
+
+    return new Swiper(".projects_container", {
       loop: true,
-      spaceBetween: 24,
       effect: "cube",
       grabCursor: true,
       mousewheel: true,
+      width: cubeSize,
+      height: cubeSize,
       cubeEffect: {
         shadow: true,
         slideShadows: true,
@@ -52,12 +58,22 @@ navLink.forEach(n => n.addEventListener('click', linkAction))
       },
       breakpoints: {
         1200: {
-          slidesPerView: 2,
-          spaceBetween: -56,
-        },
-      },
-    });
 
+        },
+      }
+    });
+}
+
+let swiperProjects = initSwiper();
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        swiperProjects.destroy(true, true);
+        swiperProjects = initSwiper();
+    }, 250);
+});
 /*=============== SWIPER TESTIMONIAL ===============*/
 var swiperTestimonial = new Swiper(".testimonial_container", {
       grabCursor: true,
@@ -170,7 +186,7 @@ themeButton.addEventListener('click', () => {
     themeButton.classList.toggle(iconTheme)
     // We save the theme and the current icon that the user chose
     localStorage.setItem('selected-theme', getCurrentTheme())
-    localStorage.setItem('selected-icon', getCurrenticon())
+    localStorage.setItem('selected-icon', getCurrentIcon())
 })
 
 /*=============== CHANGE BACKGROUND HEADER ===============*/
@@ -180,5 +196,5 @@ const scrollHeader = () =>{
     this.scrollY >= 50 ? header.classList.add('bg-header')
                        : header.classList.remove('bg-header')
 }
-
+window.addEventListener('scroll', scrollHeader)
 /*=============== SCROLL REVEAL ANIMATION ===============*/
