@@ -203,7 +203,7 @@ body.dark-theme {
     position: fixed;
     bottom: 2rem;
     left: 0;
-    z-index: var(--z-fixed);
+    z-index: 9999;
 }
 
 .nav {
