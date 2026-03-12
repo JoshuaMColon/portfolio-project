@@ -95,7 +95,7 @@ const sendEmail = (e) => {
     e.preventDefault();
 
     // Check if the field has a value
-    if(contactName.value === '' || contactEmail.value === '' || contactProject.value) {
+    if(contactName.value === '' || contactEmail.value === '' || contactProject.value === '') {
         // Add and remove color
         contactMessage.classList.remove('color-blue');
         contactMessage.classList.add('color-red');
