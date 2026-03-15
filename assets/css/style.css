@@ -14,6 +14,7 @@
     --text-color-light: hsl(207, 4%, 56%);
     --body-color: hsl(207, 4%, 99%);
     --container-color: hsl(207, 4%, 95%);
+    --glow-color: #4da3ff;
 
     /* Change the first number */
     /* Blue: 207 - Purple: 250 - Pink: 356 - Teal: 174 */
@@ -449,6 +450,20 @@ body.dark-theme {
     place-items: center;
     margin-bottom: 1rem;
     transition: background .4s; /* for dark mode animation */
+    border: 2px solid var(--glow-color);
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 8px var(--glow-color), 0 0 16px var(--glow-color);
+    }
+    50% {
+        box-shadow: 0 0 16px var(--glow-color), 0 0 32px var(--glow-color);
+    }
+    100% {
+        box-shadow: 0 0 8px var(--glow-color), 0 0 16px var(--glow-color);
+    }
 }
 
 .skills_blob img {
