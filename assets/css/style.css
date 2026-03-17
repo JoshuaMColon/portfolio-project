@@ -172,6 +172,8 @@ body.dark-theme {
 body.dark-theme .skills_blob {
     position: relative;
     z-index: 1;
+    background-color: var(--container-color);
+    border-radius: 3rem;
 }
 
 /* Animated glow behind the border */
