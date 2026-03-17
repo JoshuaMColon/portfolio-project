@@ -172,8 +172,6 @@ body.dark-theme {
 body.dark-theme .skills_blob {
     position: relative;
     z-index: 1;
-    background-color: var(--container-color);
-    border-radius: 3rem;
 }
 
 /* Animated glow behind the border */
@@ -196,6 +194,16 @@ body.dark-theme .skills_blob::before {
     filter: blur(12px);
     animation: rotateGlow 4s linear infinite;
     transition: animation-duration .3s ease;
+}
+
+/* Mask so only the border glows */
+body.dark-theme .skills_blob::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--container-color);
+    z-index: -1;
 }
 
 body.dark-theme .skills_blob:hover::before {
