@@ -33,21 +33,19 @@ navLink.forEach(n => n.addEventListener('click', linkAction))
 /*=============== SWIPER PROJECTS ===============*/
 function initSwiper() {
 
-    const isDesktop = window.innerWidth >= 1200;
-    const cubeSize = isDesktop ? 600 : 300;
+    
 
     return new Swiper(".projects_container", {
-      loop: true,
-      effect: "cube",
+       effect: "coverflow",
       grabCursor: true,
-      mousewheel: true,
-      width: cubeSize,
-      height: cubeSize,
-      cubeEffect: {
-        shadow: true,
+      centeredSlides: true,
+      slidesPerView: "auto",
+      coverflowEffect: {
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
         slideShadows: true,
-        shadowOffset: 20,
-        shadowScale: 0.94,
       },
       keyboard: {
         enabled: true,
@@ -56,11 +54,6 @@ function initSwiper() {
         el: ".swiper-pagination",
         clickable: true,
       },
-      breakpoints: {
-        1200: {
-
-        },
-      }
     });
 }
 
@@ -88,7 +81,7 @@ var swiperTestimonial = new Swiper(".testimonial_container", {
 const contactForm =  document.getElementById('contact-form'),
       contactName = document.getElementById('contact-name'),
       contactEmail = document.getElementById('contact-email'),
-      contactProject = document.getElementById('contact-project');
+      contactProject = document.getElementById('contact-project'),
       contactMessage = document.getElementById('contact-message');
 
 const sendEmail = (e) => {
@@ -205,7 +198,7 @@ const sr = ScrollReveal({
     duration: 2500,
     delay: 400,
     reset: true /* Animations repeat */
-})
+});
 
 sr.reveal('.home_data, .projects_container, .testimonial_container, .footer_container')
 sr.reveal('.home_info div', {delay: 600, origin: 'bottom', interval: 100})
