@@ -46,14 +46,16 @@ function initSwiper() {
         depth: 100,
         modifier: 1,
         slideShadows: true,
+
       },
-      keyboard: {
-        enabled: true,
+      breakpoints: {
+        320: { coverflowEffect: { rotate: 30, depth: 50 } },
+        768: { coverflowEffect: { rotate: 40, depth: 75 } },
+        1024: {coverflowEffect: { rotate: 50, depth: 100 } },
+
       },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
+      keyboard: { enabled: true },
+      pagination: { el: ".swiper-pagination", clickable: true },
     });
 }
 
