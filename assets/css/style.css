@@ -467,6 +467,33 @@ body.dark-theme .skills_blob:hover::before {
     font-size: var(--h1-font-size);
     font-weight: var(--font-semi-bold);
 }
+
+.home_resume {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: .5rem 1.25rem;
+}
+
+.home_resume-border {
+    width: 100%;
+    height: 100%;
+    border: 1.8px solid var(--text-color-light);
+    border-radius: .5rem;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    z-index: -1;
+    transition: opacity .6s;
+    opacity: 0;
+}
+
+.home_resume:hover .home_resume-border {
+    opacity: 1;
+}
+
 /*=============== BUTTONS ==============*/
 
 
@@ -606,6 +633,23 @@ body.dark-theme .skills_blob:hover::before {
     bottom: 12rem;
     transform: rotate(15deg);
     opacity: .1;
+}
+
+.cert_btn {
+    display: inline-flex;
+    align-items: center;
+    column-gap: .5rem;
+    color: var(--title-color);
+    font-size: var(--small-font-size);
+}
+
+.cert_btn i {
+    font-size: 1rem;
+    transition: transform .3s;
+}
+
+.cert_btn:hover i {
+    transform: translateX(.25rem);
 }
 
 /*=============== SERVICES ===============*/
