@@ -330,6 +330,7 @@ export function initLightfall(container, options = {}) {
 
   const destroy = () => {
     if (rafId) cancelAnimationFrame(rafId);
+    if (resizeTimer) clearTimeout(resizeTimer);
     if (mouseInteraction) window.removeEventListener('pointermove', onPointerMove);
     ro.disconnect();
     if (canvas.parentElement === container) {

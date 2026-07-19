@@ -22,8 +22,9 @@
 </head>
 <body>
 
-    <!--============== LIGHTFALL BACKGROUND =========-->
+    <!--============== LIGHTFALL BACKGROUND ===========-->
     <div id="lightfall-bg" class="lightfall-container"></div>
+    <div class="lightfall-scrim"></div>
 
     <!--============== HEADER ===========-->
     <header class="header" id="header">
@@ -134,7 +135,7 @@
                         BIOGRAPHY
                     </h3>
 
-                    <p class="home_info-description">
+                    <p class="home_info-description" id="bio-text">
                         Full-Stack Web Developer certified with ERA Academy. Security Clearance: Secret. Bachelor's degree in Game Design. I am striving to building clean and functional Full-Stack Web Applicaitons!
                     </p>
                 </div>
@@ -154,11 +155,11 @@
                         SERVICES
                     </h3>
 
-                    <p class="home_info-description">
-                        Web Development <br>
-                        UI/UX Design <br>
-                        Frontend/Backend Development <br>
-                        Full-Stack Web Applications <br>
+                    <p class="home_info-description" id="services-text">
+                        <span class="decrypt-line">Web Development</span> <br>
+                        <span class="decrypt-line">UI/UX Design</span> <br>
+                        <span class="decrypt-line">Frontend/Backend Development</span> <br>
+                        <span class="decrypt-line">Full-Stack Web Applications</span> <br>
                     </p>
                 </div>
             </div>
@@ -424,8 +425,8 @@
                     <i class="ri-layout-4-line"></i>
 
                     <h2 class="services_title">
-                        Website Design <br>
-                        Web Applications
+                        <span class="decrypt-line">Website Design</span> <br>
+                        <span class="decrypt-line">Web Applications</span>
                     </h2>
 
                     <p class="services_description">
@@ -440,8 +441,8 @@
                     <i class="ri-code-line"></i>
 
                     <h2 class="services_title">
-                        UI/UX <br>
-                        Responsive Layouts
+                        <span class="decrypt-line">UI/UX</span> <br>
+                        <span class="decrypt-line">Responsive Layouts</span>
                     </h2>
 
                     <p class="services_description">
@@ -456,8 +457,8 @@
                     <i class="ri-quill-pen-line"></i>
 
                     <h2 class="services_title">
-                        API Integration <br>
-                        Frontend-Backend
+                        <span class="decrypt-line">API Integration</span> <br>
+                        <span class="decrypt-line">Frontend-Backend</span>
                     </h2>
 
                     <p class="services_description">
@@ -733,6 +734,7 @@
 
 
     <!--=============== MAIN JS ================-->
+    <!-- type="module" is required because main.js now imports lightfall.js -->
     <script type="module" src="assets/js/main.js"></script>
 
 

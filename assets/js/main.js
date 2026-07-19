@@ -2,7 +2,10 @@
 /* main.js is now loaded with <script type="module">, which is required
    for this import to work. */
 import { initLightfall } from './lightfall.js';
- 
+
+/*=============== DECRYPTED TEXT ===============*/
+import { DecryptedText, bindGroupView, bindGroupHover } from './decrypted-text.js';
+
 const lightfallBg = document.getElementById('lightfall-bg');
 if (lightfallBg) {
     initLightfall(lightfallBg, {
@@ -23,7 +26,46 @@ if (lightfallBg) {
         mouseRadius: 1
     });
 }
- 
+
+/*--- Biography text: decrypt once when scrolled into view ---*/
+const bioText = document.getElementById('bio-text');
+if (bioText) {
+    new DecryptedText(bioText, {
+        animateOn: 'view',
+        sequential: true,
+        revealDirection: 'start',
+        speed: 30
+    });
+}
+
+/*--- Home "Services" list: same treatment, all lines reveal together ---*/
+const servicesText = document.getElementById('services-text');
+if (servicesText) {
+    const serviceLines = Array.from(servicesText.querySelectorAll('.decrypt-line')).map(
+        line => new DecryptedText(line, { animateOn: 'manual', sequential: true, speed: 30 })
+    );
+    bindGroupView(servicesText, serviceLines);
+}
+
+/*--- Services cards: decrypt title + description while hovering the card ---*/
+document.querySelectorAll('.services_card').forEach(card => {
+    const titleLines = Array.from(card.querySelectorAll('.services_title .decrypt-line')).map(
+        line => new DecryptedText(line, { animateOn: 'manual', sequential: true, speed: 25 })
+    );
+    const description = card.querySelector('.services_description');
+    const instances = [...titleLines];
+    if (description) {
+        instances.push(
+            new DecryptedText(description, {
+                animateOn: 'manual',
+                sequential: true,
+                speed: 15,
+                revealDirection: 'start'
+            })
+        );
+    }
+    bindGroupHover(card, instances);
+});
 
 /*=============== SHOW MENU ===============*/
 const navMenu = document.getElementById('nav-menu'),

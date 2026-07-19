@@ -22,6 +22,11 @@
                         hsla(174, 48%, 72%, 0),
                         hsla(174, 65%, 65%, 1));
 
+    /* Dims the Lightfall background so body text keeps enough contrast.
+       Mostly-opaque in light mode (dark text needs a light backdrop),
+       lighter touch in dark mode (light text has more headroom). */
+    --lightfall-scrim: hsla(207, 4%, 99%, .82);
+
     /*============== Font and typography =============*/
     /* .5rem = 8px | 1rem = 16px ...*/
     --body-font: 'Roboto', sans-serif;
@@ -77,9 +82,31 @@
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1;
+    z-index: -2;
     overflow: hidden;
     pointer-events: none; /* let clicks/scroll pass through to the real content */
+}
+
+/* Sits directly above the canvas, below all page content. Dims the effect
+   just enough that body text keeps proper contrast in either theme. */
+.lightfall-scrim {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--lightfall-scrim);
+    transition: background .4s; /* matches the existing dark-mode transition */
+}
+
+/*=============== DECRYPTED TEXT ===============*/
+.decrypt-revealed {
+    color: inherit;
+}
+
+.decrypt-encrypted {
+    color: var(--text-color-light);
 }
 
 /*============== BASE =============*/
@@ -143,6 +170,7 @@ body.dark-theme {
     --text-color: hsl(207, 4%, 65%);
     --body-color: hsl(207, 4%, 10%);
     --container-color: hsl(207, 4%, 12%);
+    --lightfall-scrim: hsla(207, 4%, 10%, .68);
 }
 
 /*=============
