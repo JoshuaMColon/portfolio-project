@@ -71,6 +71,17 @@
     }
 }
 
+/*=============== LIGHTFALL BACKGROUND ===============*/
+.lightfall-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none; /* let clicks/scroll pass through to the real content */
+}
+
 /*============== BASE =============*/
 * {
     box-sizing: border-box;
@@ -85,7 +96,11 @@ html {
 body {
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
-    background-color: var(--body-color);
+    /* was: background-color: var(--body-color);
+       now transparent so the fixed Lightfall background shows through.
+       Opaque elements (nav, cards, blobs, etc.) still use --body-color /
+       --container-color individually, so contrast there is unaffected. */
+    background-color: transparent;
     color: var(--text-color);
     transition: background .4s; /* for dark mode animation */
 }
