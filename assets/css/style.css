@@ -777,25 +777,6 @@ body.dark-theme .skills_blob:hover::before {
     margin: 0;
 }
 
-/*=============== SHAPE BLUR (project cards) ===============*/
-.projects_content {
-    position: relative;
-    overflow: hidden;
-}
-
-.shape-blur-mount {
-    position: absolute;
-    inset: 0;
-    pointer-events: none; /* purely decorative — never blocks card interaction */
-    opacity: 0;
-    transition: opacity .3s;
-    mix-blend-mode: soft-light;
-}
-
-.shape-blur-mount.is-active {
-    opacity: .9;
-}
-
 .projects_subtitle {
     font-size: var(--small-font-size);
     color: var(--text-color-light);

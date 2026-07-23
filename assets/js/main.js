@@ -6,9 +6,6 @@ import { initPrism } from './prism.js';
 /*=============== DECRYPTED TEXT ===============*/
 import { DecryptedText, bindGroupView, bindGroupHover } from './decrypted-text.js';
 
-/*=============== SHAPE BLUR ===============*/
-import { initShapeBlur } from './shape-blur.js';
-
 const prismBg = document.getElementById('prism-bg');
 if (prismBg) {
     initPrism(prismBg, {
@@ -274,44 +271,3 @@ sr.reveal('.home_info div', {delay: 600, origin: 'bottom', interval: 100})
 sr.reveal('.skills_content:nth-child(1), .contact_content:nth-child(1)', {origin: 'left'})
 sr.reveal('.skills_content:nth-child(2), .contact_content:nth-child(2)', {origin: 'right'})
 sr.reveal('.qualification_content, .services_card', {interval: 100})
-
-/*--- Project cards: ShapeBlur follows the cursor while hovering a card ---*/
-/* Only one WebGL context runs at a time (created on hover, torn down after
-   the fade-out finishes on mouseleave) since these are fairly heavyweight
-   to keep running for every card at once. */
-document.querySelectorAll('.projects_content').forEach(card => {
-    const mount = card.querySelector('.shape-blur-mount');
-    if (!mount) return;
-
-    let instance = null;
-    let hideTimer = null;
-
-    card.addEventListener('mouseenter', () => {
-        clearTimeout(hideTimer);
-        if (!instance) {
-            instance = initShapeBlur(mount, {
-                variation: 0,
-                pixelRatioProp: window.devicePixelRatio || 1,
-                shapeSize: 1,
-                roundness: 0.5,
-                borderSize: 0.05,
-                circleSize: 0.25,
-                circleEdge: 1
-            });
-        }
-        mount.classList.add('is-active');
-    });
-
-    card.addEventListener('mouseleave', () => {
-        mount.classList.remove('is-active');
-        // Wait for the opacity transition (see .shape-blur-mount in
-        // style.css) to finish before tearing down the WebGL context,
-        // so it fades out instead of snapping away.
-        hideTimer = setTimeout(() => {
-            if (instance) {
-                instance.destroy();
-                instance = null;
-            }
-        }, 300);
-    });
-});
