@@ -1,25 +1,104 @@
-/*=============== PRISM BACKGROUND ===============*/
+/*=============== BACKGROUNDS (theme-dependent) ===============*/
 /* main.js is now loaded with <script type="module">, which is required
-   for this import to work. */
+   for these imports to work. */
 import { initPrism } from './prism.js';
+import { initFloatingLines } from './floating-lines.js';
+import { initLightRays } from './light-rays.js';
 
 /*=============== DECRYPTED TEXT ===============*/
 import { DecryptedText, bindGroupView, bindGroupHover } from './decrypted-text.js';
 
 const prismBg = document.getElementById('prism-bg');
-if (prismBg) {
-    initPrism(prismBg, {
-        animationType: 'rotate',
-        timeScale: 0.5,
-        height: 3.5,
-        baseWidth: 5.5,
-        scale: 3.6,
-        hueShift: 0,
-        colorFrequency: 1,
-        noise: 0,
-        glow: 1.6,
-        bloom: 1.4
-    });
+const floatingLinesBg = document.getElementById('floating-lines-bg');
+const lightRaysBg = document.getElementById('light-rays-bg');
+
+let prismInstance = null;
+let floatingLinesInstance = null;
+let lightRaysInstance = null;
+
+function startDarkModeBackground() {
+    if (prismBg && !prismInstance) {
+        prismInstance = initPrism(prismBg, {
+            animationType: 'rotate',
+            timeScale: 0.5,
+            height: 3.5,
+            baseWidth: 5.5,
+            scale: 3.6,
+            hueShift: 0,
+            colorFrequency: 1,
+            noise: 0,
+            glow: 1.8,
+            bloom: 1.5
+        });
+    }
+}
+
+function stopDarkModeBackground() {
+    if (prismInstance) {
+        prismInstance.destroy();
+        prismInstance = null;
+    }
+}
+
+function startLightModeBackground() {
+    if (floatingLinesBg && !floatingLinesInstance) {
+        floatingLinesInstance = initFloatingLines(floatingLinesBg, {
+            enabledWaves: ['top', 'middle', 'bottom'],
+            lineCount: 8,
+            lineDistance: 8,
+            bendRadius: 8,
+            bendStrength: -2,
+            interactive: true,
+            parallax: true,
+            animationSpeed: 1,
+            // The requested gradientStart/gradientMid/gradientEnd props aren't
+            // actually read by this component — it takes a single
+            // "linesGradient" array instead, so the same three colors are
+            // combined into that here.
+            linesGradient: ['#e945f5', '#6f6f6f', '#6a6a6a']
+        });
+    }
+    if (lightRaysBg && !lightRaysInstance) {
+        lightRaysInstance = initLightRays(lightRaysBg, {
+            raysOrigin: 'top-center',
+            raysColor: '#ffffff',
+            raysSpeed: 1,
+            lightSpread: 0.5,
+            rayLength: 3,
+            followMouse: true,
+            mouseInfluence: 0.1,
+            noiseAmount: 0,
+            distortion: 0,
+            pulsating: false,
+            fadeDistance: 1,
+            saturation: 1
+        });
+    }
+}
+
+function stopLightModeBackground() {
+    if (floatingLinesInstance) {
+        floatingLinesInstance.destroy();
+        floatingLinesInstance = null;
+    }
+    if (lightRaysInstance) {
+        lightRaysInstance.destroy();
+        lightRaysInstance = null;
+    }
+}
+
+/* Switches the running background to match the theme currently applied to
+   <body>. Called once below (after the saved theme preference is applied)
+   and again every time the theme toggle button is clicked. */
+function applyBackgroundForTheme() {
+    const isDark = document.body.classList.contains('dark-theme');
+    if (isDark) {
+        stopLightModeBackground();
+        startDarkModeBackground();
+    } else {
+        stopDarkModeBackground();
+        startLightModeBackground();
+    }
 }
 
 /*--- Biography text: decrypt once when scrolled into view ---*/
@@ -238,6 +317,10 @@ if (selectedTheme) {
     themeButton.classList[selectedIcon === 'ri-moon-line' ? 'add' : 'remove'](iconTheme)
 }
 
+// Start whichever background matches the theme now applied above (this must
+// run after the block above, not before, so it reads the correct class).
+applyBackgroundForTheme();
+
 // Activate / deactivate the theme manually with the button
 themeButton.addEventListener('click', () => {
     // Add or remove the dark / icon theme
@@ -246,6 +329,8 @@ themeButton.addEventListener('click', () => {
     // We save the theme and the current icon that the user chose
     localStorage.setItem('selected-theme', getCurrentTheme())
     localStorage.setItem('selected-icon', getCurrentIcon())
+    // Swap the background to match the new theme
+    applyBackgroundForTheme()
 })
 
 /*=============== CHANGE BACKGROUND HEADER ===============*/

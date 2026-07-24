@@ -22,10 +22,11 @@
                         hsla(174, 48%, 72%, 0),
                         hsla(174, 65%, 65%, 1));
 
-    /* Dims the Prism background so body text keeps enough contrast.
+    /* Dims whichever background is active (Prism in dark theme, Floating
+       Lines + Light Rays in light theme) so body text keeps enough contrast.
        Mostly-opaque in light mode (dark text needs a light backdrop),
        lighter touch in dark mode (light text has more headroom). */
-    --prism-scrim: hsla(207, 4%, 99%, .88);
+    --bg-fx-scrim: hsla(207, 4%, 99%, .7);
 
     /*============== Font and typography =============*/
     /* .5rem = 8px | 1rem = 16px ...*/
@@ -76,15 +77,23 @@
     }
 }
 
-/*=============== LIGHTFALL BACKGROUND ===============*/
-.prism-bg-container {
+/*=============== BACKGROUNDS (theme-dependent) ===============*/
+/* Dark theme: Prism. Light theme: Floating Lines + Light Rays layered
+   together. main.js creates/destroys the WebGL instances based on the
+   current theme; these rules just hide whichever set isn't active. */
+.prism-bg-container,
+.floating-lines-bg-container,
+.light-rays-bg-container {
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -2;
     overflow: hidden;
     pointer-events: none; /* let clicks/scroll pass through to the real content */
+}
+
+.prism-bg-container {
+    z-index: -3;
     /* Prism is drawn with alpha — "empty" pixels are mostly transparent.
        Without a dark surface behind it, those pixels show the page's own
        background (near-white in light theme), which flattens the glow
@@ -93,16 +102,40 @@
     background: hsl(207, 40%, 6%);
 }
 
-/* Sits directly above the canvas, below all page content. Dims the effect
-   just enough that body text keeps proper contrast in either theme. */
-.prism-bg-scrim {
+.floating-lines-bg-container {
+    z-index: -3;
+    /* FloatingLines paints an opaque canvas itself (mostly near-black with
+       the gradient lines glowing on top), so no extra fill needed here. */
+}
+
+.light-rays-bg-container {
+    z-index: -2;
+    mix-blend-mode: screen; /* lets the rays glow over FloatingLines beneath */
+}
+
+/* Only one set is ever actually instantiated in JS at a time, but hide the
+   other's (empty) container too, in case either ever renders anything
+   before main.js finishes wiring up the theme check. */
+body.dark-theme .floating-lines-bg-container,
+body.dark-theme .light-rays-bg-container {
+    display: none;
+}
+
+body:not(.dark-theme) .prism-bg-container {
+    display: none;
+}
+
+/* Sits directly above whichever background is active, below all page
+   content. Dims the effect just enough that body text keeps proper
+   contrast in either theme. */
+.bg-fx-scrim {
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
     z-index: -1;
     pointer-events: none;
-    background: var(--prism-scrim);
+    background: var(--bg-fx-scrim);
     transition: background .4s; /* matches the existing dark-mode transition */
 }
 
@@ -130,7 +163,8 @@ body {
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
     /* was: background-color: var(--body-color);
-       now transparent so the fixed Prism background shows through.
+       now transparent so the fixed background (Prism or Floating
+       Lines/Light Rays, depending on theme) shows through.
        Opaque elements (nav, cards, blobs, etc.) still use --body-color /
        --container-color individually, so contrast there is unaffected. */
     background-color: transparent;
@@ -176,7 +210,7 @@ body.dark-theme {
     --text-color: hsl(207, 4%, 65%);
     --body-color: hsl(207, 4%, 10%);
     --container-color: hsl(207, 4%, 12%);
-    --prism-scrim: hsla(207, 4%, 10%, .15);
+    --bg-fx-scrim: hsla(207, 4%, 10%, .15);
 }
 
 /*=============
