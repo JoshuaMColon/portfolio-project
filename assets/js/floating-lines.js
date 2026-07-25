@@ -415,14 +415,19 @@ export function initFloatingLines(container, options = {}) {
 
   if (ro) ro.observe(container);
 
+  // Listens on window (not the canvas) since the background container has
+  // pointer-events: none so the real page stays clickable underneath —
+  // a listener on the canvas itself would never receive events.
   const handlePointerMove = event => {
-    const rect = renderer.domElement.getBoundingClientRect();
+    const rect = container.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const dpr = renderer.getPixelRatio();
 
-    targetMouse.set(x * dpr, (rect.height - y) * dpr);
-    targetInfluence = 1.0;
+    if (interactive) {
+      targetMouse.set(x * dpr, (rect.height - y) * dpr);
+      targetInfluence = 1.0;
+    }
 
     if (parallax) {
       const centerX = rect.width / 2;
@@ -437,9 +442,12 @@ export function initFloatingLines(container, options = {}) {
     targetInfluence = 0.0;
   };
 
+  if (interactive || parallax) {
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+  }
   if (interactive) {
-    renderer.domElement.addEventListener('pointermove', handlePointerMove);
-    renderer.domElement.addEventListener('pointerleave', handlePointerLeave);
+    window.addEventListener('mouseleave', handlePointerLeave);
+    window.addEventListener('blur', handlePointerLeave);
   }
 
   let raf = 0;
@@ -472,9 +480,12 @@ export function initFloatingLines(container, options = {}) {
     if (resizeTimer) clearTimeout(resizeTimer);
     if (ro) ro.disconnect();
 
+    if (interactive || parallax) {
+      window.removeEventListener('pointermove', handlePointerMove);
+    }
     if (interactive) {
-      renderer.domElement.removeEventListener('pointermove', handlePointerMove);
-      renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);
+      window.removeEventListener('mouseleave', handlePointerLeave);
+      window.removeEventListener('blur', handlePointerLeave);
     }
 
     geometry.dispose();
