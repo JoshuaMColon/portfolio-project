@@ -8,6 +8,12 @@ import { initLightRays } from './light-rays.js';
 /*=============== DECRYPTED TEXT ===============*/
 import { DecryptedText, bindGroupView, bindGroupHover } from './decrypted-text.js';
 
+/*=============== CUSTOM CURSOR ===============*/
+import { initCustomCursor } from './custom-cursor.js';
+
+/*=============== MAGNETIC BUTTONS ===============*/
+import { initMagnetic } from './magnetic.js';
+
 const prismBg = document.getElementById('prism-bg');
 const floatingLinesBg = document.getElementById('floating-lines-bg');
 const lightRaysBg = document.getElementById('light-rays-bg');
@@ -356,3 +362,12 @@ sr.reveal('.home_info div', {delay: 600, origin: 'bottom', interval: 100})
 sr.reveal('.skills_content:nth-child(1), .contact_content:nth-child(1)', {origin: 'left'})
 sr.reveal('.skills_content:nth-child(2), .contact_content:nth-child(2)', {origin: 'right'})
 sr.reveal('.qualification_content, .services_card', {interval: 100})
+
+/*=============== CUSTOM CURSOR ===============*/
+initCustomCursor();
+
+/*=============== MAGNETIC BUTTONS ===============*/
+/* Covers the resume link, project "View Project" links, certification
+   links, and the contact section's messenger/submit buttons — anything
+   using .projects_button or .contact_button. */
+initMagnetic('.projects_button, .contact_button');
