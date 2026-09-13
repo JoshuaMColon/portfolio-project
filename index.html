@@ -1,751 +1,453 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!--============ FAVICON ===========-->
-    <!--This will be where I place an image called "favicon.png"
-    <link rel = "shortcut icon" href = "assets/img/favicon.png" type = "image/x-icon"-->
-    <link rel ="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
-
-    <!--============ REMIXICONS =========-->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-
-    <!--============ SWIPER CSS =========-->
-    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
-
-    <!--============== CSS ==============-->
-    <link rel="stylesheet" href="assets/css/style.css">
-
-    <title> Responsive portfolio website Josh </title>
-</head>
-<body>
-
-    <!--============== LIGHTFALL BACKGROUND ===========-->
-    <!--============== DARK MODE BACKGROUND (Prism) ===========-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="assets/img/favicon.png"
+      type="image/x-icon"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Josh Colon | Full-Stack Developer</title>
+  </head>
+  <body class="dark-theme">
     <div id="prism-bg" class="prism-bg-container"></div>
-
-    <!--============== LIGHT MODE BACKGROUND (Floating Lines + Light Rays) ===========-->
     <div id="floating-lines-bg" class="floating-lines-bg-container"></div>
     <div id="light-rays-bg" class="light-rays-bg-container"></div>
-
-    <!--============== BACKGROUND CONTRAST SCRIM (dims whichever background above is active) ===========-->
     <div class="bg-fx-scrim"></div>
 
-    <!--============== HEADER ===========-->
-    <header class="header" id="header">
-        <nav class="nav container">
-            <a href="#" class="nav_logo">
-                Josh
-            </a>
+    <header class="site-header" id="header">
+      <nav class="nav container">
+        <a href="#home" class="nav_logo" aria-label="Josh home">
+          <span class="brand-mark">J</span>
+          <span>Josh</span>
+        </a>
 
-            <div class="nav_menu" id="nav-menu">
-                <ul class="nav_list grid">
-                    <li class ="nav_item">
-                        <a href="#home" class="nav_link active-link">
-                            <i class="ri-home-4-line"></i> Home
-                        </a>
-                    </li>
+        <div class="nav_menu" id="nav-menu">
+          <ul class="nav_list">
+            <li><a href="#home" class="nav_link active-link">Home</a></li>
+            <li><a href="#skills" class="nav_link">Capabilities</a></li>
+            <li><a href="#projects" class="nav_link">Projects</a></li>
+            <li><a href="#qualification" class="nav_link">About</a></li>
+            <li><a href="#contact" class="nav_link">Contact</a></li>
+          </ul>
+          <div class="nav_close" id="nav-close">
+            <i class="ri-close-circle-line"></i>
+          </div>
+        </div>
 
-                    <li class ="nav_item">
-                        <a href="#skills" class="nav_link">
-                            <i class="ri-fire-line"></i> Skills
-                        </a>
-                    </li>
-
-                    <li class ="nav_item">
-                        <a href="#qualification" class="nav_link">
-                            <i class="ri-book-open-line"></i> Qualification
-                        </a>
-                    </li>
-
-                    <li class ="nav_item">
-                        <a href="#services" class="nav_link">
-                            <i class="ri-briefcase-4-line"></i> Services
-                        </a>
-                    </li>
-
-                    <li class ="nav_item">
-                        <a href="#projects" class="nav_link">
-                            <i class="ri-image-line"></i> Projects
-                        </a>
-                    </li>
-
-                    <li class ="nav_item">
-                        <a href="#contact" class="nav_link">
-                            <i class="ri-message-2-line"></i> Contact
-                        </a>
-                    </li>
-                </ul>
-
-                <!-- Close Button -->
-                <div class="nav_close" id="nav-close">
-                    <i class="ri-close-circle-line"></i>
-                </div>
-            </div>
-
-            <div class="nav_buttons">
-                <!-- Theme Change Button -->
-                <i class="ri-moon-line change-theme" id="theme-button"></i>
-
-                <!-- Toggle Button -->
-                <div class="nav_toggle" id="nav-toggle">
-                    <i class="ri-menu-2-line"></i>
-                </div>
-            </div>
-        </nav>
-
+        <div class="nav_buttons">
+          <button
+            class="theme-button"
+            id="theme-button"
+            aria-label="Toggle theme"
+          >
+            <i class="ri-sun-line"></i>
+          </button>
+          <a
+            href="assets/docs/Joshua_Colon_Master_Resume.pdf"
+            class="nav_resume"
+            target="_blank"
+            >Resume</a
+          >
+          <button class="nav_toggle" id="nav-toggle" aria-label="Open menu">
+            <i class="ri-menu-2-line"></i>
+          </button>
+        </div>
+      </nav>
     </header>
 
-    <!--============== MAIN =============-->
     <main class="main">
+      <section class="hero section" id="home">
+        <div class="container hero-shell">
+          <div class="hero-copy">
+            <span class="eyebrow">Full-stack product developer</span>
+            <h1>
+              The next generation of<br />
+              digital craftsmanship.
+            </h1>
+            <p id="bio-text">
+              I design and build polished web experiences for startups, teams,
+              and products that need clarity, speed, and strong visual identity.
+            </p>
 
-    <!--========== HOME =============-->
-    <section class="home section" id="home">
-        <div class="home_container container grid section_border">
-            <div class="home_data grid">
-                <h1 class="home_title">
-                    Hi, I'm Josh <br>
-                    Frontend/Backend Web Developer
-                </h1>
-
-                <div class="home_blob grid">
-                    <div class="home_perfil">
-                        <img src="assets/img/perfil.png" alt="home perfil">
-                    </div>
-
-                    <img src="assets/img/shape-wawes.svg" alt="" class="home_shape-wawes">
-                    <img src="assets/img/shape-circle.svg" alt="" class="home_shape-circle">
-                </div>
-
-                <ul class="home_social">
-                    <a href="https://www.linkedin.com/in/joshua-colon2" target="_blank" class="home_social-link">
-                        <i class="ri-linkedin-box-line"></i>
-                    </a>
-
-                    <a href="https://github.com/JoshuaMColon" target="_blank" class="home_social-link">
-                        <i class="ri-github-line"></i>
-                    </a>
-                </ul>
-
-                <a href="assets/docs/Joshua_Colon_Master_Resume.pdf" class="projects_button home_resume" target="_blank">
-                    View Resume <i class="ri-arrow-right-line"></i>
-                    <div class="home_resume-border"></div>
-                </a>
+            <div class="hero-actions">
+              <a href="#projects" class="button button-primary">View work</a>
             </div>
 
-            <!--========== HOME INFO 1 =============-->
-            <div class="home_info">
-                <div>
-                    <h3 class="home_info-title">
-                        BIOGRAPHY
-                    </h3>
-
-                    <p class="home_info-description" id="bio-text">
-                        Full-Stack Web Developer certified with ERA Academy. Security Clearance: Secret. Bachelor's degree in Game Design. I am striving to building clean and functional Full-Stack Web Applicaitons!
-                    </p>
-                </div>
-
-                <div>
-                    <h3 class="home_info-title">
-                        CONTACT
-                    </h3>
-
-                    <p class="home_info-description">
-                        joshua.m.colon2@gmail.com <br>
-                    </p>
-                </div>
-
-                <div>
-                    <h3 class="home_info-title">
-                        SERVICES
-                    </h3>
-
-                    <p class="home_info-description" id="services-text">
-                        <span class="decrypt-line">Web Development</span> <br>
-                        <span class="decrypt-line">UI/UX Design</span> <br>
-                        <span class="decrypt-line">Frontend/Backend Development</span> <br>
-                        <span class="decrypt-line">Full-Stack Web Applications</span> <br>
-                    </p>
-                </div>
+            <div class="hero-metrics">
+              <div>
+                <strong>5+</strong>
+                <span>Years building</span>
+              </div>
+              <div>
+                <strong>5</strong>
+                <span>Projects shipped</span>
+              </div>
+              <div>
+                <strong>100%</strong>
+                <span>Product focus</span>
+              </div>
             </div>
+          </div>
 
-            <!--========== HOME INFO 2 =============-->
-            <div class="home_info">
-                <div>
-                    <h3 class="home_info-title">
-                        YEARS OF EXPERIENCE
-                    </h3>
+          <div class="hero-panel">
+            <div class="panel-window portrait-panel">
+              <div class="portrait-wrap">
+                <div class="portrait-glow"></div>
+                <img
+                  src="assets/img/perfil.png"
+                  alt="Josh portrait"
+                  class="portrait-photo"
+                />
+              </div>
 
-                    <p class="home_info-number">
-                        05
-                    </p>
-                </div>
-
-               <!--- <div>
-                    <h3 class="home_info-title">
-                        COMPLETED PROJECTS
-                    </h3>
-
-                    <p class="home_info-number">
-                        5
-                    </p>
-                </div> --->
-
-               <!--- <div>
-                    <h3 class="home_info-title">
-                        COMPANIES WORKED
-                    </h3>
-
-                    <p class="home_info-number">
-                        0
-                    </p>
-                </div> --->
+              <div class="profile-badge">
+                <span>Available for product work</span>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-        <!--========== SKILLS ===========-->
-        <section class="skills section" id="skills">
-            <h2 class="section_title">Skills</h2>
-            <span class="section_subtitle">My Technical Level</span>
+      <section class="logo-strip">
+        <div class="container">
+          <p>Built for product teams, portfolios, and digital experiences.</p>
+          <div class="brands">
+            <span>Web apps</span>
+            <span>UI systems</span>
+            <span>Landing pages</span>
+            <span>Dashboards</span>
+            <span>Brand sites</span>
+          </div>
+        </div>
+      </section>
 
-            <div class="skills_container container grid section_border">
-                <!--========== SKILLS 1 ===========-->
-                <div class="skills_content">
-                    <h3 class="skills_title">
-                        <i class="ri-braces-line"></i> Frontend Developer
-                    </h3>
+      <section class="features section" id="skills">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Capabilities</span>
+            <h2>Strategy, design, and engineering in one workflow.</h2>
+          </div>
 
-                    <div class="skills_info">
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/html-1.svg" alt="skills image">
-                            </div>
+          <div class="skills-grid">
+            <article class="skill-card">
+              <img src="assets/img/html-1.svg" alt="HTML5" />
+              <h3>HTML5</h3>
+              <p>Semantic, accessible foundations for dependable interfaces.</p>
+            </article>
+            <article class="skill-card">
+              <img src="assets/img/css-3.svg" alt="CSS3" />
+              <h3>CSS3</h3>
+              <p>Responsive visual systems with precise motion and layout.</p>
+            </article>
+            <article class="skill-card">
+              <img src="assets/img/javascript-r.svg" alt="JavaScript" />
+              <h3>JavaScript</h3>
+              <p>Interactive behavior that keeps products quick and clear.</p>
+            </article>
+            <article class="skill-card">
+              <img src="assets/img/react-2.svg" alt="React" />
+              <h3>React</h3>
+              <p>Reusable components for flexible, maintainable frontends.</p>
+            </article>
+            <article class="skill-card">
+              <img src="assets/img/nodejs-3.svg" alt="Node.js" />
+              <h3>Node.js</h3>
+              <p>Practical server-side logic and API integrations.</p>
+            </article>
+            <article class="skill-card">
+              <img src="assets/img/mysql.svg" alt="MySQL" />
+              <h3>MySQL</h3>
+              <p>Structured data models that support useful product flows.</p>
+            </article>
+            <article class="skill-card">
+              <img src="assets/img/mongodb-icon-2.svg" alt="MongoDB" />
+              <h3>MongoDB</h3>
+              <p>Flexible data storage for evolving application needs.</p>
+            </article>
+            <article class="skill-card">
+              <img src="assets/img/git-icon.svg" alt="Git" />
+              <h3>Git</h3>
+              <p>Focused collaboration and clean delivery workflows.</p>
+            </article>
+          </div>
+        </div>
+      </section>
 
-                            <h3 class="skills_name">HTML</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
+      <section class="projects section" id="projects">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Selected projects</span>
+            <h2>Interfaces built to make the work feel clear.</h2>
+            <p class="section-intro">
+              A few deployed builds that show how I think through product flow,
+              interaction, and the details between the lines.
+            </p>
+          </div>
 
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/css-3.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">CSS</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
-
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/javascript-r.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">JavaScript</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
-
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/react-2.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">React</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
-
-                        <!-- <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/mysql.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">MySQL</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div> -->
-
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/git-icon.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">Git</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!--========== SKILLS 2 ===========-->
-                <div class="skills_content">
-                    <h3 class="skills_title">
-                        <i class="ri-braces-line"></i> Backend Developer
-                    </h3>
-
-                    <div class="skills_info">
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/mysql.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">MySQL</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
-
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/mongodb-icon-2.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">NoSQL</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
-
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/nodejs-3.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">Node.js</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
-
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/sendgrid-1.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">Email Services</h3>
-                            <span class="skills_subtitle">Basic/Intermediate</span>
-                        </div>
-
-                        <div class="skills_data">
-                            <div class="skills_blob">
-                                <img src="assets/img/vercel.svg" alt="skills image">
-                            </div>
-
-                            <h3 class="skills_name">Vercel</h3>
-                            <span class="skills_subtitle">Intermediate</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!--========== QUALIFICATION =====-->
-        <section class="qualification section" id="qualification">
-            <h2 class="section_title">Qualification</h2>
-            <span class="section_subtitle">Experience and Education</span>
-
-            <div class="qualification_container container grid section_border">
-                <!--========== QUALIFICATION 1 =====-->
-                <div class="qualification_content">
-                    <h3 class="qualification_title">
-                        <i class="ri-pencil-ruler-line"></i> Education
-                    </h3>
-
-                    <div class="qualification_info">
-                        <div>
-                            <h3 class="qualification_name">
-                                Bachelor's In Video Game Design
-                            </h3>
-                            <span class="qualification_country">U.S. - Full Sail University</span>
-                            <span class="qualification_year">2022 - 2024</span>
-                        </div>
-
-                        <div>
-                            <h3 class="qualification_name">
-                                Certification In HTML/CSS Web Design
-                            </h3>
-                            <span class="qualification_country">U.S. - (COITB) ERA Academy</span>
-                            <span class="qualification_year">2025</span>
-                        </div>
-
-                        <div>
-                            <h3 class="qualification_name">
-                                Certification In JavaScript Professional Developer
-                            </h3>
-                            <span class="qualification_country">U.S. - (COITB) ERA Academy</span>
-                            <span class="qualification_year">2026</span>
-                            <br>
-                            <a href="assets/img/JavaScript.jpg" class="projects_button" target="_blank">
-                                View Certification <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-
-                        <div>
-                            <h3 class="qualification_name">
-                                Ceritifcation In ReactJS Framework Developer
-                            </h3>
-                            <span class="qualification_country">U.S. - (COITB) ERA Academy</span>
-                            <span class="qualification_year">2026</span>
-                            <br>
-                            <a href="assets/img/React2.jpg" class="projects_button" target="_blank">
-                                View Certification <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-
-                        <div>
-                            <h3 class="qualification_name">
-                                Ceritifcation In MySQL Backend Developer
-                            </h3>
-                            <span class="qualification_country">U.S. - (COITB) ERA Academy</span>
-                            <span class="qualification_year">2026</span>
-                            <br>
-                            <a href="assets/img/MySQL.jpg" class="projects_button" target="_blank">
-                                View Certification <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!--========== QUALIFICATION 2 
-                <div class="qualification_content">
-                    <h3 class="qualification_title">
-                        <i class="ri-building-2-line"></i> Work
-                    </h3>
-
-                    <div class="qualification_info">
-                        <div>
-                            <h3 class="qualification_name">
-                                TBD
-                            </h3>
-                            <span class="qualification_country"></span>
-                            <span class="qualification_year"></span>
-                        </div>
-                    </div>
-                </div> =====-->
-                    
+          <div class="project-gallery" aria-label="Deployed projects">
+            <div class="project-stage">
+              <div class="project-track" id="project-track">
+                <article class="project-slide active" data-project="blog">
+                  <img src="assets/img/Blog.png" alt="Blog Platform preview" />
+                  <span class="project-slide-label">Blog Platform</span>
+                </article>
+                <article class="project-slide" data-project="kanban">
+                  <img
+                    src="assets/img/kanaban-board.png"
+                    alt="Kanban Board preview"
+                  />
+                  <span class="project-slide-label">Kanban Board</span>
+                </article>
+                <article class="project-slide" data-project="weather">
+                  <img
+                    src="assets/img/Weather.png"
+                    alt="Weather Dashboard preview"
+                  />
+                  <span class="project-slide-label">Weather Dashboard</span>
+                </article>
+              </div>
             </div>
 
-            <img src="assets/img/shape-circle.svg" alt="qualification image" class="qualification_img">
+            <div
+              class="project-tabs"
+              role="tablist"
+              aria-label="Choose a project"
+            >
+              <button
+                class="project-tab active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                data-project="blog"
+                data-index="0"
+              >
+                <span class="project-tab-number">01</span>
+                <span class="project-tab-content">
+                  <strong>Blog Platform</strong>
+                  <small>Editorial web app</small>
+                  <span class="project-tab-description"
+                    >Editorial experience with a clean writing flow and
+                    product-grade content structure.</span
+                  >
+                </span>
+                <i class="ri-arrow-right-line"></i>
+              </button>
+              <button
+                class="project-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-project="kanban"
+                data-index="1"
+              >
+                <span class="project-tab-number">02</span>
+                <span class="project-tab-content">
+                  <strong>Kanban Board</strong>
+                  <small>Team collaboration tool</small>
+                  <span class="project-tab-description"
+                    >Task orchestration interface built for team velocity,
+                    focus, and simple visual flow.</span
+                  >
+                </span>
+                <i class="ri-arrow-right-line"></i>
+              </button>
+              <button
+                class="project-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-project="weather"
+                data-index="2"
+              >
+                <span class="project-tab-number">03</span>
+                <span class="project-tab-content">
+                  <strong>Weather Dashboard</strong>
+                  <small>Data-rich dashboard</small>
+                  <span class="project-tab-description"
+                    >Data-rich UI with readable summaries and a clear, branded
+                    experience.</span
+                  >
+                </span>
+                <i class="ri-arrow-right-line"></i>
+              </button>
 
-        </section>
-
-        <!--========== SERVICES ==========-->
-        <section class="services section" id="services">
-            <h2 class="section_title">Services</h2>
-            <span class="section_subtitle">What I offer</span>
-
-            <div class="services_container container grid section_border">
-                <div class="services_card">
-                    <i class="ri-layout-4-line"></i>
-
-                    <h2 class="services_title">
-                        <span class="decrypt-line">Website Design</span> <br>
-                        <span class="decrypt-line">Web Applications</span>
-                    </h2>
-
-                    <p class="services_description">
-                        Service that provides the best quality and vision
-                        at the request of the client, with professional work and great customer support.
-                    </p>
-
-                    <div class="services_border"></div>
-                </div>
-
-                <div class="services_card">
-                    <i class="ri-code-line"></i>
-
-                    <h2 class="services_title">
-                        <span class="decrypt-line">UI/UX</span> <br>
-                        <span class="decrypt-line">Responsive Layouts</span>
-                    </h2>
-
-                    <p class="services_description">
-                        Service that provides the best quality and vision
-                        at the request of the client, with professional work and great customer support.
-                    </p>
-
-                    <div class="services_border"></div>
-                </div>
-
-                <div class="services_card">
-                    <i class="ri-quill-pen-line"></i>
-
-                    <h2 class="services_title">
-                        <span class="decrypt-line">API Integration</span> <br>
-                        <span class="decrypt-line">Frontend-Backend</span>
-                    </h2>
-
-                    <p class="services_description">
-                        Service that provides the best quality and vision
-                        at the request of the client, with professional work and great customer support.
-                    </p>
-
-                    <div class="services_border"></div>
-                </div>
+              <div class="project-tab-detail" id="project-tab-detail">
+                <span class="project-detail-type" id="project-detail-type"
+                  >Web app</span
+                >
+                <h3 id="project-detail-title">Blog Platform</h3>
+                <p id="project-detail-description">
+                  Editorial experience with a clean writing flow and
+                  product-grade content structure.
+                </p>
+                <a
+                  id="project-detail-link"
+                  href="https://blog-platform-one-xi.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Visit live site <i class="ri-arrow-up-right-line"></i>
+                </a>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <!--========== PROJECTS ==========-->
-        <section class="projects section" id="projects">
-            <h2 class="section_title">Projects</h2>
-            <span class="section_subtitle">Most Recent Work</span>
+      <section class="about section" id="qualification">
+        <div class="container about-shell">
+          <div class="section-heading left-heading">
+            <span class="eyebrow">About</span>
+            <h2>Product-minded, design-aware, and built for execution.</h2>
+          </div>
 
-            <div class="container section_border">
-                <div class="projects_container swiper">
-                    <div class="swiper-wrapper">
-                    <!--========== PROJECT 1 ==========-->
-                    <div class="projects_content swiper-slide">
-                        <img src="assets/img/Blog.png" alt="projects image" class="projects_img">
-
-                        <div>
-                            <span class="projects_subtitle">Web</span>
-                            <h1 class="projects_title">Blog Platform</h1>
-
-                            <a href="https://blog-platform-one-xi.vercel.app/" class="projects_button" target="_blank">
-                                View Project <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!--========== PROJECT 2 ==========-->
-                    <div class="projects_content swiper-slide">
-                        <img src="assets/img/kanaban-board.png" alt="projects image" class="projects_img">
-
-                        <div>
-                            <span class="projects_subtitle">Web</span>
-                            <h1 class="projects_title">Collab Kanaban Board</h1>
-
-                            <a href="https://collaborative-kanban-board-q5pl4n6x0-joshuamcolons-projects.vercel.app/" class="projects_button" target="_blank">
-                                View Project <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!--========== PROJECT 3 ==========-->
-                    <div class="projects_content swiper-slide">
-                        <img src="assets/img/Weather.png" alt="projects image" class="projects_img">
-
-                        <div>
-                            <span class="projects_subtitle">Web App</span>
-                            <h1 class="projects_title">Weather Dashboard</h1>
-
-                            <a href="https://joshuamcolon.github.io/Weather_Dashboard_App/" class="projects_button" target="_blank">
-                                View Project <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!--========== PROJECT 4 ==========-->
-                    <div class="projects_content swiper-slide">
-                        <img src="assets/img/Resume.png" alt="projects image" class="projects_img">
-
-                        <div>
-                            <span class="projects_subtitle">Web</span>
-                            <h1 class="projects_title">React Resume</h1>
-
-                            <a href="https://my-website-one-jade.vercel.app" class="projects_button" target="_blank">
-                                View Project <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!--========== PROJECT 5 ==========-->
-                    <div class="projects_content swiper-slide">
-                        <img src="assets/img/Task.png" alt="projects image" class="projects_img">
-
-                        <div>
-                            <span class="projects_subtitle">Web</span>
-                            <h1 class="projects_title">Task Manager</h1>
-
-                            <a href="https://joshuamcolon.github.io/task-manager/" class="projects_button" target="_blank">
-                                View Project <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                    
-                    <!-- Swiper Arrows
-                    <div class="swiper-button-next">
-                        <i class="ri-arrow-right-s-line"></i>
-                    </div>
-
-                    <div class="swiper-button-prev">
-                        <i class="ri-arrow-left-s-line"></i>
-                    </div> -->
-
-                    <!-- Swiper Pagination -->
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-        </section>
-
-        <!--========== TESTIMONIAL 
-        <section class="testimonial section">
-            <h2 class="section_title">Testimonial</h2>
-            <span class="section_subtitle">Coming Soon</span>
-
-            <div class="container section_border">
-                <div class="testimonial_container swiper">
-                    <div class="swiper-wrapper"> ========-->
-                        <!--========== TESTIMONIAL 1 
-                        <div class="testimonial_content swiper-slide">
-                            <p class="testimonial_description">
-                                "Coming Soon"
-                            </p>
-
-                            <div>
-                                <h3 class="testimonial_name">N/A</h3>
-                                <span class="testimonial_subtitle">Future Client</span>
-                            </div>
-                        </div> ========-->
-
-                        <!--========== TESTIMONIAL 2 
-                        <div class="testimonial_content swiper-slide">
-                            <p class="testimonial_description">
-                                "Coming Soon"
-                            </p>
-
-                            <div>
-                                <h3 class="testimonial_name">N/A</h3>
-                                <span class="testimonial_subtitle">Future Client</span>
-                            </div>
-                        </div> 
-                    </div> ========-->
-
-                    <!-- Swiper Arrows 
-                    <div class="swiper-button-next">
-                        <i class="ri-arrow-right-s-line"></i>
-                    </div>
-                    
-                    <div class="swiper-button-prev">
-                        <i class="ri-arrow-left-s-line"></i>
-                    </div> -->
-                    <div class="swiper-pagination"></div>
-                </div>
+          <div class="about-grid">
+            <div class="about-card">
+              <h3>Education</h3>
+              <ul>
+                <li>
+                  <span>BS in Video Game Design</span>
+                  <small>Full Sail University</small>
+                </li>
+                <li>
+                  <span>JavaScript Professional Developer</span>
+                  <small>ERA Academy</small>
+                </li>
+                <li>
+                  <span>ReactJS Framework Developer</span>
+                  <small>ERA Academy</small>
+                </li>
+              </ul>
             </div>
 
-            <img src="assets/img/shape-wawes.svg" alt="testimonial image" class="testimonial_img">
-        </section>
-
-        <!--========== CONTACT =============-->
-        <section class="contact section" id="contact">
-            <h2 class="section_title">Contact Me</h2>
-            <span class="section_subtitle">Get in Touch</span>
-
-            <div class="contact_container container grid section_border">
-                <div class="contact_content">
-                    <h3 class="contact_title">
-                        <i class="ri-message-2-line"></i> Message Me
-                    </h3>
-
-                    <div class="contact_info">
-                        <div class="contact_data">
-                            <span class="contact_data-title">Email</span>
-                            <span class="contact_data-info">joshua.m.colon2@gmail.com</span>
-                        </div>
-
-                        <!-- <div class="contact_data">
-                            <span class="contact_data-title">Phone Number</span>
-                            <span class="contact_data-info">(###) ###-####</span>
-                            <!-- Insert a real number plus country code 
-                            <a href="" target="_blank" class="contact_button">
-                                Write me <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div> -->
-
-                        <div class="contact_data">
-                            <span class="contact_data-title">Messenger</span>
-                            <span class="contact_data-info">@joshua.colon.9066</span>
-                            <!-- Insert brand name or profile -->
-                            <a href="http://m.me/joshua.colon.9066" target="_blank" class="contact_button">
-                                Write me <i class="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="contact_content">
-                    <h3 class="contact_title">
-                        <i class="ri-send-plane-line"></i> Write me your project
-                    </h3>
-
-                    <form action="" class="contact_form" id="contact-form">
-                        <div class="contact_form-div">
-                            <label class="contact_form-tag">Names</label>
-                            <input type="text" name="user_name" required placeholder="Write your names" class="contact_form-input" id="contact-name">
-                        </div>
-
-                        <div class="contact_form-div">
-                            <label class="contact_form-tag">Mail</label>
-                            <input type="email" name="user_email" required placeholder="Write your email" class="contact_form-input" id="contact-email">
-                        </div>
-
-                        <div class="contact_form-div contact_form-area">
-                            <label class="contact_form-tag">Project</label>
-                            <textarea name="user_project" placeholder="Write your project" id="contact-project" class="contact_form-input"></textarea>
-                        </div>
-
-                        <p class="contact_message" id="contact-message"></p>
-
-                        <button type="submit" class="contact_button">
-                            Submit <i class="ri-arrow-right-up-line"></i>
-                        </button>
-                    </form>
-                </div>
+            <div class="about-card">
+              <h3>Experience</h3>
+              <ul>
+                <li>
+                  <span>Full-stack web development</span>
+                  <small>UI, logic, optimization, and deployment</small>
+                </li>
+                <li>
+                  <span>Responsive product design</span>
+                  <small>Clear interfaces across mobile and desktop</small>
+                </li>
+                <li>
+                  <span>Modern frontend systems</span>
+                  <small>Reusable patterns and polished interactions</small>
+                </li>
+              </ul>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-    <!--============== FOOTER ===============-->
+      <section class="contact section" id="contact">
+        <div class="container contact-shell">
+          <div class="contact-copy">
+            <span class="eyebrow">Let’s build</span>
+            <h2>Contact</h2>
+            <h3>Need a cleaner product experience or a sharper launch site?</h3>
+            <p>
+              Whether you need a modern landing page, a portfolio refresh, or a
+              full web app, I can help shape it from concept through launch.
+            </p>
+            <div class="contact-links">
+              <a href="mailto:joshua.m.colon2@gmail.com"
+                >joshua.m.colon2@gmail.com</a
+              >
+              <a
+                href="https://www.linkedin.com/in/joshua-colon2"
+                target="_blank"
+                >LinkedIn</a
+              >
+              <a href="https://github.com/JoshuaMColon" target="_blank"
+                >GitHub</a
+              >
+            </div>
+          </div>
+
+          <form class="contact_form" id="contact-form">
+            <div class="contact_form-div">
+              <label class="contact_form-tag">Name</label>
+              <input
+                type="text"
+                name="user_name"
+                required
+                placeholder="Your name"
+                class="contact_form-input"
+                id="contact-name"
+              />
+            </div>
+
+            <div class="contact_form-div">
+              <label class="contact_form-tag">Email</label>
+              <input
+                type="email"
+                name="user_email"
+                required
+                placeholder="you@example.com"
+                class="contact_form-input"
+                id="contact-email"
+              />
+            </div>
+
+            <div class="contact_form-div contact_form-area">
+              <label class="contact_form-tag">Project</label>
+              <textarea
+                name="user_project"
+                placeholder="Tell me about your idea"
+                id="contact-project"
+                class="contact_form-input"
+              ></textarea>
+            </div>
+
+            <p class="contact_message" id="contact-message"></p>
+            <button type="submit" class="contact_button">
+              Start a project <i class="ri-arrow-right-up-line"></i>
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
     <footer class="footer">
-        <div class="footer_container container">
-            <h1 class="footer_title">Josh</h1>
-            <p>Frontend/Backend Web Developer</p>
-
-            <ul class="footer_list">
-                <li>
-                    <a href="#home" class="footer_link">Home</a>
-                </li>
-
-                <li>
-                    <a href="#skills" class="footer_link">Skills</a>
-                </li>
-
-                <li>
-                    <a href="#projects" class="footer_link">Projects</a>
-                </li>
-            </ul>
-
-            <ul class="footer_social">
-                <a href="https://www.linkedin.com/in/joshua-colon2" target="_blank" class="footer_social-link">
-                    <i class="ri-linkedin-box-line"></i>
-                </a>
-
-                <a href="https://github.com/JoshuaMColon" target="_blank" class="footer_social-link">
-                    <i class="ri-github-line"></i>
-                </a>
-            </ul>
-
-            <span class="footer_copy">
-               <i class="ri-copyright-line"></i> Copyright All Rights Reserved.
-            </span>
+      <div class="container footer_container">
+        <div class="footer-brand">
+          <span class="brand-mark">J</span>
+          <span>Josh</span>
         </div>
+        <p>Frontend / Backend Web Developer</p>
+        <div class="footer_links">
+          <a href="#home">Home</a>
+          <a href="#skills">Capabilities</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <span class="footer_copy"
+          ><i class="ri-copyright-line"></i> 2026 Josh Colon</span
+        >
+      </div>
     </footer>
 
-    <!--============== SCROLL UP ============-->
-    <a href="#" class="scrollup" id="scroll-up">
-        <i class="ri-arrow-up-line"></i>
-    </a>
+    <a href="#" class="scrollup" id="scroll-up"
+      ><i class="ri-arrow-up-line"></i
+    ></a>
 
-
-    <!--=============== SCROLL REVEAL ========-->
     <script src="assets/js/scrollreveal.min.js"></script>
-
-    <!--=============== SWIPER JS ============-->
     <script src="assets/js/swiper-bundle.min.js"></script>
-
-    <!--=============== EMAIL JS ==============-->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-
-    <!--=============== MAIN JS ================-->
-    <!-- type="module" is required because main.js now imports prism.js -->
-    <script type="module" src="assets/js/main.js"></script>
-
-
-    </main>
-    
-</body>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script src="assets/js/project-showcase.js?v=1"></script>
+    <script type="module" src="assets/js/main.js?v=2"></script>
+  </body>
 </html>
