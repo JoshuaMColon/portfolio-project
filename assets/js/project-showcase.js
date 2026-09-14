@@ -13,6 +13,7 @@ const projects = {
   blog: {
     type: "Web app",
     title: "Blog Platform",
+    accent: "#7dd3fc",
     description:
       "Editorial experience with a clean writing flow and product-grade content structure.",
     url: "https://blog-platform-one-xi.vercel.app/",
@@ -20,6 +21,7 @@ const projects = {
   kanban: {
     type: "Productivity tool",
     title: "Kanban Board",
+    accent: "#f7b36a",
     description:
       "Task orchestration interface built for team velocity, focus, and simple visual flow.",
     url: "https://collaborative-kanban-board-q5pl4n6x0-joshuamcolons-projects.vercel.app/",
@@ -27,6 +29,7 @@ const projects = {
   weather: {
     type: "Dashboard",
     title: "Weather Dashboard",
+    accent: "#54e1c1",
     description:
       "Data-rich UI with readable summaries and a clear, branded experience.",
     url: "https://joshuamcolon.github.io/Weather_Dashboard_App/",
@@ -39,6 +42,9 @@ function selectProject(tab) {
   if (!project || !projectTrack) return;
 
   projectTrack.style.transform = `translateX(-${projectIndex * 100}%)`;
+  if (projectStage) {
+    projectStage.style.setProperty("--project-accent", project.accent);
+  }
   projectTabs.forEach((projectTab) => {
     const isActive = projectTab === tab;
     projectTab.classList.toggle("active", isActive);

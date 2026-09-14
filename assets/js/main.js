@@ -397,6 +397,84 @@ const scrollHeader = () => {
 };
 window.addEventListener("scroll", scrollHeader);
 
+/*=============== PAGE SCROLL MOTION ===============*/
+const scrollProgress = document.getElementById("scroll-progress");
+const pageSections = Array.from(document.querySelectorAll("main > section"));
+const scrollTiltElements = Array.from(
+  document.querySelectorAll(".offer-card, .project-gallery, .skill-stack"),
+);
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
+
+if (!prefersReducedMotion) {
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
+      });
+    },
+    { threshold: 0.12 },
+  );
+
+  pageSections.forEach((section) => revealObserver.observe(section));
+}
+
+let scrollFrame = null;
+const updateScrollMotion = () => {
+  scrollFrame = null;
+  const documentHeight =
+    document.documentElement.scrollHeight - window.innerHeight;
+  const progress = documentHeight > 0 ? window.scrollY / documentHeight : 0;
+
+  if (scrollProgress) {
+    scrollProgress.style.transform = `scaleX(${progress})`;
+  }
+
+  pageSections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    const distanceFromCenter =
+      (rect.top + rect.height / 2 - window.innerHeight / 2) /
+      window.innerHeight;
+    section.style.setProperty(
+      "--scroll-depth",
+      Math.max(-1, Math.min(1, distanceFromCenter)),
+    );
+  });
+
+  scrollTiltElements.forEach((element) => {
+    const rect = element.getBoundingClientRect();
+    const verticalOffset =
+      (rect.top + rect.height / 2 - window.innerHeight / 2) /
+      window.innerHeight;
+    const horizontalOffset =
+      (rect.left + rect.width / 2 - window.innerWidth / 2) / window.innerWidth;
+    const clamp = (value) => Math.max(-1, Math.min(1, value));
+
+    element.style.setProperty(
+      "--scroll-tilt-x",
+      `${clamp(verticalOffset) * -12}deg`,
+    );
+    element.style.setProperty(
+      "--scroll-tilt-y",
+      `${clamp(horizontalOffset) * 16}deg`,
+    );
+    element.style.setProperty(
+      "--scroll-spin",
+      `${clamp(verticalOffset) * 180}deg`,
+    );
+  });
+};
+
+const requestScrollMotion = () => {
+  if (!scrollFrame)
+    scrollFrame = window.requestAnimationFrame(updateScrollMotion);
+};
+
+window.addEventListener("scroll", requestScrollMotion, { passive: true });
+window.addEventListener("resize", requestScrollMotion);
+requestScrollMotion();
+
 /*=============== SCROLL REVEAL ANIMATION ===============*/
 const sr = ScrollReveal({
   origin: "top",

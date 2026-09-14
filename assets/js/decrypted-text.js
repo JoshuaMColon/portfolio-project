@@ -21,22 +21,23 @@
   elements) — its children get replaced with per-character <span>s.
 */
 
-const DEFAULT_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+';
+const DEFAULT_CHARACTERS =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+";
 
 export class DecryptedText {
   constructor(el, options = {}) {
     this.el = el;
-    this.text = options.text ?? el.textContent;
+    this.text = (options.text ?? el.textContent).replace(/\s+/g, " ").trim();
     this.speed = options.speed ?? 50;
     this.maxIterations = options.maxIterations ?? 10;
     this.sequential = options.sequential ?? true;
-    this.revealDirection = options.revealDirection ?? 'start'; // 'start' | 'end' | 'center'
+    this.revealDirection = options.revealDirection ?? "start"; // 'start' | 'end' | 'center'
     this.useOriginalCharsOnly = options.useOriginalCharsOnly ?? false;
     this.characters = options.characters ?? DEFAULT_CHARACTERS;
-    this.className = options.className ?? 'decrypt-revealed';
-    this.encryptedClassName = options.encryptedClassName ?? 'decrypt-encrypted';
+    this.className = options.className ?? "decrypt-revealed";
+    this.encryptedClassName = options.encryptedClassName ?? "decrypt-encrypted";
     // 'hover' | 'view' | 'manual' — manual means the caller drives start()/reset()
-    this.animateOn = options.animateOn ?? 'manual';
+    this.animateOn = options.animateOn ?? "manual";
     this.threshold = options.threshold ?? 0.1;
 
     this.revealed = new Set();
@@ -50,21 +51,39 @@ export class DecryptedText {
 
   get availableChars() {
     if (this.useOriginalCharsOnly) {
-      const unique = Array.from(new Set(this.text.split(''))).filter(c => c !== ' ');
-      return unique.length ? unique : this.characters.split('');
+      const unique = Array.from(new Set(this.text.split(""))).filter(
+        (c) => c !== " ",
+      );
+      return unique.length ? unique : this.characters.split("");
     }
-    return this.characters.split('');
+    return this.characters.split("");
   }
 
   _buildDom() {
-    this.el.textContent = '';
-    this.el.setAttribute('aria-label', this.text);
-    this.spans = this.text.split('').map(char => {
-      const span = document.createElement('span');
+    this.el.textContent = "";
+    this.el.setAttribute("aria-label", this.text);
+    this.spans = [];
+    let word = null;
+
+    this.text.split("").forEach((char) => {
+      if (/\s/.test(char)) {
+        this.el.appendChild(document.createTextNode(char));
+        word = null;
+        return;
+      }
+
+      if (!word) {
+        word = document.createElement("span");
+        word.className = "decrypt-word";
+        this.el.appendChild(word);
+      }
+
+      const span = document.createElement("span");
       span.textContent = char;
+      span.dataset.originalChar = char;
       span.className = this.className;
-      this.el.appendChild(span);
-      return span;
+      word.appendChild(span);
+      this.spans.push(span);
     });
 
     // Lock every non-space character's box to its natural rendered width.
@@ -72,12 +91,11 @@ export class DecryptedText {
     // widths, so without this the line reflows on every scramble tick,
     // which is what caused the jitter. Space spans are left as plain
     // inline text so normal line-wrapping at those points still works.
-    this.spans.forEach((span, i) => {
-      if (this.text[i] === ' ') return;
+    this.spans.forEach((span) => {
       const width = span.getBoundingClientRect().width;
-      span.style.display = 'inline-block';
+      span.style.display = "inline-block";
       span.style.width = `${width}px`;
-      span.style.textAlign = 'center';
+      span.style.textAlign = "center";
     });
   }
 
@@ -87,19 +105,20 @@ export class DecryptedText {
   }
 
   _getNextIndex() {
-    const len = this.text.length;
+    const len = this.spans.length;
     switch (this.revealDirection) {
-      case 'end':
+      case "end":
         return len - 1 - this.revealed.size;
-      case 'center': {
+      case "center": {
         const middle = Math.floor(len / 2);
         const offset = Math.floor(this.revealed.size / 2);
-        const next = this.revealed.size % 2 === 0 ? middle + offset : middle - offset - 1;
+        const next =
+          this.revealed.size % 2 === 0 ? middle + offset : middle - offset - 1;
         if (next >= 0 && next < len && !this.revealed.has(next)) return next;
         for (let i = 0; i < len; i++) if (!this.revealed.has(i)) return i;
         return 0;
       }
-      case 'start':
+      case "start":
       default:
         return this.revealed.size;
     }
@@ -107,9 +126,8 @@ export class DecryptedText {
 
   _renderFrame() {
     this.spans.forEach((span, i) => {
-      if (this.text[i] === ' ') return;
       if (this.revealed.has(i)) {
-        span.textContent = this.text[i];
+        span.textContent = span.dataset.originalChar;
         span.className = this.className;
       } else {
         span.textContent = this._randomChar();
@@ -128,7 +146,7 @@ export class DecryptedText {
 
     this.intervalId = setInterval(() => {
       if (this.sequential) {
-        if (this.revealed.size < this.text.length) {
+        if (this.revealed.size < this.spans.length) {
           this.revealed.add(this._getNextIndex());
           this._renderFrame();
         } else {
@@ -145,9 +163,9 @@ export class DecryptedText {
   _finish() {
     clearInterval(this.intervalId);
     this.isAnimating = false;
-    for (let i = 0; i < this.text.length; i++) this.revealed.add(i);
-    this.spans.forEach((span, i) => {
-      span.textContent = this.text[i];
+    for (let i = 0; i < this.spans.length; i++) this.revealed.add(i);
+    this.spans.forEach((span) => {
+      span.textContent = span.dataset.originalChar;
       span.className = this.className;
     });
   }
@@ -157,26 +175,29 @@ export class DecryptedText {
     clearInterval(this.intervalId);
     this.isAnimating = false;
     this.revealed = new Set();
-    this.spans.forEach((span, i) => {
-      span.textContent = this.text[i];
+    this.spans.forEach((span) => {
+      span.textContent = span.dataset.originalChar;
       span.className = this.className;
     });
   }
 
   _bindEvents() {
-    if (this.animateOn === 'hover') {
-      this.el.addEventListener('mouseenter', () => this.start());
-      this.el.addEventListener('mouseleave', () => this.reset());
-    } else if (this.animateOn === 'view') {
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !this.hasAnimated) {
-            this.start();
-            this.hasAnimated = true;
-            observer.unobserve(this.el);
-          }
-        });
-      }, { threshold: this.threshold });
+    if (this.animateOn === "hover") {
+      this.el.addEventListener("mouseenter", () => this.start());
+      this.el.addEventListener("mouseleave", () => this.reset());
+    } else if (this.animateOn === "view") {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !this.hasAnimated) {
+              this.start();
+              this.hasAnimated = true;
+              observer.unobserve(this.el);
+            }
+          });
+        },
+        { threshold: this.threshold },
+      );
       observer.observe(this.el);
     }
     // 'manual': caller drives start()/reset() directly — see bindGroupHover/bindGroupView below.
@@ -185,21 +206,28 @@ export class DecryptedText {
 
 /** Bind a group of DecryptedText instances to fire together on hover of `triggerEl`. */
 export function bindGroupHover(triggerEl, instances) {
-  triggerEl.addEventListener('mouseenter', () => instances.forEach(i => i.start()));
-  triggerEl.addEventListener('mouseleave', () => instances.forEach(i => i.reset()));
+  triggerEl.addEventListener("mouseenter", () =>
+    instances.forEach((i) => i.start()),
+  );
+  triggerEl.addEventListener("mouseleave", () =>
+    instances.forEach((i) => i.reset()),
+  );
 }
 
 /** Bind a group of DecryptedText instances to fire together once, when `triggerEl` scrolls into view. */
 export function bindGroupView(triggerEl, instances, threshold = 0.1) {
   let done = false;
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !done) {
-        instances.forEach(i => i.start());
-        done = true;
-        observer.unobserve(triggerEl);
-      }
-    });
-  }, { threshold });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !done) {
+          instances.forEach((i) => i.start());
+          done = true;
+          observer.unobserve(triggerEl);
+        }
+      });
+    },
+    { threshold },
+  );
   observer.observe(triggerEl);
 }

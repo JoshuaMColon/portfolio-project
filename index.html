@@ -21,6 +21,7 @@
     <div id="floating-lines-bg" class="floating-lines-bg-container"></div>
     <div id="light-rays-bg" class="light-rays-bg-container"></div>
     <div class="bg-fx-scrim"></div>
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
     <header class="site-header" id="header">
       <nav class="nav container">
@@ -137,45 +138,171 @@
           </div>
 
           <div class="skills-grid">
-            <article class="skill-card">
-              <img src="assets/img/html-1.svg" alt="HTML5" />
-              <h3>HTML5</h3>
-              <p>Semantic, accessible foundations for dependable interfaces.</p>
+            <div class="skill-stack">
+              <p class="skill-stack-label">Frontend</p>
+              <div class="skill-stack-items">
+                <article
+                  class="skill-card"
+                  data-skill="HTML5"
+                  aria-label="HTML5"
+                >
+                  <div class="skill-visual">
+                    <span class="skill-layer skill-layer-back"></span>
+                    <span class="skill-layer skill-layer-middle"></span>
+                    <span class="skill-layer skill-layer-front"></span>
+                    <img src="assets/img/html-1.svg" alt="HTML5" />
+                  </div>
+                  <h3>HTML5</h3>
+                  <p>
+                    Semantic, accessible foundations for dependable interfaces.
+                  </p>
+                </article>
+                <article class="skill-card" data-skill="CSS3" aria-label="CSS3">
+                  <div class="skill-visual">
+                    <span class="skill-layer skill-layer-back"></span>
+                    <span class="skill-layer skill-layer-middle"></span>
+                    <span class="skill-layer skill-layer-front"></span>
+                    <img src="assets/img/css-3.svg" alt="CSS3" />
+                  </div>
+                  <h3>CSS3</h3>
+                  <p>
+                    Responsive visual systems with precise motion and layout.
+                  </p>
+                </article>
+                <article
+                  class="skill-card"
+                  data-skill="JavaScript"
+                  aria-label="JavaScript"
+                >
+                  <div class="skill-visual">
+                    <span class="skill-layer skill-layer-back"></span>
+                    <span class="skill-layer skill-layer-middle"></span>
+                    <span class="skill-layer skill-layer-front"></span>
+                    <img src="assets/img/javascript-r.svg" alt="JavaScript" />
+                  </div>
+                  <h3>JavaScript</h3>
+                  <p>
+                    Interactive behavior that keeps products quick and clear.
+                  </p>
+                </article>
+                <article
+                  class="skill-card"
+                  data-skill="React"
+                  aria-label="React"
+                >
+                  <div class="skill-visual">
+                    <span class="skill-layer skill-layer-back"></span>
+                    <span class="skill-layer skill-layer-middle"></span>
+                    <span class="skill-layer skill-layer-front"></span>
+                    <img src="assets/img/react-2.svg" alt="React" />
+                  </div>
+                  <h3>React</h3>
+                  <p>
+                    Reusable components for flexible, maintainable frontends.
+                  </p>
+                </article>
+              </div>
+            </div>
+            <div class="skill-stack">
+              <p class="skill-stack-label">Backend</p>
+              <div class="skill-stack-items">
+                <article
+                  class="skill-card"
+                  data-skill="Node.js"
+                  aria-label="Node.js"
+                >
+                  <div class="skill-visual">
+                    <span class="skill-layer skill-layer-back"></span>
+                    <span class="skill-layer skill-layer-middle"></span>
+                    <span class="skill-layer skill-layer-front"></span>
+                    <img src="assets/img/nodejs-3.svg" alt="Node.js" />
+                  </div>
+                  <h3>Node.js</h3>
+                  <p>Practical server-side logic and API integrations.</p>
+                </article>
+                <article
+                  class="skill-card"
+                  data-skill="MySQL"
+                  aria-label="MySQL"
+                >
+                  <div class="skill-visual">
+                    <span class="skill-layer skill-layer-back"></span>
+                    <span class="skill-layer skill-layer-middle"></span>
+                    <span class="skill-layer skill-layer-front"></span>
+                    <img src="assets/img/mysql.svg" alt="MySQL" />
+                  </div>
+                  <h3>MySQL</h3>
+                  <p>
+                    Structured data models that support useful product flows.
+                  </p>
+                </article>
+                <article
+                  class="skill-card"
+                  data-skill="MongoDB"
+                  aria-label="MongoDB"
+                >
+                  <div class="skill-visual">
+                    <span class="skill-layer skill-layer-back"></span>
+                    <span class="skill-layer skill-layer-middle"></span>
+                    <span class="skill-layer skill-layer-front"></span>
+                    <img src="assets/img/mongodb-icon-2.svg" alt="MongoDB" />
+                  </div>
+                  <h3>MongoDB</h3>
+                  <p>Flexible data storage for evolving application needs.</p>
+                </article>
+                <article class="skill-card" data-skill="Git" aria-label="Git">
+                  <div class="skill-visual">
+                    <span class="skill-layer skill-layer-back"></span>
+                    <span class="skill-layer skill-layer-middle"></span>
+                    <span class="skill-layer skill-layer-front"></span>
+                    <img src="assets/img/git-icon.svg" alt="Git" />
+                  </div>
+                  <h3>Git</h3>
+                  <p>Focused collaboration and clean delivery workflows.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div class="offer-heading">
+            <span class="eyebrow">What I can offer</span>
+            <h2>Useful product work from first idea to final detail.</h2>
+          </div>
+
+          <div class="offer-grid">
+            <article class="offer-card">
+              <span class="card-icon"><i class="ri-layout-4-line"></i></span>
+              <h3>Product Interfaces</h3>
+              <p>
+                Clear, responsive screens that make complex workflows feel
+                simple.
+              </p>
             </article>
-            <article class="skill-card">
-              <img src="assets/img/css-3.svg" alt="CSS3" />
-              <h3>CSS3</h3>
-              <p>Responsive visual systems with precise motion and layout.</p>
+            <article class="offer-card">
+              <span class="card-icon"
+                ><i class="ri-code-s-slash-line"></i
+              ></span>
+              <h3>Frontend Builds</h3>
+              <p>
+                Fast, polished frontends built around reusable components and
+                real users.
+              </p>
             </article>
-            <article class="skill-card">
-              <img src="assets/img/javascript-r.svg" alt="JavaScript" />
-              <h3>JavaScript</h3>
-              <p>Interactive behavior that keeps products quick and clear.</p>
+            <article class="offer-card">
+              <span class="card-icon"><i class="ri-database-2-line"></i></span>
+              <h3>Backend Systems</h3>
+              <p>
+                Practical APIs, data models, and integrations that support the
+                product.
+              </p>
             </article>
-            <article class="skill-card">
-              <img src="assets/img/react-2.svg" alt="React" />
-              <h3>React</h3>
-              <p>Reusable components for flexible, maintainable frontends.</p>
-            </article>
-            <article class="skill-card">
-              <img src="assets/img/nodejs-3.svg" alt="Node.js" />
-              <h3>Node.js</h3>
-              <p>Practical server-side logic and API integrations.</p>
-            </article>
-            <article class="skill-card">
-              <img src="assets/img/mysql.svg" alt="MySQL" />
-              <h3>MySQL</h3>
-              <p>Structured data models that support useful product flows.</p>
-            </article>
-            <article class="skill-card">
-              <img src="assets/img/mongodb-icon-2.svg" alt="MongoDB" />
-              <h3>MongoDB</h3>
-              <p>Flexible data storage for evolving application needs.</p>
-            </article>
-            <article class="skill-card">
-              <img src="assets/img/git-icon.svg" alt="Git" />
-              <h3>Git</h3>
-              <p>Focused collaboration and clean delivery workflows.</p>
+            <article class="offer-card">
+              <span class="card-icon"><i class="ri-rocket-2-line"></i></span>
+              <h3>Launch Support</h3>
+              <p>
+                Thoughtful iteration, cleanup, and delivery support from
+                prototype to launch.
+              </p>
             </article>
           </div>
         </div>
@@ -323,6 +450,14 @@
                 </li>
                 <li>
                   <span>ReactJS Framework Developer</span>
+                  <small>ERA Academy</small>
+                </li>
+                <li>
+                  <span>HTML/CSS Web Designer</span>
+                  <small>ERA Academy</small>
+                </li>
+                <li>
+                  <span>MySQL Backend</span>
                   <small>ERA Academy</small>
                 </li>
               </ul>
