@@ -3,7 +3,6 @@
    for these imports to work. */
 import { initFloatingLines } from "./floating-lines.js";
 import { initLightRays } from "./light-rays.js";
-import { initPrism } from "./prism.js";
 
 /*=============== DECRYPTED TEXT ===============*/
 import {
@@ -18,56 +17,13 @@ import { initCustomCursor } from "./custom-cursor.js";
 /*=============== MAGNETIC BUTTONS ===============*/
 import { initMagnetic } from "./magnetic.js";
 
-const prismBg = document.getElementById("prism-bg");
 const floatingLinesBg = document.getElementById("floating-lines-bg");
 const lightRaysBg = document.getElementById("light-rays-bg");
 
-let prismInstance = null;
 let floatingLinesInstance = null;
 let lightRaysInstance = null;
 
 function startDarkModeBackground() {
-  if (prismBg && !prismInstance) {
-    prismInstance = initPrism(prismBg, {
-      animationType: "rotate",
-      timeScale: 0.5,
-      height: 3.5,
-      baseWidth: 5.5,
-      scale: 3.6,
-      hueShift: 0,
-      colorFrequency: 1,
-      noise: 0,
-      glow: 1.8,
-      bloom: 1.5,
-    });
-  }
-}
-
-function stopDarkModeBackground() {
-  if (prismInstance) {
-    prismInstance.destroy();
-    prismInstance = null;
-  }
-}
-
-function startLightModeBackground() {
-  if (floatingLinesBg && !floatingLinesInstance) {
-    floatingLinesInstance = initFloatingLines(floatingLinesBg, {
-      enabledWaves: ["top", "middle", "bottom"],
-      lineCount: 8,
-      lineDistance: 8,
-      bendRadius: 8,
-      bendStrength: -2,
-      interactive: true,
-      parallax: true,
-      animationSpeed: 1,
-      // The requested gradientStart/gradientMid/gradientEnd props aren't
-      // actually read by this component — it takes a single
-      // "linesGradient" array instead, so the same three colors are
-      // combined into that here.
-      linesGradient: ["#e945f5", "#6f6f6f", "#6a6a6a"],
-    });
-  }
   if (lightRaysBg && !lightRaysInstance) {
     lightRaysInstance = initLightRays(lightRaysBg, {
       raysOrigin: "top-center",
@@ -86,14 +42,37 @@ function startLightModeBackground() {
   }
 }
 
+function stopDarkModeBackground() {
+  if (lightRaysInstance) {
+    lightRaysInstance.destroy();
+    lightRaysInstance = null;
+  }
+}
+
+function startLightModeBackground() {
+  if (floatingLinesBg && !floatingLinesInstance) {
+    floatingLinesInstance = initFloatingLines(floatingLinesBg, {
+      enabledWaves: ["top", "middle", "bottom"],
+      lineCount: 12,
+      lineDistance: 7,
+      bendRadius: 8,
+      bendStrength: -2,
+      interactive: true,
+      parallax: true,
+      animationSpeed: 1,
+      // The requested gradientStart/gradientMid/gradientEnd props aren't
+      // actually read by this component — it takes a single
+      // "linesGradient" array instead, so the same three colors are
+      // combined into that here.
+      linesGradient: ["#f72585", "#22b8f0", "#ffd166"],
+    });
+  }
+}
+
 function stopLightModeBackground() {
   if (floatingLinesInstance) {
     floatingLinesInstance.destroy();
     floatingLinesInstance = null;
-  }
-  if (lightRaysInstance) {
-    lightRaysInstance.destroy();
-    lightRaysInstance = null;
   }
 }
 
@@ -495,6 +474,31 @@ sr.reveal(".skills_content:nth-child(2), .contact_content:nth-child(2)", {
   origin: "right",
 });
 sr.reveal(".qualification_content, .services_card", { interval: 100 });
+
+/*=============== FLIPPING SKILL CARDS ===============*/
+document.querySelectorAll(".skill-card").forEach((card) => {
+  const visual = card.querySelector(".skill-visual");
+  const title = card.querySelector("h3");
+  const description = card.querySelector("p");
+  if (!visual || !title || !description) return;
+
+  const inner = document.createElement("div");
+  const front = document.createElement("div");
+  const back = document.createElement("div");
+  inner.className = "skill-card-inner";
+  front.className = "skill-card-front";
+  back.className = "skill-card-back";
+
+  front.append(visual);
+  back.append(title, description);
+  inner.append(front, back);
+  card.replaceChildren(inner);
+  card.tabIndex = 0;
+  card.setAttribute(
+    "aria-label",
+    `${title.textContent.trim()}: ${description.textContent.trim()}`,
+  );
+});
 
 /*=============== CUSTOM CURSOR ===============*/
 initCustomCursor();

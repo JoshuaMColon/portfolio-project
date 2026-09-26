@@ -13,7 +13,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css?v=10" />
     <title>Josh Colon | Full-Stack Developer</title>
   </head>
   <body class="dark-theme">
@@ -321,26 +321,12 @@
 
           <div class="project-gallery" aria-label="Deployed projects">
             <div class="project-stage">
-              <div class="project-track" id="project-track">
-                <article class="project-slide active" data-project="blog">
-                  <img src="assets/img/Blog.png" alt="Blog Platform preview" />
-                  <span class="project-slide-label">Blog Platform</span>
-                </article>
-                <article class="project-slide" data-project="kanban">
-                  <img
-                    src="assets/img/kanaban-board.png"
-                    alt="Kanban Board preview"
-                  />
-                  <span class="project-slide-label">Kanban Board</span>
-                </article>
-                <article class="project-slide" data-project="weather">
-                  <img
-                    src="assets/img/Weather.png"
-                    alt="Weather Dashboard preview"
-                  />
-                  <span class="project-slide-label">Weather Dashboard</span>
-                </article>
-              </div>
+              <div
+                class="infinite-spiral"
+                id="project-spiral"
+                role="list"
+                aria-label="Project previews"
+              ></div>
             </div>
 
             <div
@@ -583,6 +569,6 @@
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
     <script src="assets/js/project-showcase.js?v=1"></script>
-    <script type="module" src="assets/js/main.js?v=2"></script>
+    <script type="module" src="assets/js/main.js?v=3"></script>
   </body>
 </html>
