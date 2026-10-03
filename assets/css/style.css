@@ -1013,6 +1013,10 @@ body:not(.dark-theme) .nav_resume {
   height: 57rem;
 }
 
+.skill-stack:nth-child(2) .skill-stack-items:is(:hover, :focus-within) {
+  height: 47.5rem;
+}
+
 .skill-card {
   --stack-index: 0;
   position: absolute;
