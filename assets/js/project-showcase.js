@@ -28,7 +28,7 @@ const projects = {
     accent: "#f7b36a",
     description:
       "Task orchestration interface built for team velocity, focus, and simple visual flow.",
-    url: "https://collaborative-kanban-board-q5pl4n6x0-joshuamcolons-projects.vercel.app/",
+    url: "https://collaborative-kanban-board-gold.vercel.app/",
   },
   weather: {
     type: "Dashboard",
