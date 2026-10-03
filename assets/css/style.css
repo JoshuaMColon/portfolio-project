@@ -972,6 +972,10 @@ body:not(.dark-theme) .nav_resume {
   line-height: 1.5;
 }
 
+body:not(.dark-theme) .offer-card p {
+  color: #f4f7fb;
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1480,6 +1484,17 @@ body.dark-theme .skill-card-back {
   transform: translateX(0.2rem);
 }
 
+body:not(.dark-theme) .project-tab {
+  color: #f4f7fb;
+}
+
+body:not(.dark-theme) .project-tab small,
+body:not(.dark-theme) .project-tab-description,
+body:not(.dark-theme) .project-detail-type,
+body:not(.dark-theme) .project-tab-detail p {
+  color: #c5cfdf;
+}
+
 .project-tab-detail {
   display: flex;
   flex: 1;
@@ -1503,6 +1518,10 @@ body.dark-theme .skill-card-back {
   margin-top: 0.6rem;
   font-size: clamp(1.35rem, 2.2vw, 1.8rem);
   letter-spacing: -0.04em;
+}
+
+body:not(.dark-theme) .project-tab-detail h3 {
+  color: #f7f7fb;
 }
 
 .project-tab-detail p {
