@@ -26,6 +26,7 @@
   if (themeButton) {
     syncThemeButton();
     themeButton.addEventListener("click", function () {
+      body.classList.add("theme-switched"); /* rings use the full neon start-up from now on */
       body.classList.toggle(DARK);
       var isDark = body.classList.contains(DARK);
       try {
