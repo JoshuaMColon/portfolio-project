@@ -1108,6 +1108,82 @@ body:not(.dark-theme) .hero-visual {
   opacity: var(--hex-glow);
 }
 
+/* Neon flicker-on when the rings light up in dark mode.
+   Pure CSS: the animation starts whenever body gains .dark-theme, so a quick
+   re-toggle simply restarts it, and nothing is held dim afterwards
+   (fill-mode backwards only; the resting state is the normal steady glow).
+   - first load in dark: one short stutter (~0.85s incl. delay)
+   - switching light -> dark (site.js adds .theme-switched): the full ~1.4s start-up
+   Photosensitivity (WCAG 2.3.1): at most 2.5 full-contrast flashes in any
+   1s window; the "buzz" between them only dips to >= 0.92 opacity, which
+   stays above 0.80 relative luminance, so it is not a flash. */
+body.dark-theme .hero-hex .hx-layer > g {
+  animation: hex-ignite-load 0.7s linear 0.15s backwards;
+}
+
+body.dark-theme .hero-hex .hx-layer > g .hx-glow {
+  animation: hex-glow-buzz 0.7s linear 0.15s backwards;
+}
+
+body.dark-theme.theme-switched .hero-hex .hx-layer > g {
+  animation: hex-ignite 1.4s linear backwards;
+}
+
+body.dark-theme.theme-switched .hero-hex .hx-layer > g .hx-glow {
+  animation: hex-glow-buzz 1.4s linear backwards;
+}
+
+/* inner tubes catch a few ms late, like separate neon segments */
+body.dark-theme .hero-hex .hx-layer:nth-of-type(2) > g,
+body.dark-theme .hero-hex .hx-layer:nth-of-type(2) > g .hx-glow { animation-delay: 0.18s; }
+body.dark-theme .hero-hex .hx-layer:nth-of-type(3) > g,
+body.dark-theme .hero-hex .hx-layer:nth-of-type(3) > g .hx-glow { animation-delay: 0.2s; }
+body.dark-theme .hero-hex .hx-layer:nth-of-type(4) > g,
+body.dark-theme .hero-hex .hx-layer:nth-of-type(4) > g .hx-glow { animation-delay: 0.22s; }
+body.dark-theme.theme-switched .hero-hex .hx-layer:nth-of-type(2) > g,
+body.dark-theme.theme-switched .hero-hex .hx-layer:nth-of-type(2) > g .hx-glow { animation-delay: 0.03s; }
+body.dark-theme.theme-switched .hero-hex .hx-layer:nth-of-type(3) > g,
+body.dark-theme.theme-switched .hero-hex .hx-layer:nth-of-type(3) > g .hx-glow { animation-delay: 0.05s; }
+body.dark-theme.theme-switched .hero-hex .hx-layer:nth-of-type(4) > g,
+body.dark-theme.theme-switched .hero-hex .hx-layer:nth-of-type(4) > g .hx-glow { animation-delay: 0.07s; }
+
+/* 1.4s: off, on 150-220ms, off, on 600-680ms (with a small buzz), dim
+   half-glow, ignite at 1150ms and settle with a low-amplitude buzz */
+@keyframes hex-ignite {
+  0%, 10.6% { opacity: 0.06; }
+  10.8%, 15.6% { opacity: 1; }
+  15.8%, 42.7% { opacity: 0.1; }
+  43% { opacity: 1; }
+  45% { opacity: 0.94; }
+  46.5%, 48.4% { opacity: 1; }
+  48.7% { opacity: 0.12; }
+  65%, 82% { opacity: 0.2; }
+  82.2% { opacity: 1; }
+  86% { opacity: 0.93; }
+  89% { opacity: 1; }
+  93% { opacity: 0.95; }
+  96%, 100% { opacity: 1; }
+}
+
+/* 0.7s: off, one stutter at ~120-190ms, ignite at ~420ms, settle */
+@keyframes hex-ignite-load {
+  0%, 17% { opacity: 0.06; }
+  17.4%, 27% { opacity: 1; }
+  27.4%, 45% { opacity: 0.12; }
+  59.6% { opacity: 0.2; }
+  60% { opacity: 1; }
+  72% { opacity: 0.93; }
+  80%, 100% { opacity: 1; }
+}
+
+/* glow halo breathes while the tube stabilises */
+@keyframes hex-glow-buzz {
+  0%, 70% { opacity: calc(var(--hex-glow) * 0.75); }
+  78% { opacity: var(--hex-glow); }
+  84% { opacity: calc(var(--hex-glow) * 0.8); }
+  90%, 100% { opacity: var(--hex-glow); }
+}
+
 /* portrait sits in the dark centre of the smallest layer */
 .portrait-wrap {
   position: relative;
@@ -2394,6 +2470,18 @@ body.custom-cursor-active * {
     transform: none;
   }
 
+  /* hex rings: no flicker, just a soft fade-in when dark mode turns on */
+  body.dark-theme .hero-hex .hx-layer > g,
+  body.dark-theme.theme-switched .hero-hex .hx-layer > g {
+    animation: hex-fade-in 0.6s ease backwards !important;
+    animation-duration: 0.6s !important;
+    animation-delay: 0s !important;
+  }
+
+  body.dark-theme .hero-hex .hx-layer > g .hx-glow {
+    animation: none !important;
+  }
+
   /* keep a gentle, non-moving tap acknowledgement */
   .tap-ripple {
     animation: tap-flash 0.25s linear forwards !important;
@@ -2405,4 +2493,9 @@ body.custom-cursor-active * {
     from { opacity: 0.8; }
     to { opacity: 0; }
   }
+}
+
+@keyframes hex-fade-in {
+  from { opacity: 0.06; }
+  to { opacity: 1; }
 }
