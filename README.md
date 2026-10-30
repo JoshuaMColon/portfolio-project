@@ -20,7 +20,7 @@ This project is a professional portfolio website built to showcase frontend and 
 - CSS3
 - JavaScript
 - Geist and Geist Mono (Google Fonts), Remix Icon
-- three.js / OGL background effects (loaded as an optional ES module)
+- Layered CSS-only background (graphite gradient, dot grid, slow light beams, film grain and a hero spotlight)
 - EmailJS integration for form messaging support
 
 ## Purpose
@@ -33,7 +33,7 @@ This portfolio demonstrates the ability to build a complete web experience from 
 - `assets/css/graphite.css`: theme, layout and responsive styles
 - `assets/js/site.js`: core interactions (menu, theme, scroll, reveal, tap feedback, contact form); works even when opened from disk
 - `assets/js/project-showcase.js`: project spiral and tabs
-- `assets/js/main.js`: optional visual effects (background, decrypted text, custom cursor, magnetic buttons); needs to be served over http(s)
+- `assets/js/main.js`: optional visual effects (decrypted text, custom cursor, magnetic buttons); needs to be served over http(s)
 - `assets/img/` — portfolio visuals, icons, and graphic assets
 - `assets/docs/` — supporting documents such as resume PDF
 

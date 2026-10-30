@@ -23,7 +23,7 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/graphite.css?v=4" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=5" />
     <title>Josh Colon | Full-Stack Developer</title>
   </head>
   <body class="dark-theme">
@@ -36,13 +36,12 @@
       } catch (e) {}
     </script>
     <a class="skip-link" href="#main">Skip to content</a>
-    <div id="light-rays-bg" class="fx-bg fx-bg--rays" aria-hidden="true"></div>
-    <div
-      id="floating-lines-bg"
-      class="fx-bg fx-bg--lines"
-      aria-hidden="true"
-    ></div>
-    <div class="fx-grid" aria-hidden="true"></div>
+    <!-- layered background: graphite gradient + dot grid + drifting beams + grain (CSS only) -->
+    <div class="bg-layers" aria-hidden="true">
+      <div class="bg-dots"></div>
+      <div class="bg-beams"><span></span><span></span><span></span></div>
+      <div class="bg-grain"></div>
+    </div>
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
 
@@ -680,6 +679,6 @@
     ></script>
     <script defer src="assets/js/site.js?v=2"></script>
     <script defer src="assets/js/project-showcase.js?v=2"></script>
-    <script type="module" src="assets/js/main.js?v=5"></script>
+    <script type="module" src="assets/js/main.js?v=6"></script>
   </body>
 </html>
