@@ -48,7 +48,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
       <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
     </noscript>
-    <link rel="stylesheet" href="assets/css/graphite.css?v=11" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=13" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -182,8 +182,8 @@
               </div>
               <div>
                 <dt>Projects shipped</dt>
-                <!-- the live projects shown on this page: Blog Platform, Kanban Board, Weather Dashboard -->
-                <dd>3</dd>
+                <!-- the live projects shown on this page: Blog Platform, Kanban Board, Weather Dashboard, XPlan -->
+                <dd>4</dd>
               </div>
               <div>
                 <dt>Product focus</dt>
@@ -422,6 +422,13 @@
                       <span class="ticker-cta">Try it <i class="ri-arrow-right-line" aria-hidden="true"></i></span>
                     </a>
                   </li>
+                  <li>
+                    <a class="ticker-link" href="https://xplan-sand.vercel.app/demo" target="_blank" rel="noreferrer">
+                      <span class="ticker-tag">New</span>
+                      <span class="ticker-text"><strong>XPlan</strong> Gamified task manager with XP, levels and natural-language quick-add, React + Supabase. Live demo, no sign-up needed.</span>
+                      <span class="ticker-cta">Try it <i class="ri-arrow-right-line" aria-hidden="true"></i></span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -501,6 +508,24 @@
                 </span>
                 <i class="ri-arrow-right-line" aria-hidden="true"></i>
               </button>
+              <button
+                class="project-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-project="xplan"
+                data-index="3"
+              >
+                <span class="project-tab-number">04</span>
+                <span class="project-tab-content">
+                  <strong>XPlan</strong>
+                  <small>Gamified task manager</small>
+                  <span class="project-tab-description"
+                    >Task manager that plays like an RPG: quests earn XP, levels and trophies, with natural-language quick-add, Cmd+K and realtime sync.</span
+                  >
+                </span>
+                <i class="ri-arrow-right-line" aria-hidden="true"></i>
+              </button>
 
               <div class="project-tab-detail" id="project-tab-detail" aria-live="polite">
                 <span class="project-detail-type" id="project-detail-type"
@@ -521,15 +546,23 @@
                   <span class="readmore-label">Read more…</span>
                   <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
                 </button>
-                <a
-                  id="project-detail-link"
-                  class="btn btn-light btn-sm"
-                  href="https://blog-platform-one-xi.vercel.app/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Visit live site <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
-                </a>
+                <div class="project-detail-actions">
+                  <a
+                    id="project-detail-link"
+                    class="btn btn-light btn-sm"
+                    href="https://blog-platform-one-xi.vercel.app/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Visit live site <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
+                  </a>
+                  <a id="project-detail-demo" class="btn btn-dark btn-sm" href="https://blog-platform-one-xi.vercel.app/demo" target="_blank" rel="noreferrer">
+                    Guest demo <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
+                  </a>
+                  <a id="project-detail-repo" class="btn btn-dark btn-sm btn-icon" href="https://github.com/JoshuaMColon/blog-platform" target="_blank" rel="noreferrer" aria-label="Blog Platform source code on GitHub" title="Blog Platform source code on GitHub">
+                    <i class="ri-github-line" aria-hidden="true"></i>
+                  </a>
+                </div>
                 <details class="case-study" id="project-case-study">
                   <summary>
                     <span>Case study</span>
@@ -781,6 +814,7 @@
             <li><a href="https://blog-platform-one-xi.vercel.app/" target="_blank" rel="noreferrer">Blog Platform</a></li>
             <li><a href="https://collaborative-kanban-board-gold.vercel.app/" target="_blank" rel="noreferrer">Kanban Board</a></li>
             <li><a href="https://weather-dashboard-app-sable-three.vercel.app/" target="_blank" rel="noreferrer">Weather Dashboard</a></li>
+            <li><a href="https://xplan-sand.vercel.app/" target="_blank" rel="noreferrer">XPlan</a></li>
           </ul>
         </div>
         <div>
@@ -809,7 +843,7 @@
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
     <script defer src="assets/js/site.js?v=5"></script>
-    <script defer src="assets/js/project-showcase.js?v=5"></script>
+    <script defer src="assets/js/project-showcase.js?v=7"></script>
     <script defer src="assets/js/skill-layers.js?v=2"></script>
     <script type="module" src="assets/js/main.js?v=6"></script>
   </body>
