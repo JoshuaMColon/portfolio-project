@@ -1297,7 +1297,7 @@ body:not(.dark-theme) .portrait-wrap::after {
    alignment), --spread (scroll ease-in) and .is-active; without JS the stack
    simply renders fanned out. */
 .layers {
-  --n: 4;
+  --n: 5;
   --plate: 15rem;
   --tilt-x: 58deg;
   --tilt-z: -45deg;
