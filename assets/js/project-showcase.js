@@ -23,6 +23,8 @@ const projects = {
     description:
       "Cyber-styled blogging app with realtime comments, notifications, full-text search and AI-matched related posts.",
     url: "https://blog-platform-one-xi.vercel.app/",
+    demo: "https://blog-platform-one-xi.vercel.app/demo",
+    repo: "https://github.com/JoshuaMColon/blog-platform",
     caseStudy: {
       problem:
         "I wanted a blog that covers the whole authoring loop: signing up, writing, publishing, and readers responding.",
@@ -49,6 +51,7 @@ const projects = {
     description:
       "Task orchestration interface built for team velocity, focus, and simple visual flow.",
     url: "https://collaborative-kanban-board-gold.vercel.app/",
+    repo: "https://github.com/JoshuaMColon/collaborative-kanban-board",
     caseStudy: {
       problem:
         "Many Kanban demos stop at drag and drop on local state. I wanted to see what it takes to build a shared board where several people work at once.",
@@ -73,6 +76,8 @@ const projects = {
     description:
       "iPhone Weather-style app with animated skies, an hourly strip, a 10-day forecast and cities that sync across devices.",
     url: "https://weather-dashboard-app-sable-three.vercel.app/",
+    demo: "https://weather-dashboard-app-sable-three.vercel.app/demo",
+    repo: "https://github.com/JoshuaMColon/Weather_Dashboard_App",
     caseStudy: {
       problem:
         "My first weather app called a weather API straight from the browser and showed a basic forecast. I wanted to rebuild it as a real full-stack app that feels like the iPhone Weather app.",
@@ -222,7 +227,8 @@ function selectProject(tab) {
   projectDetailDescription.textContent = project.description;
   readMore.reset();
   projectDetailLink.href = project.url;
-  /* optional extra links: only projects that set them show these buttons */
+  /* optional extra links: only projects that set them show these buttons
+   (Kanban has no /demo route, so it shows Live + GitHub only) */
   [
     [projectDetailDemo, project.demo],
     [projectDetailRepo, project.repo],
@@ -231,6 +237,11 @@ function selectProject(tab) {
     link.hidden = !href;
     if (href) link.href = href;
   });
+  if (projectDetailRepo && project.repo) {
+    const label = `${project.title} source code on GitHub`;
+    projectDetailRepo.setAttribute("aria-label", label);
+    projectDetailRepo.title = label;
+  }
   renderCaseStudy(project.caseStudy);
 }
 

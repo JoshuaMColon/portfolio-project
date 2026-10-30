@@ -2040,6 +2040,33 @@ body:not(.dark-theme) .project-tab.active::before {
   display: none;
 }
 
+/* square icon-only button (GitHub); its name comes from aria-label + title */
+.btn-icon {
+  width: 2.35rem;
+  padding-inline: 0;
+}
+
+.btn-icon i {
+  font-size: 1.1rem;
+}
+
+/* phones: keep Live / demo / GitHub on one row; the decorative arrows go */
+@media (max-width: 640px) {
+  .project-detail-actions {
+    gap: 0.4rem;
+  }
+
+  .project-detail-actions .btn-sm:not(.btn-icon) {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: 0.6rem;
+  }
+
+  .project-detail-actions .ri-arrow-right-up-line {
+    display: none;
+  }
+}
+
 /* read more: the description clamps to two lines (set by project-showcase.js) */
 .project-tab-detail .readmore-text {
   overflow: hidden;
