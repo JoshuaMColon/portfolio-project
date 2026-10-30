@@ -1291,69 +1291,328 @@ body:not(.dark-theme) .portrait-wrap::after {
   opacity: 1;
 }
 
-/* ---------- Capabilities ---------- */
-.skills-frame {
+/* ---------- Capabilities: isometric layer stack ---------- */
+/* Tilted glass plates stacked on translateZ, one per skill layer, with the
+   real text beside them. skill-layers.js sets --gap/--origin-y (mobile
+   alignment), --spread (scroll ease-in) and .is-active; without JS the stack
+   simply renders fanned out. */
+.layers {
+  --n: 4;
+  --plate: 15rem;
+  --tilt-x: 58deg;
+  --tilt-z: -45deg;
+  --gap: 5.25rem;
+  --spread: 1;
+  --lift: 1.6rem;
+  --reveal: 5rem; /* plates above the active one lift away so its face shows */
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 2.5rem;
-  padding: 2.75rem 2.25rem 2.25rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem;
+  padding: 1.5rem 3rem 1.5rem 2rem;
 }
 
-.skill-stack-label {
-  margin-bottom: 1rem;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.skill-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
-  gap: 0.75rem;
-}
-
-.skill-tile {
-  display: grid;
-  align-content: start;
-  gap: 0.55rem;
-  padding: 1.1rem;
-  cursor: default;
-}
-
-.tile-icon {
+.layers-visual {
+  position: sticky;
+  top: calc(var(--header-h) + 1.5rem);
   display: grid;
   place-items: center;
-  width: 2.6rem;
-  height: 2.6rem;
-  border: 1px solid var(--line);
-  border-radius: 0.6rem;
-  background: var(--bg-soft);
-  transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease;
+  height: min(40rem, calc(100vh - var(--header-h) - 3rem));
+  pointer-events: none;
 }
 
-.tile-icon img {
-  width: 1.5rem;
-  height: 1.5rem;
+.layers-stage {
+  position: relative;
+  width: var(--plate);
+  height: var(--plate);
+  /* drop the stage by half the stack height so the whole stack is centred */
+  margin-top: calc(((var(--n) - 1) * var(--gap) * var(--spread) + var(--reveal)) * 0.85);
+  transform: rotateX(var(--tilt-x)) rotateZ(var(--tilt-z));
+  transform-style: preserve-3d;
+}
+
+.layer-plate {
+  --is-active: 0;
+  --is-above: 0;
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22%;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.025) 48%, rgba(255, 255, 255, 0.06)),
+    rgba(20, 20, 20, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 1px 0 0 rgba(255, 255, 255, 0.1),
+    1.6rem 1.6rem 3rem rgba(0, 0, 0, 0.55);
+  transform: translateZ(
+    calc(
+      (var(--n) - 1 - var(--i)) * var(--gap) * var(--spread) + var(--is-active) * var(--lift) +
+        var(--is-above) * var(--reveal)
+    )
+  );
+  transform-style: preserve-3d;
+  transition:
+    transform 0.7s var(--ease-out),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+/* slab underside, so each plate reads as a thick tile */
+.layer-plate::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: inherit;
+  background: #050505;
+  transform: translateZ(-0.6rem);
+}
+
+/* glass sheen across the face */
+.layer-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.09) 46%, transparent 60%);
+  pointer-events: none;
+}
+
+.layer-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.layer-face img {
+  width: 44%;
+  height: 44%;
+  object-fit: contain;
+  /* counter-rotate so the logo faces forward on the tilted plate */
+  transform: rotateZ(45deg);
+  opacity: 0.55;
+  filter: grayscale(0.7);
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.layer-plate.is-above {
+  --is-above: 1;
+}
+
+.layer-plate.is-active {
+  --is-active: 1;
+  border-color: color-mix(in srgb, var(--accent) 55%, white);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent),
+    0 0 3.5rem -0.5rem color-mix(in srgb, var(--accent) 55%, transparent),
+    1.6rem 1.6rem 3rem rgba(0, 0, 0, 0.55);
+}
+
+.layer-plate.is-active .layer-face img,
+.layers:not(.is-ready) .layer-face img {
+  opacity: 1;
+  filter: none;
+}
+
+body:not(.dark-theme) .layer-plate {
+  border-color: rgba(0, 0, 0, 0.1);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.85)),
+    rgba(236, 236, 236, 0.9);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    1.4rem 1.4rem 2.6rem rgba(0, 0, 0, 0.12);
+}
+
+body:not(.dark-theme) .layer-plate::before {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: #d6d6d6;
+}
+
+body:not(.dark-theme) .layer-plate.is-active {
+  border-color: color-mix(in srgb, var(--accent) 70%, black);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent),
+    0 0 3rem -0.5rem color-mix(in srgb, var(--accent) 45%, transparent),
+    1.4rem 1.4rem 2.6rem rgba(0, 0, 0, 0.14);
+}
+
+.layers-copy {
+  display: grid;
+  list-style: none;
+}
+
+.layer-item {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 0.7rem;
+  min-height: clamp(18rem, 58vh, 30rem);
+  padding: 1.5rem 0 1.5rem 1.5rem;
+  border-left: 1px solid var(--line);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.layer-item::before {
+  content: "";
+  position: absolute;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  left: -1px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.layer-item.is-active::before {
+  transform: scaleY(1);
+}
+
+.layer-item:active {
+  transform: scale(0.985);
+}
+
+.layer-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.layer-index {
+  color: var(--dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.layer-item h3 {
+  color: var(--muted);
+  font-size: clamp(1.45rem, 2.6vw, 2.1rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  transition: color 0.4s ease;
+}
+
+.layer-item.is-active h3,
+.layers:not(.is-ready) .layer-item h3 {
+  color: var(--text);
+}
+
+.layer-item p {
+  max-width: 30rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.layer-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.3rem;
+  list-style: none;
+}
+
+.layer-chips li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.layer-chips img {
+  width: 1rem;
+  height: 1rem;
   object-fit: contain;
 }
 
-.skill-tile:hover .tile-icon,
-.skill-tile:focus-visible .tile-icon {
-  transform: translateY(-2px) rotate(-4deg);
-  box-shadow: 0 8px 24px -8px rgba(125, 211, 252, 0.45);
-}
+/* Tablet and phone: the stack sits beside the text, partly off the left
+   edge, with each plate lined up with its layer (see skill-layers.js). */
+@media (max-width: 899px) {
+  .layers {
+    --plate: 12rem;
+    --gap: 9rem;
+    --lift: 0.7rem;
+    --reveal: 0rem;
+    display: block;
+    position: relative;
+    overflow: clip;
+    padding: 1.25rem 1rem 1.25rem 0;
+  }
 
-.skill-tile h4 {
-  font-size: 1rem;
-}
+  .layers-visual {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 50%;
+    height: auto;
+  }
 
-.skill-tile p {
-  color: var(--muted);
-  font-size: 0.85rem;
-  line-height: 1.45;
+  .layers-stage {
+    position: absolute;
+    top: var(--origin-y, 85%);
+    left: 22%;
+    margin: calc(var(--plate) / -2) 0 0 calc(var(--plate) / -2);
+  }
+
+  .layers-copy {
+    padding-left: 47%;
+  }
+
+  .layer-item {
+    min-height: 0;
+    gap: 0.55rem;
+    padding: 1.1rem 0 1.1rem 1rem;
+    border-left-color: transparent;
+  }
+
+  .layer-item::before {
+    top: 1.1rem;
+    bottom: 1.1rem;
+  }
+
+  .layer-item h3 {
+    font-size: 1.35rem;
+  }
+
+  .layer-item p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* compact skill list instead of pills on small screens */
+  .layer-chips {
+    gap: 0.15rem 0.6rem;
+    margin-top: 0.1rem;
+  }
+
+  .layer-chips li {
+    gap: 0.3rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .layer-chips img {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
 }
 
 .offer-heading {
@@ -2507,10 +2766,6 @@ body.custom-cursor-active * {
     max-width: 24rem;
   }
 
-  .skills-frame {
-    grid-template-columns: 1fr;
-  }
-
   .project-gallery {
     grid-template-columns: 1fr;
     min-height: auto;
@@ -2588,19 +2843,6 @@ body.custom-cursor-active * {
 
   .brands li {
     font-size: 1rem;
-  }
-
-  .skills-frame {
-    padding: 2.25rem 1rem 1rem;
-  }
-
-  .skill-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-  }
-
-  .skill-tile {
-    padding: 0.9rem;
   }
 
   .bento {
