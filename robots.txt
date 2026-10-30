@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://joshuamcolon.github.io/portfolio-project/sitemap.xml

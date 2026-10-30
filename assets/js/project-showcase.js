@@ -8,39 +8,113 @@ const projectDetailDescription = document.getElementById(
   "project-detail-description",
 );
 const projectDetailLink = document.getElementById("project-detail-link");
+const projectCaseStudyBody = document.getElementById("project-case-study-body");
 
 const projects = {
   blog: {
     type: "Web app",
     title: "Blog Platform",
-    image: "assets/img/Blog.png",
+    image: "assets/img/blog.webp",
+    fallback: "assets/img/blog.jpg",
     imageAlt: "Blog Platform preview",
     accent: "#7dd3fc",
     description:
       "Editorial experience with a clean writing flow and product-grade content structure.",
     url: "https://blog-platform-one-xi.vercel.app/",
+    caseStudy: {
+      problem:
+        "I wanted a blog that covers the whole authoring loop: signing up, writing, publishing, and readers responding.",
+      approach: [
+        "Email/password sign-up and login with Supabase Auth, with protected routes for writing, editing, and my posts.",
+        "A TipTap rich-text editor with a title, tags, and a cover image; posts can be published or kept as drafts.",
+        "Comments and likes on published posts, plus search, bookmarks, following, and author profile pages.",
+        "Light and dark themes and a responsive layout.",
+      ],
+      stack: ["React", "TypeScript", "Tailwind CSS", "TipTap", "React Router", "Framer Motion", "Supabase Auth + Postgres", "Vercel"],
+      learned:
+        "It taught me to keep auth state in one place and guard routes around it, so readers and signed-in authors each land on the right screens.",
+    },
   },
   kanban: {
     type: "Productivity tool",
     title: "Kanban Board",
     image: "assets/img/kanaban-board.png",
+    fallback: "assets/img/kanaban-board.png",
     imageAlt: "Kanban Board preview",
     accent: "#f7b36a",
     description:
       "Task orchestration interface built for team velocity, focus, and simple visual flow.",
     url: "https://collaborative-kanban-board-gold.vercel.app/",
+    caseStudy: {
+      problem:
+        "Many Kanban demos stop at drag and drop on local state. I wanted to see what it takes to build a shared board where several people work at once.",
+      approach: [
+        "Optimistic drag and drop with @dnd-kit; if a write fails, I show an error toast and resync the board.",
+        "Supabase Realtime pushes card, list, comment, and label changes to everyone, and Presence shows who is online.",
+        "Row-level security on every table.",
+        "A one-click anonymous demo board that pg_cron re-seeds every hour.",
+      ],
+      stack: ["React 19", "TypeScript", "Tailwind CSS", "Motion", "@dnd-kit", "Supabase Realtime + Presence", "Postgres + RLS", "pg_cron", "Vite", "Vercel"],
+      learned:
+        "The hard part was keeping drag and drop feeling instant while a write is still in flight, and recovering cleanly when it fails. Next on my list: tests for card ordering and realtime reconciliation.",
+    },
   },
   weather: {
     type: "Dashboard",
     title: "Weather Dashboard",
-    image: "assets/img/Weather.png",
+    image: "assets/img/weather.webp",
+    fallback: "assets/img/weather.jpg",
     imageAlt: "Weather Dashboard preview",
     accent: "#54e1c1",
     description:
       "Data-rich UI with readable summaries and a clear, branded experience.",
     url: "https://joshuamcolon.github.io/Weather_Dashboard_App/",
+    caseStudy: {
+      problem:
+        "I wanted one view that shows a city's current conditions, the next 24 hours, and a 5-day outlook.",
+      approach: [
+        "Each search makes two OpenWeatherMap calls: current weather, then the 5-day / 3-hour forecast.",
+        "The next 8 forecast entries become the hourly strip, and the 12:00 entries become the daily cards.",
+        "The background gradient follows the temperature, and tsParticles adds effects that match the conditions.",
+        "A loading state and friendly errors for unknown cities or network problems.",
+      ],
+      stack: ["React (hooks)", "Tailwind CSS", "OpenWeatherMap API", "tsParticles", "Vite"],
+      learned:
+        "It was good practice in turning raw API responses into small, display-ready data and in handling loading and error states.",
+    },
   },
 };
+
+function renderCaseStudy(caseStudy) {
+  if (!projectCaseStudyBody || !caseStudy) return;
+  const make = (tag, className, text) => {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    if (text) el.textContent = text;
+    return el;
+  };
+  const row = (label, content) => {
+    const wrap = make("div", "case-study-row");
+    wrap.append(make("dt", "", label));
+    const dd = make("dd");
+    dd.append(content);
+    wrap.append(dd);
+    return wrap;
+  };
+  const list = (items, className) => {
+    const ul = make("ul", className);
+    items.forEach((item) => ul.append(make("li", "", item)));
+    return ul;
+  };
+  const dl = make("dl", "case-study-list");
+  dl.append(
+    row("Problem", make("p", "", caseStudy.problem)),
+    row("Approach", list(caseStudy.approach, "case-study-points")),
+    row("Stack", list(caseStudy.stack, "case-study-stack")),
+    row("What I learned", make("p", "", caseStudy.learned)),
+  );
+  projectCaseStudyBody.replaceChildren(dl);
+}
 
 function selectProject(tab) {
   const project = projects[tab.dataset.project];
@@ -66,6 +140,7 @@ function selectProject(tab) {
   projectDetailTitle.textContent = project.title;
   projectDetailDescription.textContent = project.description;
   projectDetailLink.href = project.url;
+  renderCaseStudy(project.caseStudy);
 }
 
 let selectedProjectIndex = 0;
@@ -115,6 +190,19 @@ function initializeProjectSpiral() {
     button.setAttribute("aria-label", `Select ${project.title} project`);
     image.className = "infinite-spiral__image";
     image.src = project.image;
+    image.width = settings.cardWidth;
+    image.height = settings.cardHeight;
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.addEventListener(
+      "error",
+      () => {
+        if (project.fallback && !image.src.endsWith(project.fallback)) {
+          image.src = project.fallback;
+        }
+      },
+      { once: true },
+    );
     image.alt = project.imageAlt;
     image.draggable = false;
     image.style.filter = `grayscale(${settings.grayscale})`;
