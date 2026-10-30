@@ -118,6 +118,54 @@ function renderCaseStudy(caseStudy) {
   projectCaseStudyBody.replaceChildren(dl);
 }
 
+/* Read more: the detail description clamps to two lines. The toggle only
+   shows when the text really overflows, and selectProject() resets it. */
+const readMore = (() => {
+  const text = projectDetailDescription;
+  const toggle = document.getElementById("project-detail-toggle");
+  const label = toggle?.querySelector(".readmore-label");
+  if (!text || !toggle || !label) return { reset() {} };
+  const LINES = 2;
+  let expanded = false;
+
+  function apply(animate) {
+    if (!animate) text.classList.add("readmore-instant");
+    const limit = parseFloat(getComputedStyle(text).lineHeight) * LINES;
+    const full = text.scrollHeight;
+    const overflows = full > limit + 2;
+    if (!overflows) expanded = false;
+    toggle.hidden = !overflows;
+    text.classList.toggle("is-clamped", overflows && !expanded);
+    text.style.maxHeight = overflows ? `${expanded ? full : limit}px` : "";
+    toggle.setAttribute("aria-expanded", String(expanded));
+    label.textContent = expanded ? "Show less" : "Read more…";
+    if (!animate) {
+      void text.offsetHeight; // commit the jump before transitions come back
+      text.classList.remove("readmore-instant");
+    }
+  }
+
+  toggle.addEventListener("click", () => {
+    expanded = !expanded;
+    apply(true);
+  });
+
+  let lastWidth = 0;
+  new ResizeObserver(() => {
+    if (text.clientWidth === lastWidth) return;
+    lastWidth = text.clientWidth;
+    apply(false);
+  }).observe(text);
+  document.fonts?.ready.then(() => apply(false));
+
+  return {
+    reset() {
+      expanded = false;
+      apply(false);
+    },
+  };
+})();
+
 function selectProject(tab) {
   const project = projects[tab.dataset.project];
   if (!project) return;
@@ -141,6 +189,7 @@ function selectProject(tab) {
   projectDetailType.textContent = project.type;
   projectDetailTitle.textContent = project.title;
   projectDetailDescription.textContent = project.description;
+  readMore.reset();
   projectDetailLink.href = project.url;
   renderCaseStudy(project.caseStudy);
 }

@@ -48,7 +48,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
       <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
     </noscript>
-    <link rel="stylesheet" href="assets/css/graphite.css?v=7" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=8" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -490,9 +490,20 @@
                   >Web app</span
                 >
                 <h3 id="project-detail-title">Blog Platform</h3>
-                <p id="project-detail-description">
+                <p id="project-detail-description" class="readmore-text">
                   Cyber-styled blogging app with realtime comments, notifications, full-text search and AI-matched related posts.
                 </p>
+                <button
+                  type="button"
+                  class="readmore-toggle"
+                  id="project-detail-toggle"
+                  aria-expanded="false"
+                  aria-controls="project-detail-description"
+                  hidden
+                >
+                  <span class="readmore-label">Read more…</span>
+                  <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+                </button>
                 <a
                   id="project-detail-link"
                   class="btn btn-light btn-sm"
@@ -780,8 +791,8 @@
       defer
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
-    <script defer src="assets/js/site.js?v=3"></script>
-    <script defer src="assets/js/project-showcase.js?v=3"></script>
+    <script defer src="assets/js/site.js?v=4"></script>
+    <script defer src="assets/js/project-showcase.js?v=4"></script>
     <script type="module" src="assets/js/main.js?v=6"></script>
   </body>
 </html>
