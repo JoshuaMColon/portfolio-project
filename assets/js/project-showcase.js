@@ -8,6 +8,8 @@ const projectDetailDescription = document.getElementById(
   "project-detail-description",
 );
 const projectDetailLink = document.getElementById("project-detail-link");
+const projectDetailDemo = document.getElementById("project-detail-demo");
+const projectDetailRepo = document.getElementById("project-detail-repo");
 const projectCaseStudyBody = document.getElementById("project-case-study-body");
 
 const projects = {
@@ -84,6 +86,34 @@ const projects = {
       stack: ["React 19", "TypeScript", "Vite", "Tailwind CSS", "Vercel Functions", "Supabase Auth + Postgres + RLS", "Supabase Realtime", "Open-Meteo", "Playwright", "Vercel"],
       learned:
         "Moving the data behind my own API taught me to validate inputs, shape responses and cache at the edge. Keeping a dozen animations smooth on phones taught me to budget motion: fewer particles on small screens, pause when hidden, and a still frame for reduced motion.",
+    },
+  },
+  xplan: {
+    type: "Full-stack web app",
+    title: "XPlan",
+    image: "assets/img/xplan.webp",
+    fallback: "assets/img/xplan.jpg",
+    imageAlt: "XPlan dashboard preview in the Forge skin",
+    accent: "#ff7a1a",
+    description:
+      "Task manager that plays like an RPG: quests earn XP, levels and trophies, with natural-language quick-add, Cmd+K and realtime sync.",
+    url: "https://xplan-sand.vercel.app/",
+    demo: "https://xplan-sand.vercel.app/demo",
+    repo: "https://github.com/JoshuaMColon/task-manager",
+    caseStudy: {
+      problem:
+        "Most to-do apps are easy to start and easy to abandon. I wanted a task manager that rewards finishing things, without letting the score live in the browser where anyone can edit it.",
+      approach: [
+        "Every task is a quest: clearing it earns XP by priority, builds a daily combo, levels you up and unlocks trophies, shown on an HQ dashboard with an activity heatmap.",
+        "XP, levels, streaks and recurring quests are computed by Postgres functions in a dedicated Supabase xplan schema, so the client can't award itself points; row-level security scopes every row to its owner.",
+        "Natural-language quick-add turns “Pay rent every month on the 1st @home p1 #bills” into a dated, tagged, recurring quest with a live preview, and a Cmd+K palette reaches every view and action.",
+        "Supabase Realtime keeps tabs and devices in sync, with email sign-in or a one-click guest demo seeded with sample quests.",
+        "Four skins, including the dark Forge and light Alloy pair, plus avatars and accent colours that follow the account.",
+        "Vitest unit tests and Playwright end-to-end tests with axe accessibility checks run in GitHub Actions CI before every Vercel deploy.",
+      ],
+      stack: ["React 19", "TypeScript", "Vite", "Tailwind CSS 4", "Supabase Auth + Postgres + RLS", "Postgres functions", "Supabase Realtime", "Vitest", "Playwright + axe", "Vercel"],
+      learned:
+        "Putting the game rules in the database taught me to treat the client as untrusted: it asks, and Postgres decides. Recurrence and streaks also taught me how much time zones matter, so every date is resolved in the player's own zone.",
     },
   },
 };
@@ -192,6 +222,15 @@ function selectProject(tab) {
   projectDetailDescription.textContent = project.description;
   readMore.reset();
   projectDetailLink.href = project.url;
+  /* optional extra links: only projects that set them show these buttons */
+  [
+    [projectDetailDemo, project.demo],
+    [projectDetailRepo, project.repo],
+  ].forEach(([link, href]) => {
+    if (!link) return;
+    link.hidden = !href;
+    if (href) link.href = href;
+  });
   renderCaseStudy(project.caseStudy);
 }
 

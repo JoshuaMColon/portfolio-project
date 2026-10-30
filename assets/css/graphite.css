@@ -2024,6 +2024,22 @@ body:not(.dark-theme) .project-tab.active::before {
   margin-top: 1.3rem;
 }
 
+/* live site plus optional demo / GitHub buttons, wrapping on narrow panels */
+.project-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.3rem;
+}
+
+.project-tab-detail .project-detail-actions a {
+  margin-top: 0;
+}
+
+.project-detail-actions a[hidden] {
+  display: none;
+}
+
 /* read more: the description clamps to two lines (set by project-showcase.js) */
 .project-tab-detail .readmore-text {
   overflow: hidden;
