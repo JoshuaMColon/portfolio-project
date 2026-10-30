@@ -815,8 +815,12 @@ body:not(.dark-theme) .tile::before {
   text-transform: uppercase;
 }
 
-/* hero visual: glowing outline rings around the portrait */
+/* hero visual: neon, layered hexagon mark framing the portrait.
+   Original geometry: three broken, offset rounded hexagons, repeated
+   at smaller scales with increasing blur for a "tunnel" depth effect. */
 .hero-visual {
+  --hex-stroke: #ffffff;
+  --hex-bloom: 0.85;
   position: relative;
   display: grid;
   place-items: center;
@@ -826,7 +830,12 @@ body:not(.dark-theme) .tile::before {
   margin-inline: auto;
 }
 
-.hero-rings {
+body:not(.dark-theme) .hero-visual {
+  --hex-stroke: #141414;
+  --hex-bloom: 0.22;
+}
+
+.hero-hex {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -834,58 +843,70 @@ body:not(.dark-theme) .tile::before {
   overflow: visible;
 }
 
-.ring {
-  stroke: var(--ring-stroke);
-  stroke-width: 2.2;
-  transform-origin: 200px 200px;
-  animation: ring-drift 18s ease-in-out infinite alternate;
+.hero-hex {
+  color: var(--hex-stroke);
 }
 
-.ring.r1 { opacity: 0.95; --rot: 0deg; }
-.ring.r2 { opacity: 0.75; --rot: 7deg; animation-delay: -1s; }
-.ring.r3 { opacity: 0.58; --rot: 14deg; animation-delay: -2s; }
-.ring.r4 { opacity: 0.42; --rot: 21deg; animation-delay: -3s; }
-.ring.r5 { opacity: 0.3; --rot: 28deg; animation-delay: -4s; }
-.ring.r6 { opacity: 0.2; --rot: 35deg; animation-delay: -5s; }
+.hex-layer {
+  transform-origin: 200px 200px;
+  transform-box: view-box;
+  animation: hex-sway 16s ease-in-out infinite alternate;
+}
 
-.ring { transform: rotate(var(--rot)); }
+.hex-layer.l1 { --s: 1; --r: 0deg; }
+.hex-layer.l2 { --s: 0.84; --r: 2deg; opacity: 0.7; animation-delay: -4s; animation-direction: alternate-reverse; }
+.hex-layer.l3 { --s: 0.69; --r: -2deg; opacity: 0.45; animation-delay: -8s; }
+.hex-layer.l4 { --s: 0.55; --r: 3deg; opacity: 0.28; animation-delay: -12s; animation-direction: alternate-reverse; }
 
-@keyframes ring-drift {
+.hex-layer {
+  transform: rotate(var(--r)) scale(var(--s));
+}
+
+.hex-bloom {
+  opacity: var(--hex-bloom);
+  animation: hex-breathe 5s ease-in-out infinite alternate;
+}
+
+@keyframes hex-sway {
   from {
-    transform: rotate(var(--rot)) scale(1);
+    transform: rotate(calc(var(--r) - 2.5deg)) scale(var(--s));
   }
   to {
-    transform: rotate(calc(var(--rot) * 1.6 + 12deg)) scale(1.03);
+    transform: rotate(calc(var(--r) + 2.5deg)) scale(calc(var(--s) * 1.02));
   }
 }
 
-body:not(.dark-theme) .hero-rings {
-  filter: none;
+@keyframes hex-breathe {
+  from { opacity: calc(var(--hex-bloom) * 0.7); }
+  to { opacity: var(--hex-bloom); }
 }
 
-body:not(.dark-theme) .ring {
-  stroke-width: 1.8;
+.hex-rim {
+  stroke: currentColor;
+  stroke-width: 3;
+  opacity: 0.9;
 }
 
 .portrait-wrap {
   position: relative;
-  width: 46%;
+  z-index: 1;
+  width: 43%;
   aspect-ratio: 1;
-  border-radius: 50%;
-  padding: 4px;
-  background: var(--spectrum);
-  box-shadow:
-    0 0 60px rgba(125, 211, 252, 0.25),
-    0 0 90px rgba(247, 179, 106, 0.18);
+  filter: drop-shadow(0 0 22px rgba(255, 255, 255, 0.18));
+}
+
+body:not(.dark-theme) .portrait-wrap {
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.18));
 }
 
 .portrait-photo {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
+  object-position: center 30%;
   background: var(--panel);
-  border: 3px solid var(--bg);
+  -webkit-clip-path: polygon(42.21% 4.50%, 44.80% 3.25%, 47.40% 2.50%, 50.00% 2.25%, 52.60% 2.50%, 55.20% 3.25%, 57.79% 4.50%, 85.51% 20.50%, 87.89% 22.13%, 89.84% 24.00%, 91.35% 26.13%, 92.44% 28.50%, 93.08% 31.13%, 93.30% 34.00%, 93.30% 66.00%, 93.08% 68.88%, 92.44% 71.50%, 91.35% 73.88%, 89.84% 76.00%, 87.89% 77.88%, 85.51% 79.50%, 57.79% 95.50%, 55.20% 96.75%, 52.60% 97.50%, 50.00% 97.75%, 47.40% 97.50%, 44.80% 96.75%, 42.21% 95.50%, 14.49% 79.50%, 12.11% 77.88%, 10.16% 76.00%, 8.65% 73.88%, 7.56% 71.50%, 6.92% 68.88%, 6.70% 66.00%, 6.70% 34.00%, 6.92% 31.12%, 7.56% 28.50%, 8.65% 26.12%, 10.16% 24.00%, 12.11% 22.12%, 14.49% 20.50%);
+  clip-path: polygon(42.21% 4.50%, 44.80% 3.25%, 47.40% 2.50%, 50.00% 2.25%, 52.60% 2.50%, 55.20% 3.25%, 57.79% 4.50%, 85.51% 20.50%, 87.89% 22.13%, 89.84% 24.00%, 91.35% 26.13%, 92.44% 28.50%, 93.08% 31.13%, 93.30% 34.00%, 93.30% 66.00%, 93.08% 68.88%, 92.44% 71.50%, 91.35% 73.88%, 89.84% 76.00%, 87.89% 77.88%, 85.51% 79.50%, 57.79% 95.50%, 55.20% 96.75%, 52.60% 97.50%, 50.00% 97.75%, 47.40% 97.50%, 44.80% 96.75%, 42.21% 95.50%, 14.49% 79.50%, 12.11% 77.88%, 10.16% 76.00%, 8.65% 73.88%, 7.56% 71.50%, 6.92% 68.88%, 6.70% 66.00%, 6.70% 34.00%, 6.92% 31.12%, 7.56% 28.50%, 8.65% 26.12%, 10.16% 24.00%, 12.11% 22.12%, 14.49% 20.50%);
 }
 
 .status-pill {
@@ -2150,6 +2171,11 @@ body.custom-cursor-active * {
 
   .project-gallery {
     transform: none;
+  }
+
+  .hex-layer,
+  .hex-bloom {
+    animation: none !important;
   }
 
   /* keep a gentle, non-moving tap acknowledgement */

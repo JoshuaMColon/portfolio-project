@@ -23,7 +23,7 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/graphite.css?v=1" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=2" />
     <title>Josh Colon | Full-Stack Developer</title>
   </head>
   <body class="dark-theme">
@@ -165,28 +165,39 @@
 
           <div class="hero-visual">
             <svg
-              class="hero-rings"
+              class="hero-hex"
               viewBox="0 0 400 400"
               aria-hidden="true"
               focusable="false"
             >
               <defs>
-                <filter id="ring-glow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="5" result="b" />
-                  <feMerge>
-                    <feMergeNode in="b" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
+                <g id="hex-set" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path pathLength="100" stroke-dasharray="80 20" stroke-dashoffset="-6" d="M157.3 40.0Q168.7 29.7 183.2 34.4L315.8 77.5Q330.3 82.2 333.5 97.2L362.5 233.6Q365.7 248.5 354.3 258.8L250.7 352.0Q239.3 362.3 224.8 357.6L92.2 314.5Q77.7 309.8 74.5 294.8L45.5 158.4Q42.3 143.5 53.7 133.2Z" />
+                  <path pathLength="100" stroke-dasharray="78 22" stroke-dashoffset="40" d="M186.5 65.3Q198.1 59.1 209.2 66.1L310.8 129.5Q321.9 136.5 321.5 149.6L317.3 269.2Q316.8 282.4 305.2 288.5L199.5 344.7Q187.9 350.9 176.8 343.9L75.2 280.5Q64.1 273.5 64.5 260.4L68.7 140.8Q69.2 127.6 80.8 121.5Z" />
+                  <path pathLength="100" stroke-dasharray="82 18" stroke-dashoffset="72" d="M156.2 100.8Q163.3 92.4 174.1 94.3L272.6 111.6Q283.4 113.5 287.2 123.9L321.4 217.9Q325.1 228.2 318.1 236.6L253.8 313.2Q246.7 321.6 235.9 319.7L137.4 302.4Q126.6 300.5 122.8 290.1L88.6 196.1Q84.9 185.8 91.9 177.4Z" />
+                </g>
+                <filter id="hex-bloom" x="-25%" y="-25%" width="150%" height="150%">
+                  <feGaussianBlur stdDeviation="9" />
+                </filter>
+                <filter id="hex-soft-1" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="0.9" />
+                </filter>
+                <filter id="hex-soft-2" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="1.8" />
+                </filter>
+                <filter id="hex-soft-3" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="2.7" />
                 </filter>
               </defs>
-              <g filter="url(#ring-glow)" fill="none" stroke-linejoin="round">
-                <rect class="ring r1" x="60" y="60" width="280" height="280" rx="64" />
-                <rect class="ring r2" x="66" y="66" width="268" height="268" rx="62" />
-                <rect class="ring r3" x="72" y="72" width="256" height="256" rx="60" />
-                <rect class="ring r4" x="78" y="78" width="244" height="244" rx="58" />
-                <rect class="ring r5" x="84" y="84" width="232" height="232" rx="56" />
-                <rect class="ring r6" x="90" y="90" width="220" height="220" rx="54" />
+              <!-- depth layers: the same set repeated smaller, softer and fainter -->
+              <g class="hex-layer l4"><use href="#hex-set" filter="url(#hex-soft-3)" /></g>
+              <g class="hex-layer l3"><use href="#hex-set" filter="url(#hex-soft-2)" /></g>
+              <g class="hex-layer l2"><use href="#hex-set" filter="url(#hex-soft-1)" /></g>
+              <g class="hex-layer l1">
+                <use class="hex-bloom" href="#hex-set" filter="url(#hex-bloom)" />
+                <use href="#hex-set" />
               </g>
+              <path class="hex-rim" d="M184.1 117.2Q200.0 108.0 215.9 117.2L263.7 144.8Q279.7 154.0 279.7 172.4L279.7 227.6Q279.7 246.0 263.7 255.2L215.9 282.8Q200.0 292.0 184.1 282.8L136.3 255.2Q120.3 246.0 120.3 227.6L120.3 172.4Q120.3 154.0 136.3 144.8Z" fill="none" stroke-linejoin="round" />
             </svg>
             <div class="portrait-wrap">
               <img
