@@ -1,360 +1,336 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Josh Colon, full-stack product developer. Polished web experiences for startups, teams, and products."
+    />
+    <meta name="theme-color" content="#070707" />
     <link
       rel="shortcut icon"
       href="assets/img/favicon.png"
       type="image/x-icon"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="assets/css/style.css?v=11" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=1" />
     <title>Josh Colon | Full-Stack Developer</title>
   </head>
   <body class="dark-theme">
-    <div id="prism-bg" class="prism-bg-container"></div>
-    <div id="floating-lines-bg" class="floating-lines-bg-container"></div>
-    <div id="light-rays-bg" class="light-rays-bg-container"></div>
-    <div class="bg-fx-scrim"></div>
+    <script>
+      /* Apply the saved theme before first paint so there is no flash. */
+      try {
+        if (localStorage.getItem("selected-theme") === "light") {
+          document.body.classList.remove("dark-theme");
+        }
+      } catch (e) {}
+    </script>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div id="light-rays-bg" class="fx-bg fx-bg--rays" aria-hidden="true"></div>
+    <div
+      id="floating-lines-bg"
+      class="fx-bg fx-bg--lines"
+      aria-hidden="true"
+    ></div>
+    <div class="fx-grid" aria-hidden="true"></div>
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
+    <div class="announce">
+      <a
+        href="https://collaborative-kanban-board-gold.vercel.app"
+        target="_blank"
+        rel="noreferrer"
+        class="announce-link"
+      >
+        <span class="announce-tag">New</span>
+        <span
+          >The Kanban Board now has a live demo, no sign-up needed.</span
+        >
+        <span class="announce-cta"
+          >Try it <i class="ri-arrow-right-line" aria-hidden="true"></i
+        ></span>
+      </a>
+    </div>
+
     <header class="site-header" id="header">
-      <nav class="nav container">
-        <a href="#home" class="nav_logo" aria-label="Josh home">
-          <span class="brand-mark">J</span>
+      <nav class="nav container" aria-label="Primary">
+        <a href="#home" class="nav-logo" aria-label="Josh, back to top">
+          <span class="brand-mark" aria-hidden="true">J</span>
           <span>Josh</span>
         </a>
 
-        <div class="nav_menu" id="nav-menu">
-          <ul class="nav_list">
+        <div class="nav-menu" id="nav-menu">
+          <ul class="nav-list">
             <li><a href="#home" class="nav_link active-link">Home</a></li>
             <li><a href="#skills" class="nav_link">Capabilities</a></li>
             <li><a href="#projects" class="nav_link">Projects</a></li>
             <li><a href="#qualification" class="nav_link">About</a></li>
             <li><a href="#contact" class="nav_link">Contact</a></li>
           </ul>
-          <div class="nav_close" id="nav-close">
-            <i class="ri-close-circle-line"></i>
-          </div>
+          <button
+            class="nav-close icon-btn"
+            id="nav-close"
+            type="button"
+            aria-label="Close menu"
+          >
+            <i class="ri-close-line" aria-hidden="true"></i>
+          </button>
         </div>
 
-        <div class="nav_buttons">
+        <div class="nav-actions">
           <button
-            class="theme-button"
+            class="icon-btn theme-button"
             id="theme-button"
-            aria-label="Toggle theme"
+            type="button"
+            aria-label="Switch to light theme"
           >
-            <i class="ri-sun-line"></i>
+            <i class="ri-sun-line" aria-hidden="true"></i>
           </button>
           <a
             href="assets/docs/Joshua_Colon_Master_Resume.pdf"
-            class="nav_resume"
+            class="btn btn-light btn-sm nav-resume"
             target="_blank"
-            >Resume</a
+            rel="noreferrer"
+            >Resume <i class="ri-arrow-right-up-line" aria-hidden="true"></i
+          ></a>
+          <button
+            class="icon-btn nav-toggle"
+            id="nav-toggle"
+            type="button"
+            aria-label="Open menu"
+            aria-controls="nav-menu"
+            aria-expanded="false"
           >
-          <button class="nav_toggle" id="nav-toggle" aria-label="Open menu">
-            <i class="ri-menu-2-line"></i>
+            <i class="ri-menu-line" aria-hidden="true"></i>
           </button>
         </div>
       </nav>
     </header>
 
-    <main class="main">
+    <main class="main" id="main">
+      <!-- ============ HERO ============ -->
       <section class="hero section" id="home">
         <div class="container hero-shell">
           <div class="hero-copy">
             <span class="eyebrow">Full-stack product developer</span>
             <h1>
-              The next generation of<br />
-              digital craftsmanship.
+              The next generation of digital craftsmanship.
             </h1>
-            <p id="bio-text">
+            <p id="bio-text" class="hero-lede">
               I design and build polished web experiences for startups, teams,
               and products that need clarity, speed, and strong visual identity.
             </p>
 
             <div class="hero-actions">
-              <a href="#projects" class="button button-primary">View work</a>
+              <a href="#projects" class="btn btn-light"
+                >View work <i class="ri-arrow-right-line" aria-hidden="true"></i
+              ></a>
+              <a href="#contact" class="btn btn-dark">Get in touch</a>
             </div>
+            <p class="hero-note">
+              Frontend / Backend Web Developer.
+              <a
+                href="assets/docs/Joshua_Colon_Master_Resume.pdf"
+                target="_blank"
+                rel="noreferrer"
+                >Resume (PDF)</a
+              >
+            </p>
 
-            <div class="hero-metrics">
+            <dl class="hero-metrics">
               <div>
-                <strong>5+</strong>
-                <span>Years building</span>
+                <dt>Years building</dt>
+                <dd>5+</dd>
               </div>
               <div>
-                <strong>5</strong>
-                <span>Projects shipped</span>
+                <dt>Projects shipped</dt>
+                <dd>5</dd>
               </div>
               <div>
-                <strong>100%</strong>
-                <span>Product focus</span>
+                <dt>Product focus</dt>
+                <dd>100%</dd>
               </div>
-            </div>
+            </dl>
           </div>
 
-          <div class="hero-panel">
-            <div class="panel-window portrait-panel">
-              <div class="portrait-wrap">
-                <div class="portrait-glow"></div>
-                <img
-                  src="assets/img/perfil.png"
-                  alt="Josh portrait"
-                  class="portrait-photo"
-                />
-              </div>
-
-              <div class="profile-badge">
-                <span>Available for product work</span>
-              </div>
+          <div class="hero-visual">
+            <svg
+              class="hero-rings"
+              viewBox="0 0 400 400"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <defs>
+                <filter id="ring-glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="5" result="b" />
+                  <feMerge>
+                    <feMergeNode in="b" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <g filter="url(#ring-glow)" fill="none" stroke-linejoin="round">
+                <rect class="ring r1" x="60" y="60" width="280" height="280" rx="64" />
+                <rect class="ring r2" x="66" y="66" width="268" height="268" rx="62" />
+                <rect class="ring r3" x="72" y="72" width="256" height="256" rx="60" />
+                <rect class="ring r4" x="78" y="78" width="244" height="244" rx="58" />
+                <rect class="ring r5" x="84" y="84" width="232" height="232" rx="56" />
+                <rect class="ring r6" x="90" y="90" width="220" height="220" rx="54" />
+              </g>
+            </svg>
+            <div class="portrait-wrap">
+              <img
+                src="assets/img/perfil.png"
+                alt="Portrait of Josh Colon"
+                class="portrait-photo"
+                width="640"
+                height="640"
+              />
             </div>
+            <span class="status-pill"
+              ><span class="status-dot" aria-hidden="true"></span>Available for
+              product work</span
+            >
           </div>
         </div>
-      </section>
 
-      <section class="logo-strip">
         <div class="container">
-          <p>Built for product teams, portfolios, and digital experiences.</p>
-          <div class="brands">
-            <span>Web apps</span>
-            <span>UI systems</span>
-            <span>Landing pages</span>
-            <span>Dashboards</span>
-            <span>Brand sites</span>
+          <div class="logo-strip">
+            <p>Built for product teams, portfolios, and digital experiences.</p>
+            <ul class="brands" aria-label="Kinds of work">
+              <li>Web apps</li>
+              <li>UI systems</li>
+              <li>Landing pages</li>
+              <li>Dashboards</li>
+              <li>Brand sites</li>
+            </ul>
           </div>
         </div>
       </section>
 
+      <!-- ============ CAPABILITIES ============ -->
       <section class="features section" id="skills">
         <div class="container">
-          <div class="section-heading">
+          <div class="section-heading center">
             <span class="eyebrow">Capabilities</span>
             <h2>Strategy, design, and engineering in one workflow.</h2>
           </div>
 
-          <div class="skills-grid">
+          <div class="frame skills-frame">
+            <span class="corner tl" aria-hidden="true"></span>
+            <span class="corner tr" aria-hidden="true"></span>
+            <span class="corner bl" aria-hidden="true"></span>
+            <span class="corner br" aria-hidden="true"></span>
+
             <div class="skill-stack">
-              <p class="skill-stack-label">Frontend</p>
-              <div class="skill-stack-items">
-                <article
-                  class="skill-card"
-                  data-skill="HTML5"
-                  aria-label="HTML5"
-                >
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/html-1.svg" alt="HTML5" />
-                  </div>
-                  <h3>HTML5</h3>
-                  <p>
-                    Semantic, accessible foundations for dependable interfaces.
-                  </p>
-                </article>
-                <article class="skill-card" data-skill="CSS3" aria-label="CSS3">
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/css-3.svg" alt="CSS3" />
-                  </div>
-                  <h3>CSS3</h3>
-                  <p>
-                    Responsive visual systems with precise motion and layout.
-                  </p>
-                </article>
-                <article
-                  class="skill-card"
-                  data-skill="JavaScript"
-                  aria-label="JavaScript"
-                >
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/javascript-r.svg" alt="JavaScript" />
-                  </div>
-                  <h3>JavaScript</h3>
-                  <p>
-                    Interactive behavior that keeps products quick and clear.
-                  </p>
-                </article>
-                <article
-                  class="skill-card"
-                  data-skill="React"
-                  aria-label="React"
-                >
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/react-2.svg" alt="React" />
-                  </div>
-                  <h3>React</h3>
-                  <p>
-                    Reusable components for flexible, maintainable frontends.
-                  </p>
-                </article>
-                <article class="skill-card" data-skill="JSX" aria-label="JSX">
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/jsx.svg" alt="JSX" />
-                  </div>
-                  <h3>JSX</h3>
-                  <p>
-                    Clear, component-friendly markup for building React
-                    interfaces.
-                  </p>
-                </article>
-                <article
-                  class="skill-card"
-                  data-skill="TypeScript"
-                  aria-label="TypeScript"
-                >
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/typescript.svg" alt="TypeScript" />
-                  </div>
-                  <h3>TypeScript</h3>
-                  <p>
-                    Typed JavaScript for safer, more maintainable application
-                    code.
-                  </p>
-                </article>
-              </div>
+              <h3 class="skill-stack-label">Frontend</h3>
+              <ul class="skill-grid">
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/html-1.svg" alt="" /></span>
+                  <h4>HTML5</h4>
+                  <p>Semantic, accessible foundations for dependable interfaces.</p>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/css-3.svg" alt="" /></span>
+                  <h4>CSS3</h4>
+                  <p>Responsive visual systems with precise motion and layout.</p>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/javascript-r.svg" alt="" /></span>
+                  <h4>JavaScript</h4>
+                  <p>Interactive behavior that keeps products quick and clear.</p>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/react-2.svg" alt="" /></span>
+                  <h4>React</h4>
+                  <p>Reusable components for flexible, maintainable frontends.</p>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/jsx.svg" alt="" /></span>
+                  <h4>JSX</h4>
+                  <p>Clear, component-friendly markup for building React interfaces.</p>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/typescript.svg" alt="" /></span>
+                  <h4>TypeScript</h4>
+                  <p>Typed JavaScript for safer, more maintainable application code.</p>
+                </li>
+              </ul>
             </div>
+
             <div class="skill-stack">
-              <p class="skill-stack-label">Backend</p>
-              <div class="skill-stack-items">
-                <article
-                  class="skill-card"
-                  data-skill="Node.js"
-                  aria-label="Node.js"
-                >
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/nodejs-3.svg" alt="Node.js" />
-                  </div>
-                  <h3>Node.js</h3>
+              <h3 class="skill-stack-label">Backend</h3>
+              <ul class="skill-grid">
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/nodejs-3.svg" alt="" /></span>
+                  <h4>Node.js</h4>
                   <p>Practical server-side logic and API integrations.</p>
-                </article>
-                <article
-                  class="skill-card"
-                  data-skill="MySQL"
-                  aria-label="MySQL"
-                >
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/mysql.svg" alt="MySQL" />
-                  </div>
-                  <h3>MySQL</h3>
-                  <p>
-                    Structured data models that support useful product flows.
-                  </p>
-                </article>
-                <article
-                  class="skill-card"
-                  data-skill="MongoDB"
-                  aria-label="MongoDB"
-                >
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/mongodb-icon-2.svg" alt="MongoDB" />
-                  </div>
-                  <h3>MongoDB</h3>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/mysql.svg" alt="" /></span>
+                  <h4>MySQL</h4>
+                  <p>Structured data models that support useful product flows.</p>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/mongodb-icon-2.svg" alt="" /></span>
+                  <h4>MongoDB</h4>
                   <p>Flexible data storage for evolving application needs.</p>
-                </article>
-                <article class="skill-card" data-skill="Git" aria-label="Git">
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/git-icon.svg" alt="Git" />
-                  </div>
-                  <h3>Git</h3>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/git-icon.svg" alt="" /></span>
+                  <h4>Git</h4>
                   <p>Focused collaboration and clean delivery workflows.</p>
-                </article>
-                <article
-                  class="skill-card"
-                  data-skill="Supabase"
-                  aria-label="Supabase"
-                >
-                  <div class="skill-visual">
-                    <span class="skill-layer skill-layer-back"></span>
-                    <span class="skill-layer skill-layer-middle"></span>
-                    <span class="skill-layer skill-layer-front"></span>
-                    <img src="assets/img/supabase.svg" alt="Supabase" />
-                  </div>
-                  <h3>Supabase</h3>
-                  <p>
-                    Backend services for data, authentication, and real-time
-                    features.
-                  </p>
-                </article>
-              </div>
+                </li>
+                <li class="tile skill-tile" tabindex="0">
+                  <span class="tile-icon"><img src="assets/img/supabase.svg" alt="" /></span>
+                  <h4>Supabase</h4>
+                  <p>Backend services for data, authentication, and real-time features.</p>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div class="offer-heading">
+          <div class="section-heading center offer-heading">
             <span class="eyebrow">What I can offer</span>
             <h2>Useful product work from first idea to final detail.</h2>
           </div>
 
-          <div class="offer-grid">
-            <article class="offer-card">
-              <span class="card-icon"><i class="ri-layout-4-line"></i></span>
+          <div class="bento">
+            <article class="tile offer-card span-2">
+              <span class="card-icon"><i class="ri-layout-4-line" aria-hidden="true"></i></span>
               <h3>Product Interfaces</h3>
-              <p>
-                Clear, responsive screens that make complex workflows feel
-                simple.
-              </p>
+              <p>Clear, responsive screens that make complex workflows feel simple.</p>
             </article>
-            <article class="offer-card">
-              <span class="card-icon"
-                ><i class="ri-code-s-slash-line"></i
-              ></span>
+            <article class="tile offer-card">
+              <span class="card-icon"><i class="ri-code-s-slash-line" aria-hidden="true"></i></span>
               <h3>Frontend Builds</h3>
-              <p>
-                Fast, polished frontends built around reusable components and
-                real users.
-              </p>
+              <p>Fast, polished frontends built around reusable components and real users.</p>
             </article>
-            <article class="offer-card">
-              <span class="card-icon"><i class="ri-database-2-line"></i></span>
+            <article class="tile offer-card">
+              <span class="card-icon"><i class="ri-database-2-line" aria-hidden="true"></i></span>
               <h3>Backend Systems</h3>
-              <p>
-                Practical APIs, data models, and integrations that support the
-                product.
-              </p>
+              <p>Practical APIs, data models, and integrations that support the product.</p>
             </article>
-            <article class="offer-card">
-              <span class="card-icon"><i class="ri-rocket-2-line"></i></span>
+            <article class="tile offer-card span-2">
+              <span class="card-icon"><i class="ri-rocket-2-line" aria-hidden="true"></i></span>
               <h3>Launch Support</h3>
-              <p>
-                Thoughtful iteration, cleanup, and delivery support from
-                prototype to launch.
-              </p>
+              <p>Thoughtful iteration, cleanup, and delivery support from prototype to launch.</p>
             </article>
           </div>
         </div>
       </section>
 
+      <!-- ============ PROJECTS (structure unchanged) ============ -->
       <section class="projects section" id="projects">
         <div class="container">
           <div class="section-heading">
@@ -366,7 +342,11 @@
             </p>
           </div>
 
-          <div class="project-gallery" aria-label="Deployed projects">
+          <div class="project-gallery frame" aria-label="Deployed projects">
+            <span class="corner tl" aria-hidden="true"></span>
+            <span class="corner tr" aria-hidden="true"></span>
+            <span class="corner bl" aria-hidden="true"></span>
+            <span class="corner br" aria-hidden="true"></span>
             <div class="project-stage">
               <div
                 class="infinite-spiral"
@@ -398,7 +378,7 @@
                     product-grade content structure.</span
                   >
                 </span>
-                <i class="ri-arrow-right-line"></i>
+                <i class="ri-arrow-right-line" aria-hidden="true"></i>
               </button>
               <button
                 class="project-tab"
@@ -417,7 +397,7 @@
                     focus, and simple visual flow.</span
                   >
                 </span>
-                <i class="ri-arrow-right-line"></i>
+                <i class="ri-arrow-right-line" aria-hidden="true"></i>
               </button>
               <button
                 class="project-tab"
@@ -436,10 +416,10 @@
                     experience.</span
                   >
                 </span>
-                <i class="ri-arrow-right-line"></i>
+                <i class="ri-arrow-right-line" aria-hidden="true"></i>
               </button>
 
-              <div class="project-tab-detail" id="project-tab-detail">
+              <div class="project-tab-detail" id="project-tab-detail" aria-live="polite">
                 <span class="project-detail-type" id="project-detail-type"
                   >Web app</span
                 >
@@ -450,11 +430,12 @@
                 </p>
                 <a
                   id="project-detail-link"
+                  class="btn btn-light btn-sm"
                   href="https://blog-platform-one-xi.vercel.app/"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Visit live site <i class="ri-arrow-up-right-line"></i>
+                  Visit live site <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
                 </a>
               </div>
             </div>
@@ -462,6 +443,7 @@
         </div>
       </section>
 
+      <!-- ============ ABOUT ============ -->
       <section class="about section" id="qualification">
         <div class="container about-shell">
           <div class="section-heading left-heading">
@@ -470,9 +452,9 @@
           </div>
 
           <div class="about-grid">
-            <div class="about-card">
-              <h3>Education</h3>
-              <ul>
+            <div class="tile about-card">
+              <h3><i class="ri-graduation-cap-line" aria-hidden="true"></i> Education</h3>
+              <ul class="timeline">
                 <li>
                   <span>BS in Video Game Design</span>
                   <small>Full Sail University</small>
@@ -496,9 +478,9 @@
               </ul>
             </div>
 
-            <div class="about-card">
-              <h3>Experience</h3>
-              <ul>
+            <div class="tile about-card">
+              <h3><i class="ri-briefcase-4-line" aria-hidden="true"></i> Experience</h3>
+              <ul class="timeline">
                 <li>
                   <span>Full-stack web development</span>
                   <small>UI, logic, optimization, and deployment</small>
@@ -517,105 +499,170 @@
         </div>
       </section>
 
+      <!-- ============ CONTACT ============ -->
       <section class="contact section" id="contact">
-        <div class="container contact-shell">
-          <div class="contact-copy">
+        <div class="container">
+          <div class="cta">
+            <div class="cta-glow" aria-hidden="true"></div>
             <span class="eyebrow">Let’s build</span>
-            <h2>Contact</h2>
-            <h3>Need a cleaner product experience or a sharper launch site?</h3>
-            <p>
+            <h2 class="sr-only">Contact</h2>
+            <p class="cta-title">
+              Need a cleaner product experience or a sharper launch site?
+            </p>
+            <p class="cta-lede">
               Whether you need a modern landing page, a portfolio refresh, or a
               full web app, I can help shape it from concept through launch.
             </p>
-            <div class="contact-links">
-              <a href="mailto:joshua.m.colon2@gmail.com"
-                >joshua.m.colon2@gmail.com</a
-              >
-              <a
-                href="https://www.linkedin.com/in/joshua-colon2"
-                target="_blank"
-                >LinkedIn</a
-              >
-              <a href="https://github.com/JoshuaMColon" target="_blank"
-                >GitHub</a
+            <div class="hero-actions center">
+              <a href="#contact-form" class="btn btn-light"
+                >Start a project <i class="ri-arrow-right-line" aria-hidden="true"></i
+              ></a>
+              <a href="mailto:joshua.m.colon2@gmail.com" class="btn btn-dark"
+                >Email me</a
               >
             </div>
           </div>
 
-          <form class="contact_form" id="contact-form">
-            <div class="contact_form-div">
-              <label class="contact_form-tag">Name</label>
-              <input
-                type="text"
-                name="user_name"
-                required
-                placeholder="Your name"
-                class="contact_form-input"
-                id="contact-name"
-              />
-            </div>
+          <div class="contact-shell">
+            <ul class="contact-links" aria-label="Contact links">
+              <li>
+                <a href="mailto:joshua.m.colon2@gmail.com" class="tile contact-row">
+                  <i class="ri-mail-line" aria-hidden="true"></i>
+                  <span><small>Email</small>joshua.m.colon2@gmail.com</span>
+                  <i class="ri-arrow-right-up-line row-arrow" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/joshua-colon2"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="tile contact-row"
+                >
+                  <i class="ri-linkedin-box-line" aria-hidden="true"></i>
+                  <span><small>LinkedIn</small>joshua-colon2</span>
+                  <i class="ri-arrow-right-up-line row-arrow" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/JoshuaMColon"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="tile contact-row"
+                >
+                  <i class="ri-github-line" aria-hidden="true"></i>
+                  <span><small>GitHub</small>JoshuaMColon</span>
+                  <i class="ri-arrow-right-up-line row-arrow" aria-hidden="true"></i>
+                </a>
+              </li>
+            </ul>
 
-            <div class="contact_form-div">
-              <label class="contact_form-tag">Email</label>
-              <input
-                type="email"
-                name="user_email"
-                required
-                placeholder="you@example.com"
-                class="contact_form-input"
-                id="contact-email"
-              />
-            </div>
+            <form class="frame contact_form" id="contact-form" novalidate>
+              <span class="corner tl" aria-hidden="true"></span>
+              <span class="corner tr" aria-hidden="true"></span>
+              <span class="corner bl" aria-hidden="true"></span>
+              <span class="corner br" aria-hidden="true"></span>
+              <div class="field">
+                <label for="contact-name">Name</label>
+                <input
+                  type="text"
+                  name="user_name"
+                  required
+                  autocomplete="name"
+                  placeholder="Your name"
+                  id="contact-name"
+                />
+              </div>
 
-            <div class="contact_form-div contact_form-area">
-              <label class="contact_form-tag">Project</label>
-              <textarea
-                name="user_project"
-                placeholder="Tell me about your idea"
-                id="contact-project"
-                class="contact_form-input"
-              ></textarea>
-            </div>
+              <div class="field">
+                <label for="contact-email">Email</label>
+                <input
+                  type="email"
+                  name="user_email"
+                  required
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  id="contact-email"
+                />
+              </div>
 
-            <p class="contact_message" id="contact-message"></p>
-            <button type="submit" class="contact_button">
-              Start a project <i class="ri-arrow-right-up-line"></i>
-            </button>
-          </form>
+              <div class="field field-area">
+                <label for="contact-project">Project</label>
+                <textarea
+                  name="user_project"
+                  placeholder="Tell me about your idea"
+                  id="contact-project"
+                  rows="5"
+                ></textarea>
+              </div>
+
+              <div class="form-footer">
+                <p class="contact_message" id="contact-message" role="status"></p>
+                <button type="submit" class="btn btn-light contact_button">
+                  Start a project <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <div class="container footer_container">
-        <div class="footer-brand">
-          <span class="brand-mark">J</span>
-          <span>Josh</span>
+      <div class="container footer-grid">
+        <div class="footer-brand-col">
+          <a href="#home" class="nav-logo" aria-label="Josh, back to top">
+            <span class="brand-mark" aria-hidden="true">J</span>
+            <span>Josh</span>
+          </a>
+          <p>Frontend / Backend Web Developer</p>
         </div>
-        <p>Frontend / Backend Web Developer</p>
-        <div class="footer_links">
-          <a href="#home">Home</a>
-          <a href="#skills">Capabilities</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+        <div>
+          <h2 class="footer-title">Navigate</h2>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#skills">Capabilities</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#qualification">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
         </div>
-        <span class="footer_copy"
-          ><i class="ri-copyright-line"></i> 2026 Josh Colon</span
-        >
+        <div>
+          <h2 class="footer-title">Projects</h2>
+          <ul class="footer-links">
+            <li><a href="https://blog-platform-one-xi.vercel.app/" target="_blank" rel="noreferrer">Blog Platform</a></li>
+            <li><a href="https://collaborative-kanban-board-gold.vercel.app/" target="_blank" rel="noreferrer">Kanban Board</a></li>
+            <li><a href="https://joshuamcolon.github.io/Weather_Dashboard_App/" target="_blank" rel="noreferrer">Weather Dashboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-title">Elsewhere</h2>
+          <ul class="footer-links">
+            <li><a href="mailto:joshua.m.colon2@gmail.com">Email</a></li>
+            <li><a href="https://www.linkedin.com/in/joshua-colon2" target="_blank" rel="noreferrer">LinkedIn</a></li>
+            <li><a href="https://github.com/JoshuaMColon" target="_blank" rel="noreferrer">GitHub</a></li>
+            <li><a href="assets/docs/Joshua_Colon_Master_Resume.pdf" target="_blank" rel="noreferrer">Resume</a></li>
+          </ul>
+        </div>
       </div>
+      <div class="container footer-bottom">
+        <span><i class="ri-copyright-line" aria-hidden="true"></i> 2026 Josh Colon</span>
+        <span class="footer-mono">Built with HTML, CSS &amp; JavaScript</span>
+      </div>
+      <div class="footer-wordmark" aria-hidden="true">Josh Colon</div>
     </footer>
 
-    <a href="#" class="scrollup" id="scroll-up"
-      ><i class="ri-arrow-up-line"></i
+    <a href="#home" class="scrollup" id="scroll-up" aria-label="Back to top"
+      ><i class="ri-arrow-up-line" aria-hidden="true"></i
     ></a>
 
-    <script src="assets/js/scrollreveal.min.js"></script>
-    <script src="assets/js/swiper-bundle.min.js"></script>
     <script
-      type="text/javascript"
+      defer
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
-    <script src="assets/js/project-showcase.js?v=1"></script>
-    <script type="module" src="assets/js/main.js?v=3"></script>
+    <script defer src="assets/js/site.js?v=1"></script>
+    <script defer src="assets/js/project-showcase.js?v=2"></script>
+    <script type="module" src="assets/js/main.js?v=5"></script>
   </body>
 </html>

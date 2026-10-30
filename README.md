@@ -6,18 +6,21 @@ This project is a professional portfolio website built to showcase frontend and 
 
 ## Features
 
-- Responsive, mobile-first design
-- Smooth navigation with section-based scrolling
-- Interactive project showcase using Swiper slider
-- Dark mode toggle and scroll-to-top support
-- Contact section with form layout and direct messaging links
+- Dark, framed "graphite" look: thin borders, corner marks, bento grids and soft glows
+- Responsive layout for phones, tablets and desktops
+- Interactive 3D project spiral with tabs and live-site links
+- Dark/light theme toggle (remembered between visits), sticky blurred header and scroll-to-top
+- Visual feedback for mouse, touch, pen and keyboard (hover spotlight, press and tap ripple)
+- Accessible: skip link, visible focus states, labelled form fields, and reduced-motion support
+- Contact form (EmailJS) plus direct email, LinkedIn and GitHub links
 
 ## Technologies Used
 
 - HTML5
 - CSS3
 - JavaScript
-- Swiper.js for project carousel
+- Geist and Geist Mono (Google Fonts), Remix Icon
+- three.js / OGL background effects (loaded as an optional ES module)
 - EmailJS integration for form messaging support
 
 ## Purpose
@@ -27,8 +30,10 @@ This portfolio demonstrates the ability to build a complete web experience from 
 ## Project Structure
 
 - `index.html` — main landing page and portfolio content
-- `assets/css/style.css` — custom styling and responsive layout
-- `assets/js/main.js` — client-side interaction logic
+- `assets/css/graphite.css`: theme, layout and responsive styles
+- `assets/js/site.js`: core interactions (menu, theme, scroll, reveal, tap feedback, contact form); works even when opened from disk
+- `assets/js/project-showcase.js`: project spiral and tabs
+- `assets/js/main.js`: optional visual effects (background, decrypted text, custom cursor, magnetic buttons); needs to be served over http(s)
 - `assets/img/` — portfolio visuals, icons, and graphic assets
 - `assets/docs/` — supporting documents such as resume PDF
 
