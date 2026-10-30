@@ -1728,6 +1728,138 @@ body:not(.dark-theme) .project-tab.active::before {
   margin-top: 1.3rem;
 }
 
+/* when a case study makes the detail column taller, the stage stays in view */
+@media (min-width: 1024px) {
+  .project-stage {
+    position: sticky;
+    top: calc(var(--header-h) + 1.25rem);
+    align-self: start;
+  }
+}
+
+/* case study: expandable panel inside the project detail */
+.case-study {
+  margin-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.case-study summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0 0.1rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.2s ease;
+}
+
+.case-study summary::-webkit-details-marker {
+  display: none;
+}
+
+.case-study summary:hover,
+.case-study[open] summary {
+  color: var(--text);
+}
+
+.case-study summary i {
+  font-size: 1rem;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.case-study[open] summary i {
+  transform: rotate(45deg);
+}
+
+.case-study-list {
+  display: grid;
+  gap: 0.95rem;
+  margin: 0.9rem 0 0;
+}
+
+.case-study-row {
+  display: grid;
+  grid-template-columns: 7.2rem minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+.case-study-row dt {
+  padding-top: 0.2rem;
+  color: var(--dim);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.case-study-row dd {
+  margin: 0;
+  min-width: 0;
+}
+
+.project-tab-detail .case-study-row p,
+.case-study-points li {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.case-study-points {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case-study-points li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.case-study-points li::before {
+  content: "";
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 0.4rem;
+  height: 1px;
+  background: var(--project-accent, var(--dim));
+}
+
+.case-study-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case-study-stack li {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-soft);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+@media (max-width: 560px) {
+  .case-study-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}
+
 /* ---------- About ---------- */
 .about-shell {
   display: grid;
