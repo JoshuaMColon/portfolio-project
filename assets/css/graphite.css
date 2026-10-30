@@ -1540,13 +1540,17 @@ body:not(.dark-theme) .layer-plate.is-active {
   object-fit: contain;
 }
 
-/* Tablet and phone: the stack sits beside the text, partly off the left
-   edge, with each plate lined up with its layer (see skill-layers.js). */
+/* Tablet and phone: the stack sits beside the text, fully inside the card,
+   with each plate lined up with its layer (see skill-layers.js). The plate
+   is rotated 45deg, so its projected width is plate * sqrt(2); --glow-pad
+   leaves room for the active glow on the left. */
 @media (max-width: 899px) {
   .layers {
-    --plate: 12rem;
+    --plate: clamp(4.5rem, 32vw - 1.75rem, 8rem);
+    --plate-w: calc(var(--plate) * 1.4143);
+    --glow-pad: 1.25rem;
     --gap: 9rem;
-    --lift: 0.7rem;
+    --lift: 0.6rem;
     --reveal: 0rem;
     display: block;
     position: relative;
@@ -1557,19 +1561,49 @@ body:not(.dark-theme) .layer-plate.is-active {
   .layers-visual {
     position: absolute;
     inset: 0 auto 0 0;
-    width: 50%;
+    width: calc(var(--glow-pad) + var(--plate-w));
     height: auto;
   }
 
   .layers-stage {
     position: absolute;
     top: var(--origin-y, 85%);
-    left: 22%;
+    left: calc(var(--glow-pad) + var(--plate-w) / 2);
     margin: calc(var(--plate) / -2) 0 0 calc(var(--plate) / -2);
   }
 
+  /* tighter glow and shadow so nothing spills past the card edge */
+  .layer-plate,
+  .layer-plate.is-active {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0.7rem 0.7rem 1.2rem rgba(0, 0, 0, 0.5);
+  }
+
+  .layer-plate.is-active {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent),
+      0 0 1.25rem -0.25rem color-mix(in srgb, var(--accent) 60%, transparent),
+      0.7rem 0.7rem 1.2rem rgba(0, 0, 0, 0.5);
+  }
+
+  body:not(.dark-theme) .layer-plate {
+    box-shadow:
+      inset 0 1px 0 #fff,
+      0.6rem 0.6rem 1.1rem rgba(0, 0, 0, 0.12);
+  }
+
+  body:not(.dark-theme) .layer-plate.is-active {
+    box-shadow:
+      inset 0 1px 0 #fff,
+      0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent),
+      0 0 1.25rem -0.25rem color-mix(in srgb, var(--accent) 50%, transparent),
+      0.6rem 0.6rem 1.1rem rgba(0, 0, 0, 0.14);
+  }
+
   .layers-copy {
-    padding-left: 47%;
+    padding-left: calc(var(--glow-pad) + var(--plate-w) + 0.25rem);
   }
 
   .layer-item {
