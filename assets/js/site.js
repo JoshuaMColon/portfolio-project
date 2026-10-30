@@ -142,7 +142,7 @@
   }, { passive: true });
 
   /*=============== TAP / CLICK FEEDBACK (mouse, touch, pen) ===============*/
-  var rippleSel = ".btn, .icon-btn, .tile, .project-tab, .scrollup, .nav_link, .announce-link";
+  var rippleSel = ".btn, .icon-btn, .tile, .project-tab, .scrollup, .nav_link, .ticker-link";
   document.addEventListener("pointerdown", function (e) {
     if (e.button && e.button !== 0) return;
     var el = e.target.closest && e.target.closest(rippleSel);
@@ -246,4 +246,55 @@
         });
     });
   }
+
+  /*=============== LIVE DEMOS TICKER ===============*/
+  /* Clone the real group until half the track is wider than the viewport,
+     then animate -50% -> 0 (left to right) for a seamless loop. Clones are
+     aria-hidden with tabindex -1 so screen readers and Tab only meet the
+     real links, while pointer taps on a visible copy still open the demo. */
+  (function () {
+    var ticker = document.querySelector(".live-ticker");
+    if (!ticker) return;
+    var viewport = ticker.querySelector(".ticker-viewport");
+    var track = ticker.querySelector(".ticker-track");
+    var group = track && track.querySelector(".ticker-group");
+    if (!viewport || !group) return;
+
+    function clear() {
+      ticker.classList.remove("is-looping");
+      Array.prototype.forEach.call(track.querySelectorAll(".ticker-clone"), function (n) { n.remove(); });
+    }
+
+    function clone() {
+      var c = group.cloneNode(true);
+      c.classList.add("ticker-clone");
+      c.setAttribute("aria-hidden", "true");
+      c.removeAttribute("aria-label");
+      Array.prototype.forEach.call(c.querySelectorAll("a"), function (a) { a.setAttribute("tabindex", "-1"); });
+      track.appendChild(c);
+    }
+
+    function build() {
+      clear();
+      if (reduceMotion.matches) return;
+      var w = group.getBoundingClientRect().width;
+      if (!w) return;
+      var perHalf = Math.max(1, Math.ceil(viewport.clientWidth / w));
+      for (var i = 1; i < perHalf * 2; i++) clone();
+      /* constant speed of ~45px/s whatever the screen width */
+      ticker.style.setProperty("--ticker-duration", Math.round((w * perHalf) / 45) + "s");
+      ticker.classList.add("is-looping");
+    }
+
+    build();
+    var lastW = viewport.clientWidth, t;
+    window.addEventListener("resize", function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        if (viewport.clientWidth !== lastW) { lastW = viewport.clientWidth; build(); }
+      }, 200);
+    });
+    if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", build);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
+  })();
 })();

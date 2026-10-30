@@ -23,7 +23,7 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/graphite.css?v=3" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=4" />
     <title>Josh Colon | Full-Stack Developer</title>
   </head>
   <body class="dark-theme">
@@ -45,22 +45,6 @@
     <div class="fx-grid" aria-hidden="true"></div>
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-    <div class="announce">
-      <a
-        href="https://collaborative-kanban-board-gold.vercel.app"
-        target="_blank"
-        rel="noreferrer"
-        class="announce-link"
-      >
-        <span class="announce-tag">New</span>
-        <span
-          >The Kanban Board now has a live demo, no sign-up needed.</span
-        >
-        <span class="announce-cta"
-          >Try it <i class="ri-arrow-right-line" aria-hidden="true"></i
-        ></span>
-      </a>
-    </div>
 
     <header class="site-header" id="header">
       <nav class="nav container" aria-label="Primary">
@@ -349,6 +333,30 @@
               A few deployed builds that show how I think through product flow,
               interaction, and the details between the lines.
             </p>
+          </div>
+
+          <div class="live-ticker" role="region" aria-label="Live full-stack demos">
+            <span class="ticker-label" aria-hidden="true"><span class="ticker-dot"></span>Live demos</span>
+            <div class="ticker-viewport">
+              <div class="ticker-track">
+                <ul class="ticker-group" aria-label="Live full-stack demos">
+                  <li>
+                    <a class="ticker-link" href="https://collaborative-kanban-board-gold.vercel.app" target="_blank" rel="noreferrer">
+                      <span class="ticker-tag">New</span>
+                      <span class="ticker-text"><strong>Collaborative Kanban Board</strong> Realtime board with presence and live comments, React + Supabase. Live demo, no sign-up needed.</span>
+                      <span class="ticker-cta">Try it <i class="ri-arrow-right-line" aria-hidden="true"></i></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="ticker-link" href="https://blog-platform-one-xi.vercel.app" target="_blank" rel="noreferrer">
+                      <span class="ticker-tag">Live</span>
+                      <span class="ticker-text"><strong>Blog Platform</strong> Full-stack blogging with auth, rich-text posts, comments and likes, React + Supabase.</span>
+                      <span class="ticker-cta">Try it <i class="ri-arrow-right-line" aria-hidden="true"></i></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           <div class="project-gallery frame" aria-label="Deployed projects">
@@ -670,7 +678,7 @@
       defer
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
-    <script defer src="assets/js/site.js?v=1"></script>
+    <script defer src="assets/js/site.js?v=2"></script>
     <script defer src="assets/js/project-showcase.js?v=2"></script>
     <script type="module" src="assets/js/main.js?v=5"></script>
   </body>
