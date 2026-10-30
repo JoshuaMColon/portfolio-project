@@ -49,7 +49,6 @@ body.dark-theme {
   --btn-light-fg: #0a0a0a;
   --btn-dark-bg: #1a1a1a;
   --btn-dark-fg: #f5f5f5;
-  --ring-stroke: #ffffff;
   --glow: rgba(255, 255, 255, 0.07);
   --shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
   --stage-bg: #0a0a0a;
@@ -71,7 +70,6 @@ body:not(.dark-theme) {
   --btn-light-fg: #fafafa;
   --btn-dark-bg: #ffffff;
   --btn-dark-fg: #0a0a0a;
-  --ring-stroke: #1a1a1a;
   --glow: rgba(0, 0, 0, 0.04);
   --shadow: 0 30px 70px rgba(0, 0, 0, 0.1);
   --stage-bg: #0c0c0c;
@@ -815,24 +813,26 @@ body:not(.dark-theme) .tile::before {
   text-transform: uppercase;
 }
 
-/* hero visual: neon, layered hexagon mark framing the portrait.
-   Original geometry: three broken, offset rounded hexagons, repeated
-   at smaller scales with increasing blur for a "tunnel" depth effect. */
+/* hero visual: neon, layered hexagon mark with the portrait in its tunnel.
+   Original parametric geometry (three nested, progressively turned rounded
+   hexagons joined by two hairpins), stacked smaller/softer/fainter for depth. */
 .hero-visual {
   --hex-stroke: #ffffff;
-  --hex-bloom: 0.85;
+  --hex-glow: 0.825;
   position: relative;
   display: grid;
   place-items: center;
   width: 100%;
-  max-width: 31rem;
+  max-width: 34rem;
   aspect-ratio: 1;
   margin-inline: auto;
+  margin-bottom: 3.25rem;
+  color: var(--hex-stroke);
 }
 
 body:not(.dark-theme) .hero-visual {
   --hex-stroke: #141414;
-  --hex-bloom: 0.22;
+  --hex-glow: 0.2;
 }
 
 .hero-hex {
@@ -843,75 +843,63 @@ body:not(.dark-theme) .hero-visual {
   overflow: visible;
 }
 
-.hero-hex {
-  color: var(--hex-stroke);
-}
-
-.hex-layer {
-  transform-origin: 200px 200px;
-  transform-box: view-box;
-  animation: hex-sway 16s ease-in-out infinite alternate;
-}
-
-.hex-layer.l1 { --s: 1; --r: 0deg; }
-.hex-layer.l2 { --s: 0.84; --r: 2deg; opacity: 0.7; animation-delay: -4s; animation-direction: alternate-reverse; }
-.hex-layer.l3 { --s: 0.69; --r: -2deg; opacity: 0.45; animation-delay: -8s; }
-.hex-layer.l4 { --s: 0.55; --r: 3deg; opacity: 0.28; animation-delay: -12s; animation-direction: alternate-reverse; }
-
-.hex-layer {
-  transform: rotate(var(--r)) scale(var(--s));
-}
-
-.hex-bloom {
-  opacity: var(--hex-bloom);
-  animation: hex-breathe 5s ease-in-out infinite alternate;
-}
-
-@keyframes hex-sway {
-  from {
-    transform: rotate(calc(var(--r) - 2.5deg)) scale(var(--s));
-  }
-  to {
-    transform: rotate(calc(var(--r) + 2.5deg)) scale(calc(var(--s) * 1.02));
-  }
-}
-
-@keyframes hex-breathe {
-  from { opacity: calc(var(--hex-bloom) * 0.7); }
-  to { opacity: var(--hex-bloom); }
-}
-
-.hex-rim {
+.hero-hex use {
+  fill: none;
   stroke: currentColor;
-  stroke-width: 3;
-  opacity: 0.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
+.hero-hex .hx-line {
+  stroke-width: 5.25;
+}
+
+.hero-hex .hx-glow {
+  stroke-width: 10;
+  opacity: var(--hex-glow);
+}
+
+/* portrait sits in the dark centre of the smallest layer */
 .portrait-wrap {
   position: relative;
   z-index: 1;
-  width: 43%;
+  width: 28%;
   aspect-ratio: 1;
-  filter: drop-shadow(0 0 22px rgba(255, 255, 255, 0.18));
+  overflow: hidden;
+  background: #0b0b0b;
+  -webkit-clip-path: polygon(78.28% 13.06%, 80.68% 13.95%, 82.76% 15.15%, 84.53% 16.66%, 85.97% 18.47%, 87.10% 20.60%, 87.90% 23.03%, 96.13% 56.02%, 96.56% 58.55%, 96.56% 60.95%, 96.14% 63.23%, 95.29% 65.39%, 94.01% 67.43%, 92.31% 69.34%, 67.85% 92.96%, 65.88% 94.59%, 63.80% 95.80%, 61.61% 96.57%, 59.32% 96.92%, 56.92% 96.83%, 54.41% 96.31%, 21.72% 86.94%, 19.32% 86.05%, 17.24% 84.85%, 15.47% 83.34%, 14.03% 81.53%, 12.90% 79.40%, 12.10% 76.97%, 3.87% 43.98%, 3.44% 41.45%, 3.44% 39.05%, 3.86% 36.77%, 4.71% 34.61%, 5.99% 32.57%, 7.69% 30.66%, 32.15% 7.04%, 34.12% 5.41%, 36.20% 4.20%, 38.39% 3.43%, 40.68% 3.08%, 43.08% 3.17%, 45.59% 3.69%);
+  clip-path: polygon(78.28% 13.06%, 80.68% 13.95%, 82.76% 15.15%, 84.53% 16.66%, 85.97% 18.47%, 87.10% 20.60%, 87.90% 23.03%, 96.13% 56.02%, 96.56% 58.55%, 96.56% 60.95%, 96.14% 63.23%, 95.29% 65.39%, 94.01% 67.43%, 92.31% 69.34%, 67.85% 92.96%, 65.88% 94.59%, 63.80% 95.80%, 61.61% 96.57%, 59.32% 96.92%, 56.92% 96.83%, 54.41% 96.31%, 21.72% 86.94%, 19.32% 86.05%, 17.24% 84.85%, 15.47% 83.34%, 14.03% 81.53%, 12.90% 79.40%, 12.10% 76.97%, 3.87% 43.98%, 3.44% 41.45%, 3.44% 39.05%, 3.86% 36.77%, 4.71% 34.61%, 5.99% 32.57%, 7.69% 30.66%, 32.15% 7.04%, 34.12% 5.41%, 36.20% 4.20%, 38.39% 3.43%, 40.68% 3.08%, 43.08% 3.17%, 45.59% 3.69%);
 }
 
-body:not(.dark-theme) .portrait-wrap {
-  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.18));
+/* soft inner falloff so the photo reads as the end of the tunnel */
+.portrait-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 52%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
 }
 
+body:not(.dark-theme) .portrait-wrap::after {
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.18) 100%);
+}
+
+/* crop: a 540px square of the 1024x1536 source centred on the face
+   (face centre measured at x 484, y 270) */
 .portrait-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
+  position: absolute;
+  top: 0;
+  left: -39.63%;
+  width: 189.63%;
+  max-width: none;
+  height: 284.44%;
+  object-fit: fill;
   background: var(--panel);
-  -webkit-clip-path: polygon(42.21% 4.50%, 44.80% 3.25%, 47.40% 2.50%, 50.00% 2.25%, 52.60% 2.50%, 55.20% 3.25%, 57.79% 4.50%, 85.51% 20.50%, 87.89% 22.13%, 89.84% 24.00%, 91.35% 26.13%, 92.44% 28.50%, 93.08% 31.13%, 93.30% 34.00%, 93.30% 66.00%, 93.08% 68.88%, 92.44% 71.50%, 91.35% 73.88%, 89.84% 76.00%, 87.89% 77.88%, 85.51% 79.50%, 57.79% 95.50%, 55.20% 96.75%, 52.60% 97.50%, 50.00% 97.75%, 47.40% 97.50%, 44.80% 96.75%, 42.21% 95.50%, 14.49% 79.50%, 12.11% 77.88%, 10.16% 76.00%, 8.65% 73.88%, 7.56% 71.50%, 6.92% 68.88%, 6.70% 66.00%, 6.70% 34.00%, 6.92% 31.12%, 7.56% 28.50%, 8.65% 26.12%, 10.16% 24.00%, 12.11% 22.12%, 14.49% 20.50%);
-  clip-path: polygon(42.21% 4.50%, 44.80% 3.25%, 47.40% 2.50%, 50.00% 2.25%, 52.60% 2.50%, 55.20% 3.25%, 57.79% 4.50%, 85.51% 20.50%, 87.89% 22.13%, 89.84% 24.00%, 91.35% 26.13%, 92.44% 28.50%, 93.08% 31.13%, 93.30% 34.00%, 93.30% 66.00%, 93.08% 68.88%, 92.44% 71.50%, 91.35% 73.88%, 89.84% 76.00%, 87.89% 77.88%, 85.51% 79.50%, 57.79% 95.50%, 55.20% 96.75%, 52.60% 97.50%, 50.00% 97.75%, 47.40% 97.50%, 44.80% 96.75%, 42.21% 95.50%, 14.49% 79.50%, 12.11% 77.88%, 10.16% 76.00%, 8.65% 73.88%, 7.56% 71.50%, 6.92% 68.88%, 6.70% 66.00%, 6.70% 34.00%, 6.92% 31.12%, 7.56% 28.50%, 8.65% 26.12%, 10.16% 24.00%, 12.11% 22.12%, 14.49% 20.50%);
 }
 
 .status-pill {
   position: absolute;
-  bottom: 6%;
+  top: calc(100% + 0.5rem);
   left: 50%;
   display: inline-flex;
   align-items: center;
@@ -2050,7 +2038,8 @@ body.custom-cursor-active * {
   }
 
   .hero-visual {
-    max-width: 19rem;
+    max-width: 22rem;
+    margin-bottom: 3rem;
   }
 
   .hero-actions .btn {
@@ -2171,11 +2160,6 @@ body.custom-cursor-active * {
 
   .project-gallery {
     transform: none;
-  }
-
-  .hex-layer,
-  .hex-bloom {
-    animation: none !important;
   }
 
   /* keep a gentle, non-moving tap acknowledgement */
