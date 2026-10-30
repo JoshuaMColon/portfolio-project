@@ -143,7 +143,7 @@
   }, { passive: true });
 
   /*=============== TAP / CLICK FEEDBACK (mouse, touch, pen) ===============*/
-  var rippleSel = ".btn, .icon-btn, .tile, .project-tab, .scrollup, .nav_link, .ticker-link, .readmore-toggle";
+  var rippleSel = ".btn, .icon-btn, .tile, .project-tab, .scrollup, .nav_link, .ticker-link, .readmore-toggle, .layer-item";
   document.addEventListener("pointerdown", function (e) {
     if (e.button && e.button !== 0) return;
     var el = e.target.closest && e.target.closest(rippleSel);

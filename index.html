@@ -48,7 +48,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
       <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
     </noscript>
-    <link rel="stylesheet" href="assets/css/graphite.css?v=8" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=10" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -67,7 +67,7 @@
           "@type": "CollegeOrUniversity",
           "name": "Full Sail University"
         },
-        "knowsAbout": ["HTML", "CSS", "JavaScript", "React", "TypeScript", "Node.js", "MySQL", "MongoDB", "Git", "Supabase"]
+        "knowsAbout": ["HTML", "CSS", "JavaScript", "React", "TypeScript", "Node.js", "MySQL", "MongoDB", "Git", "Supabase", "Tailwind CSS", "Vite", "PostgreSQL", "Row-level security", "REST APIs", "Vercel serverless functions", "pgvector", "Accessibility (WCAG)", "SEO"]
       }
     </script>
   </head>
@@ -269,78 +269,89 @@
             <h2>Strategy, design, and engineering in one workflow.</h2>
           </div>
 
-          <div class="frame skills-frame">
+          <div class="frame skills-frame layers" data-layers>
             <span class="corner tl" aria-hidden="true"></span>
             <span class="corner tr" aria-hidden="true"></span>
             <span class="corner bl" aria-hidden="true"></span>
             <span class="corner br" aria-hidden="true"></span>
 
-            <div class="skill-stack">
-              <h3 class="skill-stack-label">Frontend</h3>
-              <ul class="skill-grid">
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/html-1.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>HTML5</h4>
-                  <p>Semantic, accessible foundations for dependable interfaces.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/css-3.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>CSS3</h4>
-                  <p>Responsive visual systems with precise motion and layout.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/javascript-r.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>JavaScript</h4>
-                  <p>Interactive behavior that keeps products quick and clear.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/react-2.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>React</h4>
-                  <p>Reusable components for flexible, maintainable frontends.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/jsx.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>JSX</h4>
-                  <p>Clear, component-friendly markup for building React interfaces.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/typescript.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>TypeScript</h4>
-                  <p>Typed JavaScript for safer, more maintainable application code.</p>
-                </li>
-              </ul>
+            <!-- Decorative isometric stack; the real content is the list beside it. -->
+            <div class="layers-visual" aria-hidden="true">
+              <div class="layers-stage">
+                <div class="layer-plate" data-layer="0" style="--i: 0; --accent: #e44d26">
+                  <span class="layer-face"><img src="assets/img/html-1.svg" alt="" width="96" height="96" loading="lazy" decoding="async" /></span>
+                </div>
+                <div class="layer-plate" data-layer="1" style="--i: 1; --accent: #61dafb">
+                  <span class="layer-face"><img src="assets/img/react-2.svg" alt="" width="96" height="96" loading="lazy" decoding="async" /></span>
+                </div>
+                <div class="layer-plate" data-layer="2" style="--i: 2; --accent: #8cc84b">
+                  <span class="layer-face"><img src="assets/img/nodejs-3.svg" alt="" width="96" height="96" loading="lazy" decoding="async" /></span>
+                </div>
+                <div class="layer-plate" data-layer="3" style="--i: 3; --accent: #4169e1">
+                  <span class="layer-face"><img src="assets/img/postgresql.svg" alt="" width="96" height="96" loading="lazy" decoding="async" /></span>
+                </div>
+                <div class="layer-plate" data-layer="4" style="--i: 4; --accent: #f05032">
+                  <span class="layer-face"><img src="assets/img/git-icon.svg" alt="" width="96" height="96" loading="lazy" decoding="async" /></span>
+                </div>
+              </div>
             </div>
 
-            <div class="skill-stack">
-              <h3 class="skill-stack-label">Backend</h3>
-              <ul class="skill-grid">
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/nodejs-3.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>Node.js</h4>
-                  <p>Practical server-side logic and API integrations.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/mysql.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>MySQL</h4>
-                  <p>Structured data models that support useful product flows.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/mongodb-icon-2.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>MongoDB</h4>
-                  <p>Flexible data storage for evolving application needs.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/git-icon.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>Git</h4>
-                  <p>Focused collaboration and clean delivery workflows.</p>
-                </li>
-                <li class="tile skill-tile" tabindex="0">
-                  <span class="tile-icon"><img src="assets/img/supabase.svg" alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
-                  <h4>Supabase</h4>
-                  <p>Backend services for data, authentication, and real-time features.</p>
-                </li>
-              </ul>
-            </div>
+            <ol class="layers-copy">
+              <li class="layer-item" id="layer-foundations" data-layer="0" style="--accent: #e44d26" tabindex="0" aria-labelledby="layer-foundations-title">
+                <span class="layer-index" aria-hidden="true">01</span>
+                <h3 id="layer-foundations-title">Foundations</h3>
+                <p>Semantic HTML, responsive CSS and Tailwind, and JavaScript that keeps interfaces quick and clear.</p>
+                <ul class="layer-chips" aria-label="Foundations skills">
+                  <li><img src="assets/img/html-1.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />HTML5</li>
+                  <li><img src="assets/img/css-3.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />CSS3</li>
+                  <li><img src="assets/img/tailwindcss.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />Tailwind CSS</li>
+                  <li><img src="assets/img/javascript-r.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />JavaScript</li>
+                </ul>
+              </li>
+              <li class="layer-item" id="layer-components" data-layer="1" style="--accent: #61dafb" tabindex="0" aria-labelledby="layer-components-title">
+                <span class="layer-index" aria-hidden="true">02</span>
+                <h3 id="layer-components-title">Components &amp; types</h3>
+                <p>Reusable React components in clear JSX, typed with TypeScript for safer, maintainable code.</p>
+                <ul class="layer-chips" aria-label="Components and types skills">
+                  <li><img src="assets/img/react-2.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />React</li>
+                  <li><img src="assets/img/jsx.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />JSX</li>
+                  <li><img src="assets/img/typescript.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />TypeScript</li>
+                </ul>
+              </li>
+              <li class="layer-item" id="layer-apis" data-layer="2" style="--accent: #8cc84b" tabindex="0" aria-labelledby="layer-apis-title">
+                <span class="layer-index" aria-hidden="true">03</span>
+                <h3 id="layer-apis-title">APIs &amp; serverless</h3>
+                <p>Node.js server logic and Vercel serverless functions behind clean REST APIs.</p>
+                <ul class="layer-chips" aria-label="APIs and serverless skills">
+                  <li><img src="assets/img/nodejs-3.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />Node.js</li>
+                  <li><img src="assets/img/rest-api.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />REST APIs</li>
+                  <li><img src="assets/img/vercel.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />Vercel serverless</li>
+                </ul>
+              </li>
+              <li class="layer-item" id="layer-data" data-layer="3" style="--accent: #4169e1" tabindex="0" aria-labelledby="layer-data-title">
+                <span class="layer-index" aria-hidden="true">04</span>
+                <h3 id="layer-data-title">Data &amp; AI</h3>
+                <p>PostgreSQL with row-level security on Supabase, MySQL and MongoDB, plus AI embeddings with pgvector.</p>
+                <ul class="layer-chips" aria-label="Data and AI skills">
+                  <li><img src="assets/img/postgresql.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />PostgreSQL + RLS</li>
+                  <li><img src="assets/img/supabase.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />Supabase</li>
+                  <li><img src="assets/img/mysql.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />MySQL</li>
+                  <li><img src="assets/img/mongodb-icon-2.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />MongoDB</li>
+                  <li><img src="assets/img/pgvector.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />pgvector embeddings</li>
+                </ul>
+              </li>
+              <li class="layer-item" id="layer-delivery" data-layer="4" style="--accent: #f05032" tabindex="0" aria-labelledby="layer-delivery-title">
+                <span class="layer-index" aria-hidden="true">05</span>
+                <h3 id="layer-delivery-title">Quality &amp; delivery</h3>
+                <p>Reviewed Git workflows and fast Vite builds, shipped with WCAG-minded accessibility and SEO.</p>
+                <ul class="layer-chips" aria-label="Quality and delivery skills">
+                  <li><img src="assets/img/git-icon.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />Git</li>
+                  <li><img src="assets/img/vite.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />Vite</li>
+                  <li><img src="assets/img/accessibility.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />Accessibility (WCAG)</li>
+                  <li><img src="assets/img/seo.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />SEO</li>
+                </ul>
+              </li>
+            </ol>
           </div>
 
           <div class="section-heading center offer-heading">
@@ -797,8 +808,9 @@
       defer
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
-    <script defer src="assets/js/site.js?v=4"></script>
+    <script defer src="assets/js/site.js?v=5"></script>
     <script defer src="assets/js/project-showcase.js?v=5"></script>
+    <script defer src="assets/js/skill-layers.js?v=2"></script>
     <script type="module" src="assets/js/main.js?v=6"></script>
   </body>
 </html>
