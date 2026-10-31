@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://joshuamcolon.github.io/portfolio-project/sitemap.xml
+Sitemap: https://joshuamcolon.vercel.app/sitemap.xml

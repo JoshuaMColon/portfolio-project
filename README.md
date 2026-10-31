@@ -1,6 +1,6 @@
 # Josh Colon — Portfolio
 
-**Live:** https://joshuamcolon.github.io/portfolio-project/
+**Live:** https://joshuamcolon.vercel.app/ (mirror: https://joshuamcolon.github.io/portfolio-project/)
 
 My personal portfolio: a single-page site for hiring managers and clients that shows my full-stack projects, skills, background and a way to get in touch. It's hand-written HTML, CSS and vanilla JavaScript with no build step, styled in a dark, framed "graphite" look.
 
@@ -34,7 +34,7 @@ The Projects section shows each app with a preview, a short description (collaps
 - HTML5, CSS3 and vanilla JavaScript (no framework, no build step)
 - Geist and Geist Mono (Google Fonts), Remix Icon
 - EmailJS for the contact form
-- GitHub Pages hosting
+- Vercel hosting (static, no build), with GitHub Pages as a mirror
 
 ## Running it locally
 
@@ -47,7 +47,7 @@ python3 -m http.server 8000
 
 ## Deployment
 
-GitHub Pages publishes the root of the `main` branch, so every merge to `main` goes live at https://joshuamcolon.github.io/portfolio-project/. When you change CSS or JS, bump the `?v=` query on its `<link>`/`<script>` tag in `index.html` so browsers fetch the new file.
+Vercel serves the root of the `main` branch as a static site (no build step), so every merge to `main` goes live at https://joshuamcolon.vercel.app/. GitHub Pages also publishes `main` as a backup mirror at https://joshuamcolon.github.io/portfolio-project/. When you change CSS or JS, bump the `?v=` query on its `<link>`/`<script>` tag in `index.html` so browsers fetch the new file.
 
 ## Project structure
 
