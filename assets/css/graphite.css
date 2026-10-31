@@ -233,13 +233,13 @@ body.dark-theme {
 }
 
 body:not(.dark-theme) {
-  --bg-top: #fcfbf8;
-  --bg-bottom: #f3f2ee;
-  --bg-halo: rgba(255, 255, 255, 0.7);
-  --dot-color: rgba(20, 20, 30, 0.09);
-  --beam-color: rgba(120, 140, 170, 0.075);
-  --spot-core: rgba(110, 110, 125, 0.1);
-  --spot-edge: rgba(150, 160, 180, 0.05);
+  --bg-top: #fbfaf7;
+  --bg-bottom: #f1f0ec;
+  --bg-halo: rgba(255, 255, 255, 0.55);
+  --dot-color: rgba(24, 24, 40, 0.17);
+  --beam-color: rgba(255, 255, 255, 0.6);
+  --spot-core: rgba(167, 139, 250, 0.2);
+  --spot-edge: rgba(125, 211, 252, 0.12);
   --grain-opacity: 0.045;
 }
 
@@ -279,6 +279,66 @@ body {
   background-position: center;
   -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 38%, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 78%);
   mask-image: radial-gradient(ellipse 75% 65% at 50% 38%, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 78%);
+}
+
+/* light theme only: soft spectrum orbs drifting behind the grid (transform-only
+   motion, plain radial gradients, no filters). Hidden and paused in dark mode so
+   the dark background is unchanged. */
+.bg-aurora {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+}
+
+body:not(.dark-theme) .bg-aurora {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease, visibility 0s;
+}
+
+.bg-aurora span {
+  position: absolute;
+  width: 62vmax;
+  height: 62vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--orb), transparent 72%);
+  transform: translate3d(var(--ox0), var(--oy0), 0);
+  animation: aurora-drift var(--dur) ease-in-out infinite alternate;
+  animation-play-state: paused;
+  will-change: transform;
+}
+
+body:not(.dark-theme) .bg-aurora span {
+  animation-play-state: running;
+}
+
+/* violet + sky behind the hero mark, coral on the left, teal low */
+.bg-aurora span:nth-child(1) { --orb: rgba(150, 118, 250, 0.46); --ox0: 46vw; --oy0: -24vmax; --ox1: 38vw; --oy1: -14vmax; --dur: 38s; }
+.bg-aurora span:nth-child(2) { --orb: rgba(96, 200, 252, 0.42); --ox0: 62vw; --oy0: 4vmax; --ox1: 70vw; --oy1: -6vmax; --dur: 44s; animation-delay: -12s; }
+.bg-aurora span:nth-child(3) { --orb: rgba(255, 128, 80, 0.32); --ox0: -26vmax; --oy0: -10vmax; --ox1: -16vmax; --oy1: 2vmax; --dur: 50s; animation-delay: -20s; }
+.bg-aurora span:nth-child(4) { --orb: rgba(52, 214, 178, 0.32); --ox0: 4vw; --oy0: 34vmax; --ox1: 18vw; --oy1: 26vmax; --dur: 56s; animation-delay: -30s; }
+
+@keyframes aurora-drift {
+  from { transform: translate3d(var(--ox0), var(--oy0), 0); }
+  to { transform: translate3d(var(--ox1), var(--oy1), 0); }
+}
+
+/* light theme: a fine graphite line grid over the dot field (same radial mask) */
+.bg-dots::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background-image:
+    linear-gradient(to right, rgba(24, 24, 40, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(24, 24, 40, 0.055) 1px, transparent 1px);
+  background-size: 88px 88px;
+  background-position: center;
+}
+
+body:not(.dark-theme) .bg-dots::before {
+  opacity: 1;
 }
 
 .bg-beams span {
@@ -324,9 +384,25 @@ body:not(.dark-theme) .bg-grain {
   .bg-dots {
     background-size: 18px 18px;
   }
+
+  .bg-dots::before {
+    background-size: 72px 72px;
+  }
+
+  /* phones: three orbs, sized to the narrow screen */
+  .bg-aurora span { width: 80vmax; height: 80vmax; }
+  .bg-aurora span:nth-child(1) { --ox0: 10vw; --oy0: -30vmax; --ox1: 0vw; --oy1: -22vmax; }
+  .bg-aurora span:nth-child(2) { display: none; }
+  .bg-aurora span:nth-child(3) { --ox0: -40vmax; --oy0: 6vmax; --ox1: -30vmax; --oy1: 14vmax; }
+  .bg-aurora span:nth-child(4) { --ox0: 0vw; --oy0: 40vmax; --ox1: 10vw; --oy1: 32vmax; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .bg-aurora span {
+    animation: none !important;
+    will-change: auto;
+  }
+
   .bg-beams span {
     animation: none !important;
     will-change: auto;
@@ -1220,6 +1296,85 @@ body:not(.dark-theme) .portrait-wrap::after {
   height: 284.44%;
   object-fit: fill;
   background: var(--panel);
+}
+
+/* Glitch on the hex mark, after the blog-platform title: two colour-split
+   copies sliced with clip-path inset() and nudged sideways in steps(1) bursts
+   (~0.35s every 7s; a 0.9s loop while hovered). Portfolio spectrum colours:
+   sky + pink in dark, deeper cyan + magenta in light. Overlays are absolutely
+   positioned and only use opacity/transform/clip-path, so nothing shifts. */
+.hex-glitch {
+  --glitch-a: #7dd3fc;
+  --glitch-b: #f472b6;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+body:not(.dark-theme) .hex-glitch {
+  --glitch-a: #0891b2;
+  --glitch-b: #db2777;
+  mix-blend-mode: multiply;
+}
+
+.hex-glitch use {
+  stroke-width: 5.25;
+}
+
+.hex-glitch-a { color: var(--glitch-a); animation: hex-glitch-a 7s steps(1, end) infinite; }
+.hex-glitch-b { color: var(--glitch-b); animation: hex-glitch-b 7s steps(1, end) infinite; }
+.hero-hex:not(.hex-glitch) { animation: hex-jolt 7s steps(1, end) infinite; }
+
+@media (hover: hover) {
+  /* hover = a short sustained burst (~0.5s glitching per 1.2s loop) */
+  .hero-visual:hover .hex-glitch-a { animation: hex-glitch-a-hover 1.2s steps(1, end) infinite; }
+  .hero-visual:hover .hex-glitch-b { animation: hex-glitch-b-hover 1.2s steps(1, end) infinite; }
+  .hero-visual:hover .hero-hex:not(.hex-glitch) { animation: hex-jolt-hover 1.2s steps(1, end) infinite; }
+}
+@keyframes hex-glitch-a-hover {
+  0%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+  4% { opacity: 0.9; transform: translate(-7px, 2px); clip-path: inset(10% 0 58% 0); }
+  14% { opacity: 0.9; transform: translate(5px, -2px); clip-path: inset(60% 0 8% 0); }
+  24% { opacity: 0.9; transform: translate(-4px, 0); clip-path: inset(30% 0 44% 0); }
+  34% { opacity: 0.9; transform: translate(6px, 1px); clip-path: inset(72% 0 4% 0); }
+  44% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+}
+@keyframes hex-glitch-b-hover {
+  0%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+  8% { opacity: 0.9; transform: translate(7px, 0); clip-path: inset(38% 0 32% 0); }
+  18% { opacity: 0.9; transform: translate(-5px, 2px); clip-path: inset(14% 0 68% 0); }
+  28% { opacity: 0.9; transform: translate(4px, -1px); clip-path: inset(52% 0 20% 0); }
+  38% { opacity: 0.9; transform: translate(-6px, 1px); clip-path: inset(4% 0 80% 0); }
+  46% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+}
+@keyframes hex-jolt-hover {
+  0%, 100% { transform: none; }
+  6% { transform: translate(2px, 0); }
+  16% { transform: translate(-2px, 1px); }
+  26% { transform: translate(1px, -1px); }
+  36% { transform: translate(-1px, 0); }
+  46% { transform: none; }
+}
+
+@keyframes hex-glitch-a {
+  0%, 90%, 100% { opacity: 0; transform: none; clip-path: none; }
+  91% { opacity: 0.9; transform: translate(-7px, 2px); clip-path: inset(10% 0 58% 0); }
+  93% { opacity: 0.9; transform: translate(5px, -2px); clip-path: inset(60% 0 8% 0); }
+  95% { opacity: 0; }
+}
+
+@keyframes hex-glitch-b {
+  0%, 91%, 100% { opacity: 0; transform: none; clip-path: none; }
+  92% { opacity: 0.85; transform: translate(7px, 0); clip-path: inset(38% 0 32% 0); }
+  94% { opacity: 0.85; transform: translate(-5px, 2px); clip-path: inset(14% 0 68% 0); }
+  96% { opacity: 0; }
+}
+
+/* the mark itself twitches a couple of pixels during the burst */
+@keyframes hex-jolt {
+  0%, 91%, 96%, 100% { transform: none; }
+  92% { transform: translateX(-2px); }
+  94% { transform: translateX(2px); }
 }
 
 .status-pill {
@@ -2997,6 +3152,15 @@ body.custom-cursor-active * {
   }
 
   body.dark-theme .hero-hex .hx-layer > g .hx-glow {
+    animation: none !important;
+  }
+
+  /* no glitch: hide the colour-split copies and keep the mark still */
+  .hex-glitch {
+    display: none !important;
+  }
+
+  .hero-hex {
     animation: none !important;
   }
 
