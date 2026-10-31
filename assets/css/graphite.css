@@ -312,8 +312,8 @@ body:not(.dark-theme) .bg-topo {
 /* line strength lives on the moving layer itself, not the group, so the browser
    doesn't re-blend the whole group every frame */
 body:not(.dark-theme) .bg-topo::before {
-  background-image: url("../img/topo.svg"); /* light only: dark never fetches it */
-  opacity: 0.44;
+  background-image: url("../img/topo.svg?v=2"); /* light only: dark never fetches it */
+  opacity: 0.6;
   animation-play-state: running;
 }
 
@@ -383,9 +383,9 @@ body:not(.dark-theme) .bg-grain {
   }
 
   /* phones: smaller contour tile, no copy wash (copy spans the full width) */
-  .bg-topo::before { background-size: 860px 860px; }
+  .bg-topo::before { background-size: 1000px 1000px; }
   .bg-topo::after { display: none; }
-  body:not(.dark-theme) .bg-topo::before { opacity: 0.36; }
+  body:not(.dark-theme) .bg-topo::before { opacity: 0.5; }
 }
 
 @media (prefers-reduced-motion: reduce) {
