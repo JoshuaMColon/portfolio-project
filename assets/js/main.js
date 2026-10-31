@@ -2,7 +2,7 @@
    block module scripts on file://). Core interactions live in site.js; the
    page background is pure CSS (.bg-layers in graphite.css). */
 import { DecryptedText } from "./decrypted-text.js";
-import { initCustomCursor } from "./custom-cursor.js?v=2";
+import { initCustomCursor } from "./custom-cursor.js?v=3";
 import { initMagnetic } from "./magnetic.js";
 import { installTooltips } from "./tooltip.js";
 

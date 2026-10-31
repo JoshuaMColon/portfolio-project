@@ -9,7 +9,7 @@
      cursor is hidden (body.custom-cursor-active) only while the dot is showing.
    One rAF loop (transforms + one opacity), stopped once the glow has settled. */
 
-const CARD = ".infinite-spiral__item, .project-tab";
+const CARD = ".infinite-spiral__item";
 const LINK =
   "a, button, summary, label, select, [role='button'], [role='tab'], [role='link'], .nav_link, .change-theme, .nav_toggle, .nav_close, .scrollup";
 const TEXT =
