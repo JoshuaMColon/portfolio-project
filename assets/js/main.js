@@ -4,6 +4,9 @@
 import { DecryptedText } from "./decrypted-text.js";
 import { initCustomCursor } from "./custom-cursor.js";
 import { initMagnetic } from "./magnetic.js";
+import { installTooltips } from "./tooltip.js";
+
+installTooltips();
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 

@@ -240,7 +240,6 @@ function selectProject(tab) {
   if (projectDetailRepo && project.repo) {
     const label = `${project.title} source code on GitHub`;
     projectDetailRepo.setAttribute("aria-label", label);
-    projectDetailRepo.title = label;
   }
   renderCaseStudy(project.caseStudy);
 }
