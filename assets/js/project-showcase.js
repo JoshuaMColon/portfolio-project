@@ -189,9 +189,9 @@ const projects = {
     accent: "#4aa3ff",
     description:
       "Early-2000s style instant messenger rebuilt on React and Supabase: a live Buddy List, away messages with auto replies, floating IM windows, Buzz and eight customizable skins.",
-    url: "https://aerogram-ten.vercel.app/",
-    demo: "https://aerogram-ten.vercel.app/demo",
-    repo: "https://github.com/JoshuaMColon/aerogram",
+    url: "https://buddyline-app.vercel.app/",
+    demo: "https://buddyline-app.vercel.app/demo",
+    repo: "https://github.com/JoshuaMColon/buddyline",
     caseStudy: {
       problem:
         "Most chat demos are one channel and a text box. I wanted to rebuild what made the old buddy-list messengers fun (presence, away messages, IM windows, sign-on chimes) as a real multi-user app, using only free services.",
