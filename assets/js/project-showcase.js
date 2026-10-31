@@ -1,5 +1,4 @@
 const projectSpiral = document.getElementById("project-spiral");
-const projectTabs = Array.from(document.querySelectorAll(".project-tab"));
 const projectStage = document.querySelector(".project-stage");
 const projectSection = document.getElementById("projects");
 const projectDetailType = document.getElementById("project-detail-type");
@@ -10,6 +9,8 @@ const projectDetailDescription = document.getElementById(
 const projectDetailLink = document.getElementById("project-detail-link");
 const projectDetailDemo = document.getElementById("project-detail-demo");
 const projectDetailRepo = document.getElementById("project-detail-repo");
+const projectDetailImage = document.getElementById("project-detail-image");
+const projectDetailCount = document.getElementById("project-detail-count");
 const projectCaseStudyBody = document.getElementById("project-case-study-body");
 
 const projects = {
@@ -291,27 +292,33 @@ const readMore = (() => {
   };
 })();
 
-function selectProject(tab) {
-  const project = projects[tab.dataset.project];
+/* Projects are picked only by clicking or tapping a card in the stack; scrolling
+   the page never changes the selection. */
+function selectProject(key) {
+  const project = projects[key];
   if (!project) return;
 
-  selectedProjectIndex = projectTabs.indexOf(tab);
   if (projectStage) {
     projectStage.style.setProperty("--project-accent", project.accent);
   }
-  projectTabs.forEach((projectTab) => {
-    const isActive = projectTab === tab;
-    projectTab.classList.toggle("active", isActive);
-    projectTab.setAttribute("aria-selected", String(isActive));
-  });
   projectSpiral?.querySelectorAll(".infinite-spiral__item").forEach((item) => {
-    item.classList.toggle(
-      "is-selected",
-      item.dataset.project === tab.dataset.project,
-    );
+    item.classList.toggle("is-selected", item.dataset.project === key);
   });
   projectSpiral?.dispatchEvent(new CustomEvent("projectselect"));
 
+  if (projectDetailImage) {
+    projectDetailImage.src = `${project.images.light}.webp`;
+    projectDetailImage.alt = project.imageAlt.light;
+    // replay the fade-in for each newly picked project
+    projectDetailImage.style.animation = "none";
+    void projectDetailImage.offsetWidth;
+    projectDetailImage.style.animation = "";
+  }
+  if (projectDetailCount) {
+    const keys = Object.keys(projects);
+    const pad = (n) => String(n).padStart(2, "0");
+    projectDetailCount.textContent = `${pad(keys.indexOf(key) + 1)} / ${pad(keys.length)}`;
+  }
   projectDetailType.textContent = project.type;
   projectDetailTitle.textContent = project.title;
   projectDetailDescription.textContent = project.description;
@@ -337,8 +344,6 @@ function selectProject(tab) {
   }
   renderCaseStudy(project.caseStudy);
 }
-
-let selectedProjectIndex = 0;
 
 function initializeProjectSpiral() {
   if (!projectSpiral) return;
@@ -432,6 +437,10 @@ function initializeProjectSpiral() {
   let previousTime = performance.now();
   let visible = true;
   let paused = false;
+  // After a pick, ease the clicked card to the front and hold it there a while.
+  let targetProgress = null;
+  let holdUntil = 0;
+  const PICK_HOLD_MS = 8000;
   let frameId;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const resizeObserver = new ResizeObserver(layoutSpiral);
@@ -528,7 +537,17 @@ function initializeProjectSpiral() {
   function animate(time) {
     const delta = Math.min((time - previousTime) / 1000, 0.05);
     previousTime = time;
-    if (visible && !paused && !reducedMotion.matches) {
+    if (targetProgress !== null) {
+      const remaining = targetProgress - progress;
+      if (Math.abs(remaining) < 0.002) {
+        progress =
+          ((targetProgress % spiralItems.length) + spiralItems.length) %
+          spiralItems.length;
+        targetProgress = null;
+      } else {
+        progress += remaining * Math.min(1, delta * 7);
+      }
+    } else if (visible && !paused && time > holdUntil && !reducedMotion.matches) {
       progress = (progress + settings.speed * delta) % spiralItems.length;
     }
     layoutSpiral();
@@ -551,11 +570,25 @@ function initializeProjectSpiral() {
     const item = event.target.closest(".infinite-spiral__item");
     if (!item) return;
     setPickedItem(item);
-    const tab = projectTabs.find(
-      (projectTab) => projectTab.dataset.project === item.dataset.project,
-    );
-    if (tab) selectProject(tab);
+    bringToFront(item);
+    selectProject(item.dataset.project);
   });
+
+  function bringToFront(item) {
+    const count = spiralItems.length;
+    const half = count / 2;
+    const offset =
+      ((((spiralItems.indexOf(item) - progress + half) % count) + count) %
+        count) -
+      half;
+    holdUntil = performance.now() + PICK_HOLD_MS;
+    if (reducedMotion.matches) {
+      progress = (((progress + offset) % count) + count) % count;
+      layoutSpiral();
+    } else {
+      targetProgress = progress + offset;
+    }
+  }
 
   // Re-run layout on selection so the picked card updates even when the
   // spiral is not animating (reduced motion).
@@ -571,94 +604,5 @@ function initializeProjectSpiral() {
   };
 }
 
-const moveProject = (direction) => {
-  const nextIndex =
-    (selectedProjectIndex + direction + projectTabs.length) %
-    projectTabs.length;
-  selectedProjectIndex = nextIndex;
-  selectProject(projectTabs[nextIndex]);
-};
-
-projectTabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    selectedProjectIndex = projectTabs.indexOf(tab);
-    selectProject(tab);
-  });
-  tab.addEventListener("keydown", (event) => {
-    const isForward = event.key === "ArrowDown" || event.key === "ArrowRight";
-    const isBackward = event.key === "ArrowUp" || event.key === "ArrowLeft";
-    if (!isForward && !isBackward) return;
-
-    event.preventDefault();
-    const currentIndex = projectTabs.indexOf(tab);
-    const direction = isForward ? 1 : -1;
-    const nextIndex =
-      (currentIndex + direction + projectTabs.length) % projectTabs.length;
-    selectedProjectIndex = nextIndex;
-    projectTabs[nextIndex].focus();
-    selectProject(projectTabs[nextIndex]);
-  });
-});
-
 initializeProjectSpiral();
-selectProject(projectTabs[0]);
-
-/* Hold the Projects section in place while the user reviews each project. */
-if (projectSection) {
-  let wheelLocked = false;
-
-  projectSection.addEventListener(
-    "wheel",
-    (event) => {
-      if (event.target.closest(".project-tab-description")) return;
-      if (wheelLocked || Math.abs(event.deltaY) < 8) return;
-
-      const direction = event.deltaY > 0 ? 1 : -1;
-      const atFirstProject = selectedProjectIndex === 0;
-      const atLastProject = selectedProjectIndex === projectTabs.length - 1;
-      const canMoveWithinProjects =
-        (direction > 0 && !atLastProject) || (direction < 0 && !atFirstProject);
-
-      if (!canMoveWithinProjects) return;
-
-      event.preventDefault();
-      wheelLocked = true;
-      moveProject(direction);
-      window.setTimeout(() => {
-        wheelLocked = false;
-      }, 650);
-    },
-    { passive: false },
-  );
-
-  let touchStartY = 0;
-  let touchHandled = false;
-  projectSection.addEventListener(
-    "touchstart",
-    (event) => {
-      touchStartY = event.touches[0].clientY;
-      touchHandled = false;
-    },
-    { passive: true },
-  );
-  projectSection.addEventListener(
-    "touchmove",
-    (event) => {
-      if (touchHandled || Math.abs(event.touches[0].clientY - touchStartY) < 36)
-        return;
-
-      const direction = event.touches[0].clientY < touchStartY ? 1 : -1;
-      const atFirstProject = selectedProjectIndex === 0;
-      const atLastProject = selectedProjectIndex === projectTabs.length - 1;
-      const canMoveWithinProjects =
-        (direction > 0 && !atLastProject) || (direction < 0 && !atFirstProject);
-
-      if (!canMoveWithinProjects) return;
-
-      event.preventDefault();
-      touchHandled = true;
-      moveProject(direction);
-    },
-    { passive: false },
-  );
-}
+selectProject(Object.keys(projects)[0]);

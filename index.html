@@ -48,7 +48,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
       <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
     </noscript>
-    <link rel="stylesheet" href="assets/css/graphite.css?v=21" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=22" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -466,127 +466,24 @@
               ></div>
             </div>
 
-            <div
-              class="project-tabs"
-              role="tablist"
-              aria-label="Choose a project"
-            >
-              <button
-                class="project-tab active"
-                type="button"
-                role="tab"
-                aria-selected="true"
-                data-project="blog"
-                data-index="0"
-              >
-                <span class="project-tab-number">01</span>
-                <span class="project-tab-content">
-                  <strong>Blog Platform</strong>
-                  <small>Full-stack blogging app</small>
-                  <span class="project-tab-description"
-                    >Cyber-styled blogging app with realtime comments, notifications, full-text search and AI-matched related posts.</span
-                  >
-                </span>
-                <i class="ri-arrow-right-line" aria-hidden="true"></i>
-              </button>
-              <button
-                class="project-tab"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                data-project="kanban"
-                data-index="1"
-              >
-                <span class="project-tab-number">02</span>
-                <span class="project-tab-content">
-                  <strong>Kanban Board</strong>
-                  <small>Team collaboration tool</small>
-                  <span class="project-tab-description"
-                    >Task orchestration interface built for team velocity,
-                    focus, and simple visual flow.</span
-                  >
-                </span>
-                <i class="ri-arrow-right-line" aria-hidden="true"></i>
-              </button>
-              <button
-                class="project-tab"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                data-project="weather"
-                data-index="2"
-              >
-                <span class="project-tab-number">03</span>
-                <span class="project-tab-content">
-                  <strong>Weather Dashboard</strong>
-                  <small>Full-stack weather app</small>
-                  <span class="project-tab-description"
-                    >iPhone Weather-style app with animated skies, an hourly strip, a 10-day forecast and cities that sync across devices.</span
-                  >
-                </span>
-                <i class="ri-arrow-right-line" aria-hidden="true"></i>
-              </button>
-              <button
-                class="project-tab"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                data-project="xplan"
-                data-index="3"
-              >
-                <span class="project-tab-number">04</span>
-                <span class="project-tab-content">
-                  <strong>XPlan</strong>
-                  <small>Gamified task manager</small>
-                  <span class="project-tab-description"
-                    >Task manager that plays like an RPG: quests earn XP, levels and trophies, with natural-language quick-add, Cmd+K and realtime sync.</span
-                  >
-                </span>
-                <i class="ri-arrow-right-line" aria-hidden="true"></i>
-              </button>
-
-              <button
-                class="project-tab"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                data-project="recall"
-                data-index="4"
-              >
-                <span class="project-tab-number">05</span>
-                <span class="project-tab-content">
-                  <strong>Recall Lab</strong>
-                  <small>Python exam practice</small>
-                  <span class="project-tab-description"
-                    >Practice for an intro Python course: 304 original questions graded by real Python in the browser, spaced repetition, a constellation mastery map and a timed mock OA.</span
-                  >
-                </span>
-                <i class="ri-arrow-right-line" aria-hidden="true"></i>
-              </button>
-
-              <button
-                class="project-tab"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                data-project="buddyline"
-                data-index="5"
-              >
-                <span class="project-tab-number">06</span>
-                <span class="project-tab-content">
-                  <strong>Buddyline</strong>
-                  <small>Realtime instant messenger</small>
-                  <span class="project-tab-description"
-                    >Early-2000s style instant messenger rebuilt on React and Supabase: a live Buddy List, away messages with auto replies, floating IM windows, Buzz and eight customizable skins.</span
-                  >
-                </span>
-                <i class="ri-arrow-right-line" aria-hidden="true"></i>
-              </button>
-
+            <div class="project-panel">
               <div class="project-tab-detail" id="project-tab-detail" aria-live="polite">
-                <span class="project-detail-type" id="project-detail-type"
-                  >Web app</span
-                >
+                <div class="project-detail-head">
+                  <span class="project-detail-type" id="project-detail-type"
+                    >Web app</span
+                  >
+                  <span class="project-detail-count" id="project-detail-count">01 / 06</span>
+                </div>
+                <figure class="project-detail-preview">
+                  <img
+                    id="project-detail-image"
+                    src="assets/img/cards/blog-platform-light.webp"
+                    width="720"
+                    height="522"
+                    decoding="async"
+                    alt="Blog Platform screenshot"
+                  />
+                </figure>
                 <h3 id="project-detail-title">Blog Platform</h3>
                 <p id="project-detail-description" class="readmore-text">
                   Cyber-styled blogging app with realtime comments, notifications, full-text search and AI-matched related posts.
@@ -674,6 +571,7 @@
 </div>
 </dl></div>
                 </details>
+                <p class="project-pick-hint"><i class="ri-cursor-line" aria-hidden="true"></i> Click or tap a card to bring it to the front.</p>
               </div>
             </div>
           </div>
@@ -901,9 +799,9 @@
       defer
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
-    <script defer src="assets/js/site.js?v=8"></script>
-    <script defer src="assets/js/project-showcase.js?v=14"></script>
+    <script defer src="assets/js/site.js?v=9"></script>
+    <script defer src="assets/js/project-showcase.js?v=15"></script>
     <script defer src="assets/js/skill-layers.js?v=2"></script>
-    <script type="module" src="assets/js/main.js?v=8"></script>
+    <script type="module" src="assets/js/main.js?v=9"></script>
   </body>
 </html>
