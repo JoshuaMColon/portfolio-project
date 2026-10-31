@@ -8,14 +8,20 @@
      levels (rings breathe out of peaks / into hollows). Everything is periodic over
      the tile, so it stays seamless.
    Cost: a 256² warp pass + one full-screen draw at <=30 fps, DPR- and pixel-capped; paused while the
-   tab is hidden or the dark theme is on. Any failure (or no hardware GPU) leaves the static tile. */
+   tab is hidden or the dark theme is on. Any failure (or no hardware GPU) leaves the static tile.
+   Pointer ripples (fine pointers only): moving the mouse drops a few soft "pressure" points
+   that lift the height field locally and spread out as they fade, so the contour lines bulge
+   around the pointer and ripple outward; a click drops a stronger, faster ring. They live in
+   a small uniform array (uDr, at most 6, x/y/radius/amplitude) and only exist while this
+   WebGL path runs; the static fallbacks (reduced motion, no WebGL2, software GPU) never see
+   them. While ripples are alive the loop runs at up to 60 fps, then drops back to 30. */
 (function () {
   "use strict";
   var host = document.querySelector(".bg-topo");
   if (!host || host.querySelector(".topo-flow")) return;
 
   var P = {"w":[2.0,-3.0,0.1888,1.4879,-2.0,2.0,0.2588,3.6578,-3.0,-3.0,0.1528,2.7214,1.0,0.0,1.0,1.0037,1.0,2.0,0.3513,0.7142,0.0,-1.0,1.0,3.2468,-1.0,0.0,1.0,3.687,-2.0,2.0,0.2588,6.0084,2.0,-2.0,0.2588,4.0749,-6.0,-4.0,0.0851,5.4047,0.0,5.0,0.0795,1.8164,5.0,-1.0,0.1067,4.6495,-7.0,-1.0,0.1411,1.9444,-3.0,-6.0,0.0902,0.351,4.0,6.0,0.1187,1.2335,7.0,-7.0,0.133,2.3315,-4.0,-7.0,0.0475,1.0234,4.0,-11.0,0.0345,0.0537,-5.0,-6.0,0.0493,3.9613,-4.0,-6.0,0.0381,4.2133,10.0,-5.0,0.0623,3.2119,11.0,12.0,0.0399,0.7915,5.0,-9.0,0.0667,4.2847,9.0,-9.0,0.0344,5.037,-11.0,-1.0,0.0671,0.0961,-2.0,9.0,0.0393,6.2027,-19.0,-14.0,0.0177,2.9193,16.0,1.0,0.0168,4.5501,7.0,17.0,0.0155,1.0867,-13.0,11.0,0.0153,4.2663,-9.0,16.0,0.0222,2.3256,13.0,-17.0,0.0183,0.9603,19.0,1.0,0.0148,4.7573,1.0,20.0,0.0165,4.0975,4.0,16.0,0.0176,5.7216,-16.0,-10.0,0.0245,4.985,-10.0,16.0,0.0225,0.6184,-17.0,6.0,0.0202,5.5283,18.0,-6.0,0.0232,3.4049,-7.0,-15.0,0.0249,2.8576],"g":[835.46,351.26,110.22,0.98,376.78,1070.05,197.77,-1.08,927.93,36.42,216.04,-0.85,792.6,1117.76,141.08,1.18,357.8,890.11,218.32,-1.3,789.18,819.36,233.01,1.06,910.45,1054.18,125.35,-1.04,515.54,34.82,33.44,0.21,500.92,260.54,54.91,-0.21,611.79,739.98,73.93,0.25,838.92,321.63,63.59,-0.18,802.63,266.62,65.76,0.3,957.65,1128.39,63.99,0.2,227.66,1082.94,30.43,-0.16,711.42,617.05,60.53,-0.16,452.79,699.02,65.52,-0.26,313.39,498.41,57.15,-0.2,954.0,1021.81,28.64,0.18,763.0,1087.41,41.48,0.2,511.0,602.51,50.76,0.28,395.11,618.53,36.89,0.2,554.65,1138.85,63.23,0.3,965.63,1040.13,63.61,0.16,382.35,133.38,58.32,0.18,655.37,56.13,48.62,-0.14,235.16,768.87,72.37,-0.26,488.86,136.07,68.07,-0.27,824.24,275.9,51.18,0.2,781.58,821.43,43.35,0.27],"lo":-3.15414,"hi":3.02072}; /* w: [kx,ky,amp,phase]*, g: [cx,cy,r,sign*amp]*, lo/hi: field range */
-  var NW = P.w.length / 4, NG = P.g.length / 4, R = 1024, T = 1200, LEVELS = 65, FR = 256;
+  var NW = P.w.length / 4, NG = P.g.length / 4, R = 1024, T = 1200, LEVELS = 65, FR = 256, ND = 6;
   var PRESETS = {
     /* drift: levels/s, warp: px, morph: levels, speed: time scale */
     calm: { drift: 0.14, warp: 16, morph: 1.1, speed: 0.3 },
@@ -68,7 +74,7 @@
     "void main(){o=vec4(flow(gl_FragCoord.xy*(T/" + FR + ".)),0.);}";
   function drawSrc(tex, lin) {
     return "#version 300 es\nprecision highp float;" + WARP +
-      "uniform sampler2D uF,uW;uniform vec2 uOff;uniform float uK,uH,uD;uniform vec2 uLW;out vec4 o;" +
+      "uniform sampler2D uF,uW;uniform vec2 uOff;uniform float uK,uH,uD;uniform vec2 uLW;uniform vec4 uDr[" + ND + "];uniform int uN;out vec4 o;" +
       "const float R=1024.;" +
       (lin ? "float H(vec2 p){return texture(uF,p/T).r;}" :
       "float dec(ivec2 c){vec4 v=texelFetch(uF,c&1023,0);return(v.r*65280.+v.g*255.)/65535.;}" +
@@ -76,8 +82,12 @@
       "return mix(mix(dec(c),dec(c+ivec2(1,0)),f.x),mix(dec(c+ivec2(0,1)),dec(c+ivec2(1,1)),f.x),f.y);}") +
       "void main(){vec2 p=vec2(gl_FragCoord.x,uH-gl_FragCoord.y)*uK+uOff;" +
       (tex ? "vec3 f=texture(uW,p/T).xyz;" : "vec3 f=flow(p);") +
-      "vec2 q=p+f.xy;q-=T*floor(q/T);" +
-      "float u=H(q)*" + LEVELS + ".+f.z+uD;" +
+      "vec2 w=vec2(0);float b=0.;" +
+      /* pointer ripples: each drop (centre .xy, radius .z, amplitude .w) pushes the contours outward
+         along a soft ring, so the lines visibly bulge around the cursor and relax as it decays */
+      "for(int i=0;i<" + ND + ";i++){if(i>=uN)break;vec4 d=uDr[i];vec2 v=p-d.xy;float r=length(v),s=24.+.2*d.z,e=(r-d.z)/s,g=d.w*exp(-e*e);w-=v/(r+1.)*g*22.;b+=g;}" +
+      "vec2 q=p+f.xy+w;q-=T*floor(q/T);" +
+      "float u=H(q)*" + LEVELS + ".+f.z+uD+.25*b;" +
       "float fw=max(fwidth(u),1e-5),d=abs(fract(u+.5)-.5)/fw,n=floor(u+.5);" +
       "float lw=mod(n-1.,5.)<.5?uLW.y:uLW.x;" +
       "float c=clamp(max(lw,1.)*.5+.5-d,0.,1.)*min(lw,1.);" +
@@ -161,7 +171,7 @@
 
   gl.useProgram(draw);
   var U = {};
-  ["uF", "uW", "uOff", "uK", "uH", "uT", "uD", "uP", "uLW"].forEach(function (n) { U[n] = gl.getUniformLocation(draw, n); });
+  ["uF", "uW", "uOff", "uK", "uH", "uT", "uD", "uP", "uLW", "uDr", "uN"].forEach(function (n) { U[n] = gl.getUniformLocation(draw, n); });
   gl.uniform1i(U.uF, 0);
   gl.uniform1i(U.uW, 1);
   gl.uniform4f(U.uP, 0, preset.warp, preset.morph, 0);
@@ -175,9 +185,10 @@
     drift = [m.m41, m.m42];
   } catch (e) {}
 
-  var scale = 1, W = 0, Hh = 0, tile = 1200;
+  var scale = 1, W = 0, Hh = 0, tile = 1200, offX = 0, offY = 0, hostX = 0, hostY = 0;
   function resize() {
     W = host.clientWidth; Hh = host.clientHeight;
+    var hr = host.getBoundingClientRect(); hostX = hr.left; hostY = hr.top;
     tile = parseFloat(getComputedStyle(host, "::before").backgroundSize) || 1200;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var cap = Math.sqrt(2.6e6 / Math.max(1, W * Hh)); /* at most ~2.6 MP per frame */
@@ -186,7 +197,8 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform1f(U.uK, T / tile / scale);
     gl.uniform1f(U.uH, canvas.height);
-    gl.uniform2f(U.uOff, -(drift[0] + (W - tile) / 2) * (T / tile), -(drift[1] + (Hh - tile) / 2) * (T / tile));
+    offX = -(drift[0] + (W - tile) / 2) * (T / tile); offY = -(drift[1] + (Hh - tile) / 2) * (T / tile);
+    gl.uniform2f(U.uOff, offX, offY);
     gl.uniform2f(U.uLW, 0.55 * scale, 1.05 * scale);
     dirty = true;
   }
@@ -194,9 +206,10 @@
   var t = 0, td = 0, last = 0, raf = 0, dirty = true, running = false, lost = false, FRAME = 1000 / 30;
   function frame(now) {
     raf = requestAnimationFrame(frame);
-    if (last && now - last < FRAME - 2 && !dirty) return;
+    if (last && now - last < (drops.length ? 1000 / 60 : FRAME) - 2 && !dirty) return;
     if (last) {
       var dt = Math.min(now - last, 100) / 1000;
+      stepDrops(dt);
       t += dt * preset.speed; /* terrain morph clock */
       td = (td + dt * preset.drift) % 5; /* level drift (mod 5 keeps index lines in step) */
     }
@@ -216,16 +229,56 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform1f(U.uT, t);
     gl.uniform1f(U.uD, td);
+    for (var i = 0, d; i < drops.length; i++) { d = drops[i]; dr[i * 4] = d[0]; dr[i * 4 + 1] = d[1]; dr[i * 4 + 2] = d[2]; dr[i * 4 + 3] = d[3]; }
+    gl.uniform4fv(U.uDr, dr);
+    gl.uniform1i(U.uN, drops.length);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
+  /* ---- pointer ripples ---- */
+  var drops = [], dr = new Float32Array(ND * 4), px = 0, py = 0, pt = 0, travel = 0;
+  function toField(cx, cy) { /* viewport px -> the shader's field coords */
+    return [(cx - hostX) * (T / tile) + offX, (cy - hostY) * (T / tile) + offY];
+  }
+  /* drop: [x, y, radius, amplitude, growth px/s, decay /s] */
+  function addDrop(cx, cy, amp, grow, decay) {
+    var f = toField(cx, cy);
+    if (drops.length >= ND) drops.shift();
+    drops.push([f[0], f[1], 0, amp, grow, decay]);
+    if (running && !raf) raf = requestAnimationFrame(frame);
+  }
+  function stepDrops(dt) {
+    for (var i = drops.length - 1; i >= 0; i--) {
+      var d = drops[i];
+      d[2] += d[4] * dt;
+      d[3] *= Math.exp(-d[5] * dt);
+      if (Math.abs(d[3]) < 0.015) drops.splice(i, 1);
+    }
+  }
+  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+  window.addEventListener("pointermove", function (e) {
+    if (!running || e.pointerType !== "mouse" || !finePointer.matches) return;
+    var dt = Math.max(8, e.timeStamp - pt), dist = Math.hypot(e.clientX - px, e.clientY - py);
+    px = e.clientX; py = e.clientY; pt = e.timeStamp;
+    if (dist > 200) { travel = 0; return; } /* first move / jump: no drop */
+    travel += dist;
+    if (travel < 38) return;
+    travel = 0;
+    /* faster strokes press harder (capped) */
+    addDrop(px, py, Math.min(1.6, 0.55 + (dist / dt) * 0.6), 80, 1.8);
+  }, { passive: true });
+  window.addEventListener("pointerdown", function (e) {
+    if (!running || e.pointerType !== "mouse" || !finePointer.matches) return;
+    addDrop(e.clientX, e.clientY, 2.6, 340, 1.5);
+  }, { passive: true });
+
   function wanted() {
     return !lost && !document.hidden && !reduceMotion.matches && !body.classList.contains("dark-theme");
   }
   function update() {
     var on = wanted();
     if (on && !running) { running = true; last = 0; raf = requestAnimationFrame(frame); }
-    if (!on && running) { running = false; cancelAnimationFrame(raf); }
+    if (!on && running) { running = false; cancelAnimationFrame(raf); drops.length = 0; }
     /* reduced motion (or a lost context) brings the static tile back */
     host.classList.toggle("is-flowing", !lost && !reduceMotion.matches);
   }

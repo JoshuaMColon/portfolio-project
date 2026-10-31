@@ -2862,104 +2862,80 @@ body:not(.dark-theme) .color-blue {
   color: var(--dim);
 }
 
-/* ---------- Custom cursor (fine pointers only; see custom-cursor.js) ---------- */
+/* ---------- Custom cursor: dot + contour ripple (fine pointers only; see custom-cursor.js, topo-flow.js) ---------- */
+/* the native cursor is hidden only while the custom cursor is showing; text fields
+   keep their caret (and the custom cursor hides over them) */
 body.custom-cursor-active,
 body.custom-cursor-active * {
   cursor: none;
 }
 
-.custom-cursor-black-hole,
-.custom-cursor-bubble {
+body.custom-cursor-active :is(input:not([type="button"], [type="submit"], [type="reset"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]), textarea, [contenteditable=""], [contenteditable="true"]) {
+  cursor: text;
+}
+
+.cursor-contour-root {
+  --cursor-ink: #334155; /* slate */
+  --cursor-halo: rgba(255, 255, 255, 0.85);
   position: fixed;
+  inset: 0;
+  z-index: 10000; /* below .app-tooltip */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  contain: strict;
+}
+
+body.dark-theme .cursor-contour-root {
+  --cursor-ink: #7dd3fc; /* site accent */
+  --cursor-halo: rgba(0, 0, 0, 0.4);
+}
+
+.cursor-contour-root.is-visible { opacity: 1; }
+.cursor-contour-root.is-text { opacity: 0; }
+
+.cursor-contour__dot,
+.cursor-contour__glow {
+  position: absolute;
   top: 0;
   left: 0;
-  pointer-events: none;
-  z-index: 10000;
-  transform: translate3d(-100px, -100px, 0);
   will-change: transform;
+  transform: translate3d(-100px, -100px, 0);
 }
 
-.custom-cursor-black-hole {
-  z-index: 10001;
-  width: 54px;
-  height: 54px;
-  margin: -27px 0 0 -27px;
-  display: block;
-  background: transparent;
-  transition:
-    opacity 0.15s,
-    filter 0.25s;
+.cursor-contour__dot {
+  width: 0;
+  height: 0;
 }
 
-.custom-cursor-black-hole.is-hovering {
-  filter: brightness(1.14);
-}
-
-.custom-cursor-black-hole.is-pressed {
-  filter: brightness(1.28);
-}
-
-.custom-cursor-black-hole.is-sun {
-  filter: drop-shadow(0 0 4px rgba(255, 218, 105, 0.95))
-    drop-shadow(0 0 11px rgba(255, 158, 39, 0.58));
-}
-
-.custom-cursor-black-hole.is-fallback {
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, #000 0 14%, transparent 15% 24%, #fff1ba 26% 28%, transparent 31%),
-    radial-gradient(ellipse at center, transparent 39%, rgba(128, 204, 238, 0.82) 42% 45%, transparent 51%);
-}
-
-.custom-cursor-black-hole.is-sun.is-fallback {
-  background: radial-gradient(circle, #fff9d6 0 19%, #ffd347 30%, #ff9f22 43%, rgba(255, 164, 39, 0.3) 58%, transparent 72%);
-}
-
-.custom-cursor-bubble {
-  z-index: 10000;
-  width: 42px;
-  height: 42px;
-  margin: -21px 0 0 -21px;
-  border-radius: 50%;
-  transition: opacity 0.2s;
-}
-
-.custom-cursor-bubble::before,
-.custom-cursor-bubble::after {
+.cursor-contour__dot::before {
   content: "";
   position: absolute;
-  border: 1px solid rgba(163, 225, 248, 0.4);
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
   border-radius: 50%;
-  background: radial-gradient(circle, transparent 42%, rgba(99, 193, 228, 0.055) 66%, rgba(160, 224, 255, 0.1) 78%, transparent 100%);
-  box-shadow:
-    inset 0 0 12px rgba(103, 202, 238, 0.1),
-    0 0 12px rgba(103, 202, 238, 0.12);
-  animation: black-hole-pulse 2.8s ease-in-out infinite;
+  background: var(--cursor-ink);
+  box-shadow: 0 0 0 1.5px var(--cursor-halo);
+  transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
-.custom-cursor-bubble::before {
-  inset: 2px;
+.cursor-contour-root.is-link .cursor-contour__dot::before { transform: scale(1.7); }
+.cursor-contour-root.is-card .cursor-contour__dot::before { transform: scale(2.3); }
+.cursor-contour-root.is-pressed .cursor-contour__dot::before { transform: scale(0.75); }
+
+/* the dark theme's stand-in for the contour ripple: a faint trailing glow */
+.cursor-contour__glow {
+  width: 220px;
+  height: 220px;
+  margin: -110px 0 0 -110px;
+  border-radius: 50%;
+  opacity: 0;
+  display: none;
+  background: radial-gradient(circle, rgba(125, 211, 252, 0.13), rgba(125, 211, 252, 0.05) 40%, transparent 70%);
 }
 
-.custom-cursor-bubble::after {
-  inset: -2px;
-  border-color: rgba(160, 224, 255, 0.24);
-  animation-delay: -1.4s;
-  animation-direction: reverse;
-}
-
-.custom-cursor-bubble.is-sun::before,
-.custom-cursor-bubble.is-sun::after {
-  border-color: rgba(255, 205, 97, 0.42);
-  box-shadow:
-    inset 0 0 12px rgba(255, 193, 69, 0.12),
-    0 0 12px rgba(255, 173, 46, 0.2);
-}
-
-@keyframes black-hole-pulse {
-  0%, 100% { opacity: 0.2; transform: scale(0.9); }
-  50% { opacity: 0.72; transform: scale(1.06); }
-}
+body.dark-theme .cursor-contour__glow { display: block; }
 
 .magnetic {
   transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);

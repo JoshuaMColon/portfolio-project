@@ -49,7 +49,7 @@
     if (conn && conn.saveData) return;
     topoFlowLoaded = true;
     var s = document.createElement("script");
-    s.src = "assets/js/topo-flow.js?v=1";
+    s.src = "assets/js/topo-flow.js?v=2";
     s.async = true;
     document.head.appendChild(s);
   }
