@@ -121,6 +121,35 @@ const projects = {
         "Putting the game rules in the database taught me to treat the client as untrusted: it asks, and Postgres decides. Recurrence and streaks also taught me how much time zones matter, so every date is resolved in the player's own zone.",
     },
   },
+  recall: {
+    type: "Full-stack web app",
+    title: "Recall Lab",
+    image: "assets/img/recall-lab.webp",
+    fallback: "assets/img/recall-lab.jpg",
+    imageAlt: "Recall Lab landing page in its cosmic dark theme",
+    accent: "#b39dff",
+    description:
+      "Practice for an intro Python course: 304 original questions graded by real Python in the browser, spaced repetition, a constellation mastery map and a timed mock OA.",
+    url: "https://recall-lab-ruby.vercel.app/",
+    demo: "https://recall-lab-ruby.vercel.app/demo",
+    repo: "https://github.com/JoshuaMColon/recall-lab",
+    caseStudy: {
+      problem:
+        "Studying for an intro Python exam (WGU D335) mostly means rereading and guessing. I wanted practice that checks answers with real Python, brings back what I miss, and costs nothing to run.",
+      approach: [
+        "304 original questions across the course's 11 objectives, in four types: multiple choice, predict the output, find the bug and write the code. A test runs every answer through Python, so the answer key can't be wrong.",
+        "Code answers run in Pyodide (CPython compiled to WebAssembly) in a Web Worker, against visible and hidden stdin/stdout tests, with a timeout for infinite loops and a fresh namespace for every run.",
+        "SM-2 spaced repetition for each question: misses come back within minutes and known questions drift out to days and weeks. Progress shows on a constellation mastery map and an orbit readiness gauge.",
+        "A timed mock OA: 25 questions in 60 minutes, weighted by objective, with flagging, auto-submit and a per-objective breakdown.",
+        "Supabase Auth with email or a one-click guest, and a dedicated study schema with row-level security on every table.",
+        "Optional AI hints, explanations and extra questions via Vercel Functions and the Vercel AI Gateway (gemini-2.5-flash-lite), behind daily caps that Postgres enforces before any model call, so it's $0 by design. Generated questions are checked in Pyodide before they're saved.",
+        "A cosmic theme with a canvas starfield that pauses when hidden and stays still for reduced motion or data saver, plus Vitest and Playwright + axe tests in GitHub Actions CI.",
+      ],
+      stack: ["React 19", "TypeScript", "Vite", "Tailwind CSS 4", "Vercel Functions", "Vercel AI Gateway", "Supabase Auth + Postgres + RLS", "Pyodide (WebAssembly)", "Vitest", "Playwright + axe", "Vercel"],
+      learned:
+        "Grading code in the browser taught me to treat the learner's program as untrusted: it runs in a worker with a time limit and a clean namespace. Keeping AI at $0 taught me to put the budget in the database, so caps hold no matter what the client sends.",
+    },
+  },
 };
 
 function renderCaseStudy(caseStudy) {
@@ -240,6 +269,11 @@ function selectProject(tab) {
   if (projectDetailRepo && project.repo) {
     const label = `${project.title} source code on GitHub`;
     projectDetailRepo.setAttribute("aria-label", label);
+    projectDetailRepo.dataset.tip = label;
+  }
+  projectDetailLink.dataset.tip = `Open the ${project.title} live site`;
+  if (projectDetailDemo && project.demo) {
+    projectDetailDemo.dataset.tip = `Try the ${project.title} guest demo, no sign-up needed`;
   }
   renderCaseStudy(project.caseStudy);
 }

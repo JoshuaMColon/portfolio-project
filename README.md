@@ -14,6 +14,7 @@ The Projects section shows each app with a preview, a short description (collaps
 | Collaborative Kanban Board: realtime board with presence and live comments | [Live](https://collaborative-kanban-board-gold.vercel.app) | [collaborative-kanban-board](https://github.com/JoshuaMColon/collaborative-kanban-board) |
 | Weather Dashboard: iPhone-style weather app with animated skies and synced cities | [Live](https://weather-dashboard-app-sable-three.vercel.app) · [guest demo](https://weather-dashboard-app-sable-three.vercel.app/demo) | [Weather_Dashboard_App](https://github.com/JoshuaMColon/Weather_Dashboard_App) |
 | XPlan: gamified task manager with XP, levels, natural-language quick-add and realtime sync | [Live](https://xplan-sand.vercel.app) · [guest demo](https://xplan-sand.vercel.app/demo) | [task-manager](https://github.com/JoshuaMColon/task-manager) |
+| Recall Lab: Python exam practice graded by in-browser Python, with SM-2 spaced repetition, a mastery map and a timed mock OA | [Live](https://recall-lab-ruby.vercel.app) · [guest demo](https://recall-lab-ruby.vercel.app/demo) | [recall-lab](https://github.com/JoshuaMColon/recall-lab) |
 
 ## Features
 
