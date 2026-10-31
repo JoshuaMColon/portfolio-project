@@ -16,9 +16,9 @@ const projects = {
   blog: {
     type: "Web app",
     title: "Blog Platform",
-    image: "assets/img/blog.webp",
-    fallback: "assets/img/blog.jpg",
-    imageAlt: "Blog Platform preview",
+    image: "assets/img/cards/blog-platform.webp",
+    fallback: "assets/img/cards/blog-platform.jpg",
+    imageAlt: "Blog Platform demo feed in the Neon Grid theme, showing published posts with tags",
     accent: "#7dd3fc",
     description:
       "Cyber-styled blogging app with realtime comments, notifications, full-text search and AI-matched related posts.",
@@ -44,9 +44,9 @@ const projects = {
   kanban: {
     type: "Productivity tool",
     title: "Kanban Board",
-    image: "assets/img/kanaban-board.png",
-    fallback: "assets/img/kanaban-board.png",
-    imageAlt: "Kanban Board preview",
+    image: "assets/img/cards/kanban-board.webp",
+    fallback: "assets/img/cards/kanban-board.jpg",
+    imageAlt: "Kanban Board demo board with Ideas, To do, In progress and Review columns full of labelled cards",
     accent: "#f7b36a",
     description:
       "Task orchestration interface built for team velocity, focus, and simple visual flow.",
@@ -69,9 +69,9 @@ const projects = {
   weather: {
     type: "Full-stack web app",
     title: "Weather Dashboard",
-    image: "assets/img/weather.webp",
-    fallback: "assets/img/weather.jpg",
-    imageAlt: "Weather Dashboard preview",
+    image: "assets/img/cards/weather-dashboard.webp",
+    fallback: "assets/img/cards/weather-dashboard.jpg",
+    imageAlt: "Weather Dashboard showing saved cities and the New York hourly and 10-day forecast",
     accent: "#54e1c1",
     description:
       "iPhone Weather-style app with animated skies, an hourly strip, a 10-day forecast and cities that sync across devices.",
@@ -96,9 +96,9 @@ const projects = {
   xplan: {
     type: "Full-stack web app",
     title: "XPlan",
-    image: "assets/img/xplan.webp",
-    fallback: "assets/img/xplan.jpg",
-    imageAlt: "XPlan dashboard preview in the Forge skin",
+    image: "assets/img/cards/xplan.webp",
+    fallback: "assets/img/cards/xplan.jpg",
+    imageAlt: "XPlan HQ dashboard in the Forge skin with level, XP bar, combo stats and daily missions",
     accent: "#ff7a1a",
     description:
       "Task manager that plays like an RPG: quests earn XP, levels and trophies, with natural-language quick-add, Cmd+K and realtime sync.",
@@ -124,9 +124,9 @@ const projects = {
   recall: {
     type: "Full-stack web app",
     title: "Recall Lab",
-    image: "assets/img/recall-lab.webp",
-    fallback: "assets/img/recall-lab.jpg",
-    imageAlt: "Recall Lab landing page in its cosmic dark theme",
+    image: "assets/img/cards/recall-lab.webp",
+    fallback: "assets/img/cards/recall-lab.jpg",
+    imageAlt: "Recall Lab grading a Python answer in the browser: 4 of 4 tests passed, including hidden tests",
     accent: "#b39dff",
     description:
       "Practice for an intro Python course: 304 original questions graded by real Python in the browser, spaced repetition, a constellation mastery map and a timed mock OA.",
