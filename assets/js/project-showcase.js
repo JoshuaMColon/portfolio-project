@@ -16,9 +16,14 @@ const projects = {
   blog: {
     type: "Web app",
     title: "Blog Platform",
-    image: "assets/img/cards/blog-platform.webp",
-    fallback: "assets/img/cards/blog-platform.jpg",
-    imageAlt: "Blog Platform demo feed in the Neon Grid theme, showing published posts with tags",
+    images: {
+      light: "assets/img/cards/blog-platform-light",
+      dark: "assets/img/cards/blog-platform-dark",
+    },
+    imageAlt: {
+      light: "Blog Platform demo feed in the Neon Grid light theme, with the full navigation bar and published posts with tags",
+      dark: "Blog Platform demo feed in the Neon Grid dark theme, with the full navigation bar and published posts with tags",
+    },
     accent: "#7dd3fc",
     description:
       "Cyber-styled blogging app with realtime comments, notifications, full-text search and AI-matched related posts.",
@@ -44,9 +49,14 @@ const projects = {
   kanban: {
     type: "Productivity tool",
     title: "Kanban Board",
-    image: "assets/img/cards/kanban-board.webp",
-    fallback: "assets/img/cards/kanban-board.jpg",
-    imageAlt: "Kanban Board demo board with Ideas, To do, In progress and Review columns full of labelled cards",
+    images: {
+      light: "assets/img/cards/kanban-board-light",
+      dark: "assets/img/cards/kanban-board-dark",
+    },
+    imageAlt: {
+      light: "Kanban Board demo board in light mode with Ideas, To do, In progress and Review columns full of labelled cards",
+      dark: "Kanban Board demo board in dark mode with Ideas, To do, In progress and Review columns full of labelled cards",
+    },
     accent: "#f7b36a",
     description:
       "Task orchestration interface built for team velocity, focus, and simple visual flow.",
@@ -69,9 +79,14 @@ const projects = {
   weather: {
     type: "Full-stack web app",
     title: "Weather Dashboard",
-    image: "assets/img/cards/weather-dashboard.webp",
-    fallback: "assets/img/cards/weather-dashboard.jpg",
-    imageAlt: "Weather Dashboard showing saved cities and the New York hourly and 10-day forecast",
+    images: {
+      light: "assets/img/cards/weather-dashboard-light",
+      dark: "assets/img/cards/weather-dashboard-dark",
+    },
+    imageAlt: {
+      light: "Weather Dashboard in the light Sky theme showing saved cities and the New York hourly and 10-day forecast",
+      dark: "Weather Dashboard in the dark Midnight theme showing saved cities and the New York hourly and 10-day forecast",
+    },
     accent: "#54e1c1",
     description:
       "iPhone Weather-style app with animated skies, an hourly strip, a 10-day forecast and cities that sync across devices.",
@@ -96,9 +111,14 @@ const projects = {
   xplan: {
     type: "Full-stack web app",
     title: "XPlan",
-    image: "assets/img/cards/xplan.webp",
-    fallback: "assets/img/cards/xplan.jpg",
-    imageAlt: "XPlan HQ dashboard in the Forge skin with level, XP bar, combo stats and daily missions",
+    images: {
+      light: "assets/img/cards/xplan-light",
+      dark: "assets/img/cards/xplan-dark",
+    },
+    imageAlt: {
+      light: "XPlan HQ dashboard in the light Alloy skin with level, XP bar, combo stats and daily missions",
+      dark: "XPlan HQ dashboard in the dark Forge skin with level, XP bar, combo stats and daily missions",
+    },
     accent: "#ff7a1a",
     description:
       "Task manager that plays like an RPG: quests earn XP, levels and trophies, with natural-language quick-add, Cmd+K and realtime sync.",
@@ -124,9 +144,14 @@ const projects = {
   recall: {
     type: "Full-stack web app",
     title: "Recall Lab",
-    image: "assets/img/cards/recall-lab.webp",
-    fallback: "assets/img/cards/recall-lab.jpg",
-    imageAlt: "Recall Lab grading a Python answer in the browser: 4 of 4 tests passed, including hidden tests",
+    images: {
+      light: "assets/img/cards/recall-lab-light",
+      dark: "assets/img/cards/recall-lab-dark",
+    },
+    imageAlt: {
+      light: "Recall Lab in its light theme grading a Python answer in the browser: 4 of 4 tests passed, including hidden tests",
+      dark: "Recall Lab in its dark theme grading a Python answer in the browser: 4 of 4 tests passed, including hidden tests",
+    },
     accent: "#b39dff",
     description:
       "Practice for an intro Python course: 304 original questions graded by real Python in the browser, spaced repetition, a constellation mastery map and a timed mock OA.",
@@ -250,6 +275,7 @@ function selectProject(tab) {
       item.dataset.project === tab.dataset.project,
     );
   });
+  projectSpiral?.dispatchEvent(new CustomEvent("projectselect"));
 
   projectDetailType.textContent = project.type;
   projectDetailTitle.textContent = project.title;
@@ -314,7 +340,6 @@ function initializeProjectSpiral() {
     const project = projects[projectKey];
     const item = document.createElement("div");
     const button = document.createElement("button");
-    const image = document.createElement("img");
     const label = document.createElement("span");
 
     item.className = "infinite-spiral__item";
@@ -323,33 +348,52 @@ function initializeProjectSpiral() {
     button.className = "infinite-spiral__button";
     button.type = "button";
     button.setAttribute("aria-label", `Select ${project.title} project`);
-    image.className = "infinite-spiral__image";
-    image.src = project.image;
-    image.width = settings.cardWidth;
-    image.height = settings.cardHeight;
-    image.loading = "lazy";
-    image.decoding = "async";
-    image.addEventListener(
-      "error",
-      () => {
-        if (project.fallback && !image.src.endsWith(project.fallback)) {
-          image.src = project.fallback;
-        }
-      },
-      { once: true },
+    // Two stacked screenshots: the dark one sits underneath and the light
+    // one fades in on top when the card is at the front or selected.
+    const images = ["dark", "light"].map((mode) =>
+      createSpiralImage(project, mode),
     );
-    image.alt = project.imageAlt;
-    image.draggable = false;
-    image.style.filter = `grayscale(${settings.grayscale})`;
     label.className = "infinite-spiral__label";
     label.textContent = project.title;
 
-    button.append(image, label);
+    button.append(...images, label);
     item.append(button);
     projectSpiral.append(item);
     spiralItems.push(item);
   });
 
+  // Warm the cache for every variant so a swap never shows a blank card.
+  projectKeys.forEach((projectKey) => {
+    Object.values(projects[projectKey].images).forEach((base) => {
+      const preload = new Image();
+      preload.decoding = "async";
+      preload.src = `${base}.webp`;
+    });
+  });
+
+  function createSpiralImage(project, mode) {
+    const image = document.createElement("img");
+    const base = project.images[mode];
+    image.className = `infinite-spiral__image infinite-spiral__image--${mode}`;
+    image.src = `${base}.webp`;
+    image.width = settings.cardWidth;
+    image.height = settings.cardHeight;
+    image.decoding = "async";
+    image.addEventListener(
+      "error",
+      () => {
+        if (!image.src.endsWith(".jpg")) image.src = `${base}.jpg`;
+      },
+      { once: true },
+    );
+    image.alt = project.imageAlt[mode];
+    image.draggable = false;
+    image.style.filter = `grayscale(${settings.grayscale})`;
+    return image;
+  }
+
+  let frontItem = null;
+  let pickedItem = null;
   let progress = 0;
   let previousTime = performance.now();
   let visible = true;
@@ -374,6 +418,10 @@ function initializeProjectSpiral() {
       Math.min(settings.radius, Math.max(72, bounds.width * 0.36)) * fit;
     const fadeStart = Math.min(Math.max(1 - settings.edgeFade, 0), 0.98);
     const half = spiralItems.length / 2;
+    let nearestItem = null;
+    let nearestOffset = Infinity;
+    let nearestSelected = null;
+    let nearestSelectedOffset = Infinity;
 
     spiralItems.forEach((item, index) => {
       let offset = index - progress;
@@ -403,7 +451,39 @@ function initializeProjectSpiral() {
       item.style.filter = blur > 0.01 ? `blur(${blur.toFixed(2)}px)` : "none";
       item.style.zIndex = String(Math.round(depth * 1000) + index);
       item.style.pointerEvents = opacity > 0.25 ? "auto" : "none";
+      if (Math.abs(offset) < nearestOffset) {
+        nearestOffset = Math.abs(offset);
+        nearestItem = item;
+      }
+      if (
+        item.classList.contains("is-selected") &&
+        Math.abs(offset) < nearestSelectedOffset
+      ) {
+        nearestSelectedOffset = Math.abs(offset);
+        nearestSelected = item;
+      }
     });
+
+    // The card nearest the front shows its light screenshot; only touch the
+    // DOM when the front card actually changes.
+    if (nearestItem !== frontItem) {
+      frontItem?.classList.remove("is-front");
+      nearestItem?.classList.add("is-front");
+      frontItem = nearestItem;
+    }
+
+    // The selected project also shows light on one copy: the card that was
+    // clicked, or (for tab/keyboard selection) the copy nearest the front.
+    if (!pickedItem?.classList.contains("is-selected")) {
+      setPickedItem(nearestSelected);
+    }
+  }
+
+  function setPickedItem(item) {
+    if (item === pickedItem) return;
+    pickedItem?.classList.remove("is-picked");
+    item?.classList.add("is-picked");
+    pickedItem = item;
   }
 
   function smoothstep(min, max, value) {
@@ -436,11 +516,16 @@ function initializeProjectSpiral() {
   projectSpiral.addEventListener("click", (event) => {
     const item = event.target.closest(".infinite-spiral__item");
     if (!item) return;
+    setPickedItem(item);
     const tab = projectTabs.find(
       (projectTab) => projectTab.dataset.project === item.dataset.project,
     );
     if (tab) selectProject(tab);
   });
+
+  // Re-run layout on selection so the picked card updates even when the
+  // spiral is not animating (reduced motion).
+  projectSpiral.addEventListener("projectselect", layoutSpiral);
 
   layoutSpiral();
   if (!reducedMotion.matches) frameId = requestAnimationFrame(animate);
@@ -448,6 +533,7 @@ function initializeProjectSpiral() {
     cancelAnimationFrame(frameId);
     resizeObserver.disconnect();
     intersectionObserver.disconnect();
+    projectSpiral.removeEventListener("projectselect", layoutSpiral);
   };
 }
 

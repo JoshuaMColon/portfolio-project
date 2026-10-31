@@ -1998,6 +1998,7 @@ body:not(.dark-theme) .layer-plate.is-active {
 }
 
 .infinite-spiral__item.is-selected .infinite-spiral__image,
+.infinite-spiral__item.is-front .infinite-spiral__image,
 .infinite-spiral__button:hover .infinite-spiral__image {
   filter: grayscale(0) !important;
 }
@@ -2011,7 +2012,25 @@ body:not(.dark-theme) .layer-plate.is-active {
   object-fit: cover;
   object-position: center;
   user-select: none;
-  transition: filter 0.4s ease;
+  transition:
+    opacity 0.35s ease,
+    filter 0.4s ease;
+}
+
+/* Light screenshot crossfades in over the dark one on the front card and the picked (selected) card. */
+.infinite-spiral__image--light {
+  opacity: 0;
+}
+
+.infinite-spiral__item.is-front .infinite-spiral__image--light,
+.infinite-spiral__item.is-picked .infinite-spiral__image--light {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infinite-spiral__image {
+    transition: none;
+  }
 }
 
 .infinite-spiral__label {
