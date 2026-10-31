@@ -37,6 +37,43 @@
     });
   }
 
+  /*=============== HEX MARK: REPLAY ON SCROLL ===============*/
+  /* the rings around the portrait replay their theme-switch start-up (neon ignite
+     in dark, colour-split glitch burst in both themes) each time the portrait
+     scrolls back into view (>= 55% visible), at most once every 4s. Not on first
+     load (the load-in animation already plays) and never with reduced motion. */
+  var heroVisual = document.querySelector(".hero-visual");
+  var hexTimer = 0;
+  var hexLast = 0;
+  function clearHexReplay() {
+    window.clearTimeout(hexTimer);
+    if (heroVisual) heroVisual.classList.remove("hex-replay", "hex-reset");
+  }
+  function replayHex() {
+    if (!heroVisual || reduceMotion.matches || document.hidden) return;
+    var now = Date.now();
+    if (now - hexLast < 4000) return;
+    hexLast = now;
+    clearHexReplay();
+    heroVisual.classList.add("hex-reset");
+    void heroVisual.offsetWidth; /* flush so the keyframes restart from 0 */
+    heroVisual.classList.remove("hex-reset");
+    heroVisual.classList.add("hex-replay");
+    hexTimer = window.setTimeout(clearHexReplay, 1700);
+  }
+  if (heroVisual && "IntersectionObserver" in window) {
+    var hexSeen = null; /* null until the first callback: no replay on page load */
+    new IntersectionObserver(
+      function (entries) {
+        var visible = entries[entries.length - 1].intersectionRatio >= 0.55;
+        if (visible && hexSeen === false) replayHex();
+        hexSeen = visible;
+      },
+      { threshold: [0, 0.55] },
+    ).observe(heroVisual);
+  }
+  if (themeButton) themeButton.addEventListener("click", function () { clearHexReplay(); hexLast = Date.now(); });
+
   /*=============== FLOWING CONTOURS (light theme) ===============*/
   /* the WebGL contour animation is fetched only once the light theme is showing and
      motion is allowed (never in dark mode); until then (or without WebGL2) the static
