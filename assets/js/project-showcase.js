@@ -175,6 +175,40 @@ const projects = {
         "Grading code in the browser taught me to treat the learner's program as untrusted: it runs in a worker with a time limit and a clean namespace. Keeping AI at $0 taught me to put the budget in the database, so caps hold no matter what the client sends.",
     },
   },
+  buddyline: {
+    type: "Realtime chat app",
+    title: "Buddyline",
+    images: {
+      light: "assets/img/cards/buddyline-light",
+      dark: "assets/img/cards/buddyline-dark",
+    },
+    imageAlt: {
+      light: "Buddyline in its Chrome skin: a Buddy List with groups and away messages beside a floating IM window and an automatic away reply",
+      dark: "Buddyline in its Midnight skin: a Buddy List with groups and away messages beside a floating IM window and an automatic away reply",
+    },
+    accent: "#4aa3ff",
+    description:
+      "Early-2000s style instant messenger rebuilt on React and Supabase: a live Buddy List, away messages with auto replies, floating IM windows, Buzz and eight customizable skins.",
+    url: "https://aerogram-ten.vercel.app/",
+    demo: "https://aerogram-ten.vercel.app/demo",
+    repo: "https://github.com/JoshuaMColon/aerogram",
+    caseStudy: {
+      problem:
+        "Most chat demos are one channel and a text box. I wanted to rebuild what made the old buddy-list messengers fun (presence, away messages, IM windows, sign-on chimes) as a real multi-user app, using only free services.",
+      approach: [
+        "A Buddy List home with collapsible groups, online counts and an Offline section; add buddies by screen name and move them by drag-and-drop. Guests at /demo get a generated screen name and a friendly bot to talk to.",
+        "Presence over Supabase Realtime: Available, Away and Idle after five minutes, with last seen for offline buddies, mirrored into Postgres so the list is right on first load.",
+        "Away messages with one automatic reply per away spell, written by a database trigger rather than the client; %n and %t become the reader's name and the time.",
+        "Floating IM windows you can drag, resize, stack and minimize to a taskbar on desktop, full-screen tabs on phones, plus typing indicators, read receipts, reactions, file sharing and Buzz.",
+        "Eight skins (Chrome, Midnight, Terminal, Arcade, Classic, Ocean, Sunset, Daydream) and a live customizer for accent, wallpaper, window chrome, corners, font, size, density, chat style and icon shape, saved to the account with row-level security. Every color combination is contrast-checked to WCAG AA.",
+        "Postgres row-level security on every table, rate limits and private Realtime channels; sign-on chimes and Buzz are synthesized with Web Audio, so there are no copied assets.",
+        "Vitest and Playwright + axe tests in GitHub Actions, including a mocked-backend run of the guest sign-off and Try the demo flow.",
+      ],
+      stack: ["React 19", "TypeScript", "Vite", "Tailwind CSS 4", "Supabase Auth + Postgres + RLS", "Supabase Realtime", "Supabase Storage", "Web Audio", "Vitest", "Playwright + axe", "Vercel"],
+      learned:
+        "Presence taught me that realtime state needs a durable twin: Realtime is fast but forgetful, so Postgres keeps the truth for first load. The skins taught me to treat contrast as a calculation, not a choice, so even random colors stay readable.",
+    },
+  },
 };
 
 function renderCaseStudy(caseStudy) {
