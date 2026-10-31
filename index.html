@@ -48,7 +48,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
       <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
     </noscript>
-    <link rel="stylesheet" href="assets/css/graphite.css?v=22" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=24" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -452,12 +452,12 @@
             </div>
           </div>
 
-          <div class="project-gallery frame" aria-label="Deployed projects">
+          <div class="project-gallery frame" id="project-gallery" aria-label="Deployed projects" aria-roledescription="carousel">
             <span class="corner tl" aria-hidden="true"></span>
             <span class="corner tr" aria-hidden="true"></span>
             <span class="corner bl" aria-hidden="true"></span>
             <span class="corner br" aria-hidden="true"></span>
-            <div class="project-stage">
+            <div class="project-stage" tabindex="0" aria-label="Project stack. Use the left and right arrow keys, or swipe, to change project.">
               <div
                 class="infinite-spiral"
                 id="project-spiral"
@@ -571,7 +571,15 @@
 </div>
 </dl></div>
                 </details>
-                <p class="project-pick-hint"><i class="ri-cursor-line" aria-hidden="true"></i> Click or tap a card to bring it to the front.</p>
+                <div class="project-nav" role="group" aria-label="Browse projects">
+                  <button type="button" class="btn btn-dark btn-icon project-nav-btn" id="project-prev" aria-label="Previous project" aria-controls="project-tab-detail" data-tip="Previous project (←)">
+                    <svg class="project-nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+                  </button>
+                  <span class="project-nav-line" aria-hidden="true"></span>
+                  <button type="button" class="btn btn-dark btn-icon project-nav-btn" id="project-next" aria-label="Next project" aria-controls="project-tab-detail" data-tip="Next project (→)">
+                    <svg class="project-nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -799,9 +807,9 @@
       defer
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
-    <script defer src="assets/js/site.js?v=9"></script>
-    <script defer src="assets/js/project-showcase.js?v=15"></script>
+    <script defer src="assets/js/site.js?v=10"></script>
+    <script defer src="assets/js/project-showcase.js?v=17"></script>
     <script defer src="assets/js/skill-layers.js?v=2"></script>
-    <script type="module" src="assets/js/main.js?v=9"></script>
+    <script type="module" src="assets/js/main.js?v=10"></script>
   </body>
 </html>

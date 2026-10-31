@@ -292,8 +292,9 @@ const readMore = (() => {
   };
 })();
 
-/* Projects are picked only by clicking or tapping a card in the stack; scrolling
-   the page never changes the selection. */
+/* Projects are picked by clicking a card, the Previous / Next buttons, the
+   left / right arrow keys, or a horizontal swipe on the stack. Scrolling the
+   page never changes the selection. */
 function selectProject(key) {
   const project = projects[key];
   if (!project) return;
@@ -567,20 +568,125 @@ function initializeProjectSpiral() {
     if (!projectSpiral.contains(event.relatedTarget)) paused = false;
   });
   projectSpiral.addEventListener("click", (event) => {
+    if (suppressClick) {
+      // the tap that ended a swipe should not also pick the card under it
+      suppressClick = false;
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
     const item = event.target.closest(".infinite-spiral__item");
     if (!item) return;
+    pick(item);
+  });
+
+  function pick(item) {
     setPickedItem(item);
     bringToFront(item);
     selectProject(item.dataset.project);
+  }
+
+  function offsetOf(item) {
+    const count = spiralItems.length;
+    const half = count / 2;
+    return (
+      ((((spiralItems.indexOf(item) - progress + half) % count) + count) %
+        count) -
+      half
+    );
+  }
+
+  /* Step to the previous (-1) or next (+1) project, wrapping around. The copy
+     of that project nearest the front is brought forward. */
+  function step(direction) {
+    const current =
+      pickedItem?.dataset.project ||
+      projectSpiral.querySelector(".is-selected")?.dataset.project ||
+      projectKeys[0];
+    const index = projectKeys.indexOf(current);
+    const key =
+      projectKeys[(index + direction + projectKeys.length) % projectKeys.length];
+    const candidates = spiralItems.filter((item) => item.dataset.project === key);
+    let best = candidates[0];
+    candidates.forEach((item) => {
+      const off = offsetOf(item);
+      // prefer the copy in the direction of travel when two are equally near
+      const score = Math.abs(off) - (Math.sign(off) === direction ? 0.01 : 0);
+      const bestOff = offsetOf(best);
+      const bestScore =
+        Math.abs(bestOff) - (Math.sign(bestOff) === direction ? 0.01 : 0);
+      if (score < bestScore) best = item;
+    });
+    pick(best);
+  }
+
+  document.getElementById("project-prev")?.addEventListener("click", () => step(-1));
+  document.getElementById("project-next")?.addEventListener("click", () => step(1));
+
+  // Left / right arrow keys while focus is anywhere in the projects gallery.
+  document.getElementById("project-gallery")?.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (event.target.closest("input, textarea, select, [contenteditable]")) return;
+    event.preventDefault();
+    step(event.key === "ArrowRight" ? 1 : -1);
   });
+
+  /* Horizontal swipe on the stack (touch / pen). touch-action: pan-y in the CSS
+     leaves vertical scrolling to the browser; a gesture only counts as a swipe
+     when it is mostly horizontal and travels at least SWIPE_MIN px. */
+  const SWIPE_MIN = 40;
+  const DRAG_FOLLOW = 0.35;
+  let swipe = null;
+  let suppressClick = false;
+
+  function resetDrag() {
+    projectSpiral.classList.remove("is-dragging");
+    projectSpiral.style.removeProperty("--swipe-x");
+  }
+
+  projectStage.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" || !event.isPrimary) return;
+    swipe = { id: event.pointerId, x: event.clientX, y: event.clientY, axis: null, dx: 0 };
+  });
+
+  projectStage.addEventListener("pointermove", (event) => {
+    if (!swipe || event.pointerId !== swipe.id) return;
+    const dx = event.clientX - swipe.x;
+    const dy = event.clientY - swipe.y;
+    if (!swipe.axis && Math.hypot(dx, dy) > 8) {
+      swipe.axis = Math.abs(dx) > Math.abs(dy) * 1.2 ? "x" : "y";
+    }
+    if (swipe.axis !== "x") return;
+    swipe.dx = dx;
+    if (!reducedMotion.matches) {
+      projectSpiral.classList.add("is-dragging");
+      const follow = Math.max(-60, Math.min(60, dx * DRAG_FOLLOW));
+      projectSpiral.style.setProperty("--swipe-x", `${follow.toFixed(1)}px`);
+    }
+  });
+
+  function endSwipe(event, cancelled) {
+    if (!swipe || event.pointerId !== swipe.id) return;
+    const { axis, dx } = swipe;
+    swipe = null;
+    resetDrag();
+    if (cancelled || axis !== "x") return;
+    // any horizontal drag is a gesture, not a tap on the card under the finger
+    if (Math.abs(dx) > 8) {
+      suppressClick = true;
+      setTimeout(() => (suppressClick = false), 400);
+    }
+    if (Math.abs(dx) >= SWIPE_MIN) step(dx < 0 ? 1 : -1);
+  }
+
+  projectStage.addEventListener("pointerup", (event) => endSwipe(event, false));
+  // the browser took the gesture over (vertical scroll): never change the card
+  projectStage.addEventListener("pointercancel", (event) => endSwipe(event, true));
 
   function bringToFront(item) {
     const count = spiralItems.length;
-    const half = count / 2;
-    const offset =
-      ((((spiralItems.indexOf(item) - progress + half) % count) + count) %
-        count) -
-      half;
+    const offset = offsetOf(item);
     holdUntil = performance.now() + PICK_HOLD_MS;
     if (reducedMotion.matches) {
       progress = (((progress + offset) % count) + count) % count;
