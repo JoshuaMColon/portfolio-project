@@ -48,7 +48,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
       <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
     </noscript>
-    <link rel="stylesheet" href="assets/css/graphite.css?v=14" />
+    <link rel="stylesheet" href="assets/css/graphite.css?v=15" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -81,8 +81,9 @@
       } catch (e) {}
     </script>
     <a class="skip-link" href="#main">Skip to content</a>
-    <!-- layered background: graphite gradient + dot grid + drifting beams + grain (CSS only) -->
+    <!-- layered background: graphite gradient + (light theme) aurora orbs + dot/line grid + drifting beams + grain (CSS only) -->
     <div class="bg-layers" aria-hidden="true">
+      <div class="bg-aurora"><span></span><span></span><span></span><span></span></div>
       <div class="bg-dots"></div>
       <div class="bg-beams"><span></span><span></span><span></span></div>
       <div class="bg-grain"></div>
@@ -226,6 +227,9 @@
                 <use class="hx-line" href="#hx-path" />
               </g></g>
             </svg>
+            <!-- glitch: two colour-split copies of the mark, sliced with clip-path in short bursts (CSS only) -->
+            <svg class="hero-hex hex-glitch hex-glitch-a" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><use href="#hx-path" /><use href="#hx-path" transform="translate(200 200) scale(0.85) translate(-200 -200)" opacity="0.75" /><use href="#hx-path" transform="translate(200 200) scale(0.7) translate(-200 -200)" opacity="0.5" /><use href="#hx-path" transform="translate(200 200) scale(0.55) translate(-200 -200)" opacity="0.25" /></svg>
+            <svg class="hero-hex hex-glitch hex-glitch-b" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><use href="#hx-path" /><use href="#hx-path" transform="translate(200 200) scale(0.85) translate(-200 -200)" opacity="0.75" /><use href="#hx-path" transform="translate(200 200) scale(0.7) translate(-200 -200)" opacity="0.5" /><use href="#hx-path" transform="translate(200 200) scale(0.55) translate(-200 -200)" opacity="0.25" /></svg>
             <div class="portrait-wrap">
               <picture>
                 <source srcset="assets/img/perfil.webp" type="image/webp" />
