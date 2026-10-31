@@ -2862,104 +2862,103 @@ body:not(.dark-theme) .color-blue {
   color: var(--dim);
 }
 
-/* ---------- Custom cursor (fine pointers only; see custom-cursor.js) ---------- */
+/* ---------- Custom cursor: dot + trailing ring (fine pointers only; see custom-cursor.js) ---------- */
+/* the native cursor is hidden only while the custom cursor is showing; text fields
+   keep their caret (and the custom cursor hides over them) */
 body.custom-cursor-active,
 body.custom-cursor-active * {
   cursor: none;
 }
 
-.custom-cursor-black-hole,
-.custom-cursor-bubble {
+body.custom-cursor-active :is(input:not([type="button"], [type="submit"], [type="reset"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]), textarea, [contenteditable=""], [contenteditable="true"]) {
+  cursor: text;
+}
+
+.cursor-ring-root {
+  --cursor-ink: #334155; /* slate */
+  --cursor-halo: rgba(255, 255, 255, 0.85);
+  --cursor-label-ink: #fafafa;
   position: fixed;
+  inset: 0;
+  z-index: 10000; /* below .app-tooltip */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  contain: strict;
+}
+
+body.dark-theme .cursor-ring-root {
+  --cursor-ink: #7dd3fc; /* site accent */
+  --cursor-halo: rgba(0, 0, 0, 0.35);
+  --cursor-label-ink: #070707;
+}
+
+body.dark-theme .cursor-ring__line { stroke-width: 1.5; }
+
+.cursor-ring-root.is-visible { opacity: 1; }
+.cursor-ring-root.is-text { opacity: 0; }
+
+.cursor-ring,
+.cursor-dot {
+  position: absolute;
   top: 0;
   left: 0;
-  pointer-events: none;
-  z-index: 10000;
-  transform: translate3d(-100px, -100px, 0);
   will-change: transform;
 }
 
-.custom-cursor-black-hole {
-  z-index: 10001;
-  width: 54px;
-  height: 54px;
-  margin: -27px 0 0 -27px;
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--cursor-ink);
+  box-shadow: 0 0 0 1.5px var(--cursor-halo);
+  transition: opacity 0.15s;
+}
+
+.cursor-ring {
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  transform: translate3d(-100px, -100px, 0) scale(0.45);
+}
+
+.cursor-ring svg {
   display: block;
-  background: transparent;
-  transition:
-    opacity 0.15s,
-    filter 0.25s;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.custom-cursor-black-hole.is-hovering {
-  filter: brightness(1.14);
+.cursor-ring circle {
+  fill: none;
+  vector-effect: non-scaling-stroke; /* the ring stays a hairline at any size */
+  transition: fill 0.2s, stroke 0.2s, opacity 0.2s;
 }
 
-.custom-cursor-black-hole.is-pressed {
-  filter: brightness(1.28);
-}
+.cursor-ring__halo { stroke: var(--cursor-halo); stroke-width: 3; opacity: 0.55; }
+.cursor-ring__line { stroke: var(--cursor-ink); stroke-width: 1.25; }
 
-.custom-cursor-black-hole.is-sun {
-  filter: drop-shadow(0 0 4px rgba(255, 218, 105, 0.95))
-    drop-shadow(0 0 11px rgba(255, 158, 39, 0.58));
-}
-
-.custom-cursor-black-hole.is-fallback {
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, #000 0 14%, transparent 15% 24%, #fff1ba 26% 28%, transparent 31%),
-    radial-gradient(ellipse at center, transparent 39%, rgba(128, 204, 238, 0.82) 42% 45%, transparent 51%);
-}
-
-.custom-cursor-black-hole.is-sun.is-fallback {
-  background: radial-gradient(circle, #fff9d6 0 19%, #ffd347 30%, #ff9f22 43%, rgba(255, 164, 39, 0.3) 58%, transparent 72%);
-}
-
-.custom-cursor-bubble {
-  z-index: 10000;
-  width: 42px;
-  height: 42px;
-  margin: -21px 0 0 -21px;
-  border-radius: 50%;
-  transition: opacity 0.2s;
-}
-
-.custom-cursor-bubble::before,
-.custom-cursor-bubble::after {
-  content: "";
+.cursor-ring__label {
   position: absolute;
-  border: 1px solid rgba(163, 225, 248, 0.4);
-  border-radius: 50%;
-  background: radial-gradient(circle, transparent 42%, rgba(99, 193, 228, 0.055) 66%, rgba(160, 224, 255, 0.1) 78%, transparent 100%);
-  box-shadow:
-    inset 0 0 12px rgba(103, 202, 238, 0.1),
-    0 0 12px rgba(103, 202, 238, 0.12);
-  animation: black-hole-pulse 2.8s ease-in-out infinite;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--cursor-label-ink);
+  font: 600 11px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.18s;
 }
 
-.custom-cursor-bubble::before {
-  inset: 2px;
-}
+/* project cards: big ring, filled, "View" */
+.cursor-ring-root.is-card .cursor-ring__line { fill: var(--cursor-ink); fill-opacity: 0.9; }
+.cursor-ring-root.is-card .cursor-ring__label { opacity: 1; }
+.cursor-ring-root.is-card .cursor-dot { opacity: 0; }
 
-.custom-cursor-bubble::after {
-  inset: -2px;
-  border-color: rgba(160, 224, 255, 0.24);
-  animation-delay: -1.4s;
-  animation-direction: reverse;
-}
-
-.custom-cursor-bubble.is-sun::before,
-.custom-cursor-bubble.is-sun::after {
-  border-color: rgba(255, 205, 97, 0.42);
-  box-shadow:
-    inset 0 0 12px rgba(255, 193, 69, 0.12),
-    0 0 12px rgba(255, 173, 46, 0.2);
-}
-
-@keyframes black-hole-pulse {
-  0%, 100% { opacity: 0.2; transform: scale(0.9); }
-  50% { opacity: 0.72; transform: scale(1.06); }
-}
+/* links and buttons: small filled disc around the dot */
+.cursor-ring-root.is-link .cursor-ring__line { fill: var(--cursor-ink); fill-opacity: 0.3; stroke-width: 1.5; }
 
 .magnetic {
   transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
