@@ -312,7 +312,7 @@ body:not(.dark-theme) .bg-topo {
 /* line strength lives on the moving layer itself, not the group, so the browser
    doesn't re-blend the whole group every frame */
 body:not(.dark-theme) .bg-topo::before {
-  background-image: url("../img/topo.svg?v=2"); /* light only: dark never fetches it */
+  background-image: url("../img/topo.svg?v=3"); /* light only: dark never fetches it */
   opacity: 0.6;
   animation-play-state: running;
 }
