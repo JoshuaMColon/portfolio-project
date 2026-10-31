@@ -183,8 +183,8 @@
               </div>
               <div>
                 <dt>Projects shipped</dt>
-                <!-- the live projects shown on this page: Blog Platform, Kanban Board, Weather Dashboard, XPlan -->
-                <dd>4</dd>
+                <!-- the live projects shown on this page: Blog Platform, Kanban Board, Weather Dashboard, XPlan, Recall Lab -->
+                <dd>5</dd>
               </div>
               <div>
                 <dt>Product focus</dt>
@@ -433,6 +433,13 @@
                       <span class="ticker-cta">Try it <i class="ri-arrow-right-line" aria-hidden="true"></i></span>
                     </a>
                   </li>
+                  <li>
+                    <a class="ticker-link" href="https://recall-lab-ruby.vercel.app/demo" target="_blank" rel="noreferrer">
+                      <span class="ticker-tag">New</span>
+                      <span class="ticker-text"><strong>Recall Lab</strong> Python exam practice graded by real Python in the browser, with spaced repetition and a timed mock OA, React + Supabase. Live demo, no sign-up needed.</span>
+                      <span class="ticker-cta">Try it <i class="ri-arrow-right-line" aria-hidden="true"></i></span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -531,6 +538,25 @@
                 <i class="ri-arrow-right-line" aria-hidden="true"></i>
               </button>
 
+              <button
+                class="project-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-project="recall"
+                data-index="4"
+              >
+                <span class="project-tab-number">05</span>
+                <span class="project-tab-content">
+                  <strong>Recall Lab</strong>
+                  <small>Python exam practice</small>
+                  <span class="project-tab-description"
+                    >Practice for an intro Python course: 304 original questions graded by real Python in the browser, spaced repetition, a constellation mastery map and a timed mock OA.</span
+                  >
+                </span>
+                <i class="ri-arrow-right-line" aria-hidden="true"></i>
+              </button>
+
               <div class="project-tab-detail" id="project-tab-detail" aria-live="polite">
                 <span class="project-detail-type" id="project-detail-type"
                   >Web app</span
@@ -553,6 +579,7 @@
                 <div class="project-detail-actions">
                   <a
                     id="project-detail-link"
+                    data-tip="Open the Blog Platform live site"
                     class="btn btn-light btn-sm"
                     href="https://blog-platform-one-xi.vercel.app/"
                     target="_blank"
@@ -560,10 +587,10 @@
                   >
                     Visit live site <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
                   </a>
-                  <a id="project-detail-demo" class="btn btn-dark btn-sm" href="https://blog-platform-one-xi.vercel.app/demo" target="_blank" rel="noreferrer">
+                  <a id="project-detail-demo" data-tip="Try the Blog Platform guest demo, no sign-up needed" class="btn btn-dark btn-sm" href="https://blog-platform-one-xi.vercel.app/demo" target="_blank" rel="noreferrer">
                     Guest demo <i class="ri-arrow-right-up-line" aria-hidden="true"></i>
                   </a>
-                  <a id="project-detail-repo" class="btn btn-dark btn-sm btn-icon" href="https://github.com/JoshuaMColon/blog-platform" target="_blank" rel="noreferrer" aria-label="Blog Platform source code on GitHub">
+                  <a id="project-detail-repo" class="btn btn-dark btn-sm btn-icon" href="https://github.com/JoshuaMColon/blog-platform" target="_blank" rel="noreferrer" aria-label="Blog Platform source code on GitHub" data-tip="Blog Platform source code on GitHub">
                     <i class="ri-github-line" aria-hidden="true"></i>
                   </a>
                 </div>
@@ -819,6 +846,7 @@
             <li><a href="https://collaborative-kanban-board-gold.vercel.app/" target="_blank" rel="noreferrer">Kanban Board</a></li>
             <li><a href="https://weather-dashboard-app-sable-three.vercel.app/" target="_blank" rel="noreferrer">Weather Dashboard</a></li>
             <li><a href="https://xplan-sand.vercel.app/" target="_blank" rel="noreferrer">XPlan</a></li>
+            <li><a href="https://recall-lab-ruby.vercel.app/" target="_blank" rel="noreferrer">Recall Lab</a></li>
           </ul>
         </div>
         <div>
@@ -847,7 +875,7 @@
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
     <script defer src="assets/js/site.js?v=6"></script>
-    <script defer src="assets/js/project-showcase.js?v=8"></script>
+    <script defer src="assets/js/project-showcase.js?v=9"></script>
     <script defer src="assets/js/skill-layers.js?v=2"></script>
     <script type="module" src="assets/js/main.js?v=7"></script>
   </body>
