@@ -1386,6 +1386,35 @@ body:not(.dark-theme) .hex-glitch {
   94% { transform: translateX(2px); }
 }
 
+/* Scroll replay (site.js): when the portrait scrolls back into view the mark
+   replays its theme-switch start-up: the neon ignite in dark mode plus one
+   colour-split glitch burst in both themes. .hex-reset drops the animations
+   for one frame so the same keyframes restart cleanly every time. */
+.hero-visual.hex-reset .hero-hex,
+.hero-visual.hex-reset .hero-hex .hx-layer > g,
+.hero-visual.hex-reset .hero-hex .hx-layer > g .hx-glow {
+  animation: none !important;
+}
+
+body.dark-theme .hero-visual.hex-replay .hero-hex .hx-layer > g {
+  animation: hex-ignite 1.4s linear backwards;
+}
+
+body.dark-theme .hero-visual.hex-replay .hero-hex .hx-layer > g .hx-glow {
+  animation: hex-glow-buzz 1.4s linear backwards;
+}
+
+body.dark-theme .hero-visual.hex-replay .hero-hex .hx-layer:nth-of-type(2) > g,
+body.dark-theme .hero-visual.hex-replay .hero-hex .hx-layer:nth-of-type(2) > g .hx-glow { animation-delay: 0.03s; }
+body.dark-theme .hero-visual.hex-replay .hero-hex .hx-layer:nth-of-type(3) > g,
+body.dark-theme .hero-visual.hex-replay .hero-hex .hx-layer:nth-of-type(3) > g .hx-glow { animation-delay: 0.05s; }
+body.dark-theme .hero-visual.hex-replay .hero-hex .hx-layer:nth-of-type(4) > g,
+body.dark-theme .hero-visual.hex-replay .hero-hex .hx-layer:nth-of-type(4) > g .hx-glow { animation-delay: 0.07s; }
+
+.hero-visual.hex-replay .hex-glitch-a { animation: hex-glitch-a-hover 1.2s steps(1, end) 0.1s 1; }
+.hero-visual.hex-replay .hex-glitch-b { animation: hex-glitch-b-hover 1.2s steps(1, end) 0.1s 1; }
+.hero-visual.hex-replay .hero-hex:not(.hex-glitch) { animation: hex-jolt-hover 1.2s steps(1, end) 0.1s 1; }
+
 .status-pill {
   position: absolute;
   top: calc(100% + 0.5rem);
@@ -1702,6 +1731,11 @@ body:not(.dark-theme) .layer-plate.is-active {
   width: 1rem;
   height: 1rem;
   object-fit: contain;
+}
+
+/* single-colour black brand marks (Vercel) flip to white on the dark theme */
+body.dark-theme .layer-chips img.icon-mono {
+  filter: invert(1);
 }
 
 /* Tablet and phone: the stack sits beside the text, fully inside the card,
