@@ -37,6 +37,31 @@
     });
   }
 
+  /*=============== FLOWING CONTOURS (light theme) ===============*/
+  /* the WebGL contour animation is fetched only once the light theme is showing and
+     motion is allowed (never in dark mode); until then (or without WebGL2) the static
+     contour tile from the CSS is what you see */
+  var topoFlowLoaded = false;
+  function loadTopoFlow() {
+    if (topoFlowLoaded || body.classList.contains(DARK) || reduceMotion.matches) return;
+    if (!window.WebGL2RenderingContext || !document.querySelector(".bg-topo")) return;
+    var conn = navigator.connection;
+    if (conn && conn.saveData) return;
+    topoFlowLoaded = true;
+    var s = document.createElement("script");
+    s.src = "assets/js/topo-flow.js?v=1";
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  function loadTopoFlowWhenIdle() {
+    var go = function () { (window.requestIdleCallback || setTimeout)(loadTopoFlow, { timeout: 1500 }); };
+    if (document.readyState === "complete") go();
+    else window.addEventListener("load", go, { once: true });
+  }
+  loadTopoFlowWhenIdle();
+  if (themeButton) themeButton.addEventListener("click", loadTopoFlow);
+  if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", loadTopoFlow);
+
   /*=============== MOBILE MENU ===============*/
   var navMenu = document.getElementById("nav-menu");
   var navToggle = document.getElementById("nav-toggle");
