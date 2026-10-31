@@ -208,7 +208,8 @@ body:not(.dark-theme) :focus-visible {
 /* ---------- Layered background ----------
    Four quiet layers, all CSS (works from file:// too):
    1. a deep graphite / paper-white gradient on the fixed layer itself
-   2. a fine dot grid, radially masked so it fades toward the edges
+   2. a fine dot grid, radially masked so it fades toward the edges (dark);
+      topographic contour lines instead in the light theme (.bg-topo)
    3. 2-3 soft diagonal light beams drifting very slowly (transform only)
    4. a static film-grain tile (inline SVG feTurbulence)
    plus a spotlight glow behind the hero hex frame (.hero-visual::before).
@@ -238,8 +239,8 @@ body:not(.dark-theme) {
   --bg-halo: rgba(255, 255, 255, 0.55);
   --dot-color: rgba(24, 24, 40, 0.17);
   --beam-color: rgba(255, 255, 255, 0.6);
-  --spot-core: rgba(167, 139, 250, 0.2);
-  --spot-edge: rgba(125, 211, 252, 0.12);
+  --spot-core: rgba(250, 251, 252, 0.92);
+  --spot-edge: rgba(148, 163, 184, 0.16);
   --grain-opacity: 0.045;
 }
 
@@ -281,64 +282,60 @@ body {
   mask-image: radial-gradient(ellipse 75% 65% at 50% 38%, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 78%);
 }
 
-/* light theme only: soft spectrum orbs drifting behind the grid (transform-only
-   motion, plain radial gradients, no filters). Hidden and paused in dark mode so
-   the dark background is unchanged. */
-.bg-aurora {
+/* light theme only: topographic contour lines (static SVG tile, assets/img/topo.svg,
+   generated offline and seamless). The tile layer drifts a few dozen px very slowly
+   (transform only, no repaint); a static paper-coloured wash (::after) softens the
+   lines where the hero copy sits (cheaper than masking the moving layer). Hidden and
+   paused in dark mode so the dark background is unchanged. */
+.bg-topo {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0s linear 0.5s;
 }
 
-body:not(.dark-theme) .bg-aurora {
+body:not(.dark-theme) .bg-topo {
   opacity: 1;
   visibility: visible;
   transition: opacity 0.5s ease, visibility 0s;
 }
 
-.bg-aurora span {
+.bg-topo::before {
+  content: "";
   position: absolute;
-  width: 62vmax;
-  height: 62vmax;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, var(--orb), transparent 72%);
-  transform: translate3d(var(--ox0), var(--oy0), 0);
-  animation: aurora-drift var(--dur) ease-in-out infinite alternate;
+  inset: -80px;
+  background: center / 1200px 1200px repeat;
+  animation: topo-drift 70s ease-in-out infinite alternate;
   animation-play-state: paused;
   will-change: transform;
 }
 
-body:not(.dark-theme) .bg-aurora span {
+/* line strength lives on the moving layer itself, not the group, so the browser
+   doesn't re-blend the whole group every frame */
+body:not(.dark-theme) .bg-topo::before {
+  background-image: url("../img/topo.svg?v=3"); /* light only: dark never fetches it */
+  opacity: 0.6;
   animation-play-state: running;
 }
 
-/* violet + sky behind the hero mark, coral on the left, teal low */
-.bg-aurora span:nth-child(1) { --orb: rgba(150, 118, 250, 0.46); --ox0: 46vw; --oy0: -24vmax; --ox1: 38vw; --oy1: -14vmax; --dur: 38s; }
-.bg-aurora span:nth-child(2) { --orb: rgba(96, 200, 252, 0.42); --ox0: 62vw; --oy0: 4vmax; --ox1: 70vw; --oy1: -6vmax; --dur: 44s; animation-delay: -12s; }
-.bg-aurora span:nth-child(3) { --orb: rgba(255, 128, 80, 0.32); --ox0: -26vmax; --oy0: -10vmax; --ox1: -16vmax; --oy1: 2vmax; --dur: 50s; animation-delay: -20s; }
-.bg-aurora span:nth-child(4) { --orb: rgba(52, 214, 178, 0.32); --ox0: 4vw; --oy0: 34vmax; --ox1: 18vw; --oy1: 26vmax; --dur: 56s; animation-delay: -30s; }
-
-@keyframes aurora-drift {
-  from { transform: translate3d(var(--ox0), var(--oy0), 0); }
-  to { transform: translate3d(var(--ox1), var(--oy1), 0); }
-}
-
-/* light theme: a fine graphite line grid over the dot field (same radial mask) */
-.bg-dots::before {
+.bg-topo::after {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  background-image:
-    linear-gradient(to right, rgba(24, 24, 40, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(24, 24, 40, 0.055) 1px, transparent 1px);
-  background-size: 88px 88px;
-  background-position: center;
+  background: radial-gradient(ellipse 36% 42% at 26% 42%, rgba(251, 250, 247, 0.78) 0%, rgba(251, 250, 247, 0.45) 55%, rgba(251, 250, 247, 0) 100%);
 }
 
-body:not(.dark-theme) .bg-dots::before {
-  opacity: 1;
+@keyframes topo-drift {
+  from { transform: translate3d(-36px, 22px, 0); }
+  to { transform: translate3d(36px, -22px, 0); }
+}
+
+/* light theme: the contours replace the dot field */
+body:not(.dark-theme) .bg-dots {
+  opacity: 0;
+}
+
+.bg-dots {
+  transition: opacity 0.5s ease;
 }
 
 .bg-beams span {
@@ -385,20 +382,14 @@ body:not(.dark-theme) .bg-grain {
     background-size: 18px 18px;
   }
 
-  .bg-dots::before {
-    background-size: 72px 72px;
-  }
-
-  /* phones: three orbs, sized to the narrow screen */
-  .bg-aurora span { width: 80vmax; height: 80vmax; }
-  .bg-aurora span:nth-child(1) { --ox0: 10vw; --oy0: -30vmax; --ox1: 0vw; --oy1: -22vmax; }
-  .bg-aurora span:nth-child(2) { display: none; }
-  .bg-aurora span:nth-child(3) { --ox0: -40vmax; --oy0: 6vmax; --ox1: -30vmax; --oy1: 14vmax; }
-  .bg-aurora span:nth-child(4) { --ox0: 0vw; --oy0: 40vmax; --ox1: 10vw; --oy1: 32vmax; }
+  /* phones: smaller contour tile, no copy wash (copy spans the full width) */
+  .bg-topo::before { background-size: 1000px 1000px; }
+  .bg-topo::after { display: none; }
+  body:not(.dark-theme) .bg-topo::before { opacity: 0.5; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bg-aurora span {
+  .bg-topo::before {
     animation: none !important;
     will-change: auto;
   }
