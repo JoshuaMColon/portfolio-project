@@ -61,6 +61,7 @@ const projects = {
     description:
       "Task orchestration interface built for team velocity, focus, and simple visual flow.",
     url: "https://collaborative-kanban-board-gold.vercel.app/",
+    demo: "https://collaborative-kanban-board-gold.vercel.app/demo",
     repo: "https://github.com/JoshuaMColon/collaborative-kanban-board",
     caseStudy: {
       problem:
@@ -316,8 +317,7 @@ function selectProject(tab) {
   projectDetailDescription.textContent = project.description;
   readMore.reset();
   projectDetailLink.href = project.url;
-  /* optional extra links: only projects that set them show these buttons
-   (Kanban has no /demo route, so it shows Live + GitHub only) */
+  /* optional extra links: only projects that set them show these buttons */
   [
     [projectDetailDemo, project.demo],
     [projectDetailRepo, project.repo],
