@@ -23,7 +23,7 @@ The Projects section shows each app with a preview, a short description (collaps
 - **Theme:** dark/light toggle remembered between visits and applied before first paint (no flash).
 - **Feedback everywhere:** hover spotlight, press states and tap ripples for mouse, touch, pen and keyboard (Enter/Space), plus scroll-reveal animations, a scroll-progress bar, sticky blurred header and scroll-to-top.
 - **Optional effects** (when served over http(s)): decrypted-text bio reveal, a custom cursor and magnetic buttons.
-- **Accessible:** skip link, visible focus states, labelled form fields, ARIA tabs and `aria-expanded` toggles, and `prefers-reduced-motion` support.
+- **Accessible:** skip link, visible focus states, labelled form fields, ARIA tabs and `aria-expanded` toggles, tooltips on icon-only buttons (hover or keyboard focus, `role="tooltip"` + `aria-describedby`, Esc to close, never from a tap), and `prefers-reduced-motion` support.
 - **SEO and sharing:** meta description, canonical URL, Open Graph/Twitter cards with a 1200×630 image, `Person` JSON-LD, `robots.txt` and `sitemap.xml`.
 - **Contact:** a form sent through EmailJS, plus email, LinkedIn, GitHub and a downloadable resume (PDF).
 
