@@ -324,6 +324,23 @@ body:not(.dark-theme) .bg-topo::before {
   background: radial-gradient(ellipse 36% 42% at 26% 42%, rgba(251, 250, 247, 0.78) 0%, rgba(251, 250, 247, 0.45) 55%, rgba(251, 250, 247, 0) 100%);
 }
 
+/* flowing contours (assets/js/topo-flow.js, light theme, motion allowed): a WebGL
+   canvas redraws the same field as it slowly shifts; once its first frame is up the
+   static tile is hidden and its drift paused. Without WebGL2 (or with reduced motion)
+   the static tile simply stays. */
+.topo-flow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body:not(.dark-theme) .bg-topo.is-flowing .topo-flow { opacity: 0.6; }
+  body:not(.dark-theme) .bg-topo.is-flowing::before { opacity: 0; animation-play-state: paused; }
+}
+
 @keyframes topo-drift {
   from { transform: translate3d(-36px, 22px, 0); }
   to { transform: translate3d(36px, -22px, 0); }
@@ -386,6 +403,7 @@ body:not(.dark-theme) .bg-grain {
   .bg-topo::before { background-size: 1000px 1000px; }
   .bg-topo::after { display: none; }
   body:not(.dark-theme) .bg-topo::before { opacity: 0.5; }
+  body:not(.dark-theme) .bg-topo.is-flowing .topo-flow { opacity: 0.5; }
 }
 
 @media (prefers-reduced-motion: reduce) {
