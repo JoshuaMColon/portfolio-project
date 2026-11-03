@@ -211,6 +211,38 @@ const projects = {
         "Presence taught me that realtime state needs a durable twin: Realtime is fast but forgetful, so Postgres keeps the truth for first load. The skins taught me to treat contrast as a calculation, not a choice, so even random colors stay readable.",
     },
   },
+  gamedev: {
+    type: "Portfolio site",
+    title: "Game Dev Portfolio",
+    images: {
+      light: "assets/img/cards/game-dev-portfolio-light",
+      dark: "assets/img/cards/game-dev-portfolio-dark",
+    },
+    imageAlt: {
+      light: "Game Dev Portfolio home page in its light theme: Gameplay Programmer · Unreal Engine 5 hero with the gooey nav and the flagship project spec",
+      dark: "Game Dev Portfolio home page in its dark phosphor theme: Gameplay Programmer · Unreal Engine 5 hero with the gooey nav and the flagship project spec",
+    },
+    accent: "#7fdbae",
+    description:
+      "My gameplay programming portfolio for Unreal Engine 5: project pages, WebGL shader transitions and a Level Design workbench that takes the Site Zero blockout from reference to route.",
+    url: "https://game-dev-portfolio-eta.vercel.app/",
+    repo: "https://github.com/JoshuaMColon/game-dev-portfolio",
+    caseStudy: {
+      problem:
+        "A gameplay programmer's portfolio has to show how the work is built, not just list titles. I wanted a site that reads like a studio dev log: systems, status and the level design process, presented as carefully as the games themselves.",
+      approach: [
+        "Next.js 14 App Router with TypeScript and Tailwind CSS. Every project is one typed entry in a data file, and each one gets a statically generated page with its engine, languages, systems, status and, when there is one, a gameplay video.",
+        "A terminal-inspired phosphor-green theme with a light/dark toggle that follows the system setting and remembers the visitor's choice.",
+        "React Bits components adapted to the site: a GooeyNav, PixelCard and BorderGlow project cards, and Threads and SideRays WebGL backgrounds built with ogl.",
+        "A Level Design page for Site Zero, the Unreal Engine 5 level for my third-person shooter SCP_TPS: a route walkthrough video, an annotated plan with toggleable layers (critical path, optional routes, sightlines, encounters, pickups, sealed exits), a Door 201 reference vs blockout comparison slider and an iteration log from v4 to v10.",
+        "Blockout captures in a MorphSlider carousel whose WebGL shader transitions add a scanline and phosphor tint, plus a DepthCarousel reference library and a full-screen lightbox. The shader code only loads near the viewport and falls back to a fade without WebGL.",
+        "Reduced motion is respected throughout: the walkthrough never autoplays, and the WebGL transitions switch off.",
+      ],
+      stack: ["Next.js 14", "React 18", "TypeScript", "Tailwind CSS", "App Router + static generation", "React Bits", "GSAP", "ogl (WebGL)", "next/font", "Vercel"],
+      learned:
+        "Building the level design page taught me to present iteration as clearly as the result: every pass is dated, captured and explained. Adapting WebGL components taught me to render only when something moves and always ship a fallback, so the site stays fast on any device.",
+    },
+  },
 };
 
 function renderCaseStudy(caseStudy) {

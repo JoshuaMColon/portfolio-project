@@ -16,6 +16,7 @@ The Projects section shows each app with a preview, a short description (collaps
 | XPlan: gamified task manager with XP, levels, natural-language quick-add and realtime sync | [Live](https://xplan-sand.vercel.app) · [guest demo](https://xplan-sand.vercel.app/demo) | [task-manager](https://github.com/JoshuaMColon/task-manager) |
 | Recall Lab: Python exam practice graded by in-browser Python, with SM-2 spaced repetition, a mastery map and a timed mock OA | [Live](https://recall-lab-ruby.vercel.app) · [guest demo](https://recall-lab-ruby.vercel.app/demo) | [recall-lab](https://github.com/JoshuaMColon/recall-lab) |
 | Buddyline: early-2000s style instant messenger with a live Buddy List, away messages, IM windows, Buzz and customizable skins | [Live](https://buddyline-app.vercel.app) · [guest demo](https://buddyline-app.vercel.app/demo) | [buddyline](https://github.com/JoshuaMColon/buddyline) |
+| Game Dev Portfolio: my Unreal Engine 5 gameplay programming portfolio with WebGL shader transitions and a Level Design workbench for the Site Zero blockout | [Live](https://game-dev-portfolio-eta.vercel.app) | [game-dev-portfolio](https://github.com/JoshuaMColon/game-dev-portfolio) |
 
 ## Features
 
