@@ -243,6 +243,39 @@ const projects = {
         "Building the level design page taught me to present iteration as clearly as the result: every pass is dated, captured and explained. Adapting WebGL components taught me to render only when something moves and always ship a fallback, so the site stays fast on any device.",
     },
   },
+  oakember: {
+    type: "E-commerce store",
+    title: "Oak & Ember",
+    images: {
+      light: "assets/img/cards/oak-and-ember-light",
+      dark: "assets/img/cards/oak-and-ember-dark",
+    },
+    imageAlt: {
+      light: "Oak & Ember catalog in its light theme: category, price, material and color filters beside a grid of sofas, beds and chairs with Add to cart buttons",
+      dark: "Oak & Ember catalog in its dark theme: category, price, material and color filters beside a grid of sofas, beds and chairs with Add to cart buttons",
+    },
+    accent: "#b4532a",
+    description:
+      "A full-stack furniture store built on Next.js, Supabase and Stripe: a filterable catalog with product variants, a persistent cart, Stripe Checkout, accounts with order history and an admin for managing products.",
+    url: "https://oak-and-ember-seven.vercel.app/",
+    demo: "https://oak-and-ember-seven.vercel.app/demo",
+    repo: "https://github.com/JoshuaMColon/oak-and-ember",
+    caseStudy: {
+      problem:
+        "Storefront demos usually stop at a product grid and a fake cart. I wanted a store that runs the whole loop for real: browse, pick a variant, pay, get an order recorded and emailed, and manage the catalog from an admin, all on free tiers.",
+      approach: [
+        "Next.js App Router with TypeScript and Tailwind CSS, server-rendered catalog pages with filters for category, price, material and color, plus sorting and search.",
+        "Products with variants (finish, fabric, size) and per-variant stock, stored in Postgres on Supabase with row-level security on every table and product images in Supabase Storage.",
+        "Stripe Checkout in test mode: the server builds the session from database prices, never client totals, and a signed webhook records the paid order idempotently.",
+        "Supabase Auth accounts with order history, a wishlist and a light/dark theme; order confirmations go out through Resend.",
+        "An admin area, gated by role in the database, for creating and editing products, variants, stock and images.",
+        "A guest demo at /demo that runs the full flow without an account, and Playwright end-to-end tests in GitHub Actions CI.",
+      ],
+      stack: ["Next.js App Router", "React", "TypeScript", "Tailwind CSS", "Supabase Auth + Postgres + RLS", "Supabase Storage", "Stripe Checkout + webhooks", "Resend", "Playwright", "GitHub Actions", "Vercel"],
+      learned:
+        "Taking real payments, even in test mode, means treating the webhook as the source of truth: an order exists only when Stripe says it was paid, and replays must be harmless. Pricing lives on the server so the cart can never set its own total.",
+    },
+  },
 };
 
 function renderCaseStudy(caseStudy) {
