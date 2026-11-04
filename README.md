@@ -17,6 +17,7 @@ The Projects section shows each app with a preview, a short description (collaps
 | Recall Lab: Python exam practice graded by in-browser Python, with SM-2 spaced repetition, a mastery map and a timed mock OA | [Live](https://recall-lab-ruby.vercel.app) · [guest demo](https://recall-lab-ruby.vercel.app/demo) | [recall-lab](https://github.com/JoshuaMColon/recall-lab) |
 | Buddyline: early-2000s style instant messenger with a live Buddy List, away messages, IM windows, Buzz and customizable skins | [Live](https://buddyline-app.vercel.app) · [guest demo](https://buddyline-app.vercel.app/demo) | [buddyline](https://github.com/JoshuaMColon/buddyline) |
 | Game Dev Portfolio: my Unreal Engine 5 gameplay programming portfolio with WebGL shader transitions and a Level Design workbench for the Site Zero blockout | [Live](https://game-dev-portfolio-eta.vercel.app) | [game-dev-portfolio](https://github.com/JoshuaMColon/game-dev-portfolio) |
+| Oak & Ember: full-stack furniture store with a filterable catalog, product variants, Stripe Checkout with webhook order recording, accounts with order history and an admin | [Live](https://oak-and-ember-seven.vercel.app) · [guest demo](https://oak-and-ember-seven.vercel.app/demo) | [oak-and-ember](https://github.com/JoshuaMColon/oak-and-ember) |
 
 ## Features
 
