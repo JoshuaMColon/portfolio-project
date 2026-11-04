@@ -265,7 +265,7 @@ const projects = {
         "Storefront demos usually stop at a product grid and a fake cart. I wanted a store that runs the whole loop for real: browse, pick a variant, pay, get an order recorded and emailed, and manage the catalog from an admin, all on free tiers.",
       approach: [
         "Next.js App Router with TypeScript and Tailwind CSS, server-rendered catalog pages with filters for category, price, material and color, plus sorting and search.",
-        "Products with variants (finish, fabric, size) and per-variant stock, stored in Postgres on Supabase with row-level security on every table and product images in Supabase Storage.",
+        "Products with variants (finish, material, color) and per-variant stock, stored in Postgres on Supabase with row-level security on every table and product images in Supabase Storage.",
         "Stripe Checkout in test mode: the server builds the session from database prices, never client totals, and a signed webhook records the paid order idempotently.",
         "Supabase Auth accounts with order history, a wishlist and a light/dark theme; order confirmations go out through Resend.",
         "An admin area, gated by role in the database, for creating and editing products, variants, stock and images.",
