@@ -1,3 +1,7 @@
+// Projects section. This file owns the data and everything that reads it:
+// the helix of cards, the detail panel, and the case study. Classic script
+// (not a module) so it still runs when index.html is opened from disk.
+
 const projectSpiral = document.getElementById("project-spiral");
 const projectStage = document.querySelector(".project-stage");
 const projectSection = document.getElementById("projects");
@@ -13,6 +17,14 @@ const projectDetailImage = document.getElementById("project-detail-image");
 const projectDetailCount = document.getElementById("project-detail-count");
 const projectCaseStudyBody = document.getElementById("project-case-study-body");
 
+// One object is the source of truth for the section. A new project is a
+// new key, not a copy of the markup. Insertion order is the display order:
+// the "01 / 08" counter and prev/next both walk Object.keys. Image paths
+// are stems with no extension; the cards request .webp and fall back to
+// .jpg. demo and repo are optional (Game Dev Portfolio has no guest demo,
+// so that button stays hidden). The detail panel always shows images.light,
+// the same file index.html already paints, so the panel is not blank
+// before this script runs and the first swap does not change projects.
 const projects = {
   blog: {
     type: "Web app",
