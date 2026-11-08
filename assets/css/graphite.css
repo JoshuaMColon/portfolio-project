@@ -33,6 +33,10 @@
   );
 }
 
+/* .dark-theme is the whole UI theme. site.js only toggles that class;
+   the tokens below are what the components actually read. Light is the
+   absence of the class, so the script in the head can switch to light
+   by removing it before first paint. */
 body.dark-theme {
   color-scheme: dark;
   --bg: #070707;
@@ -213,7 +217,9 @@ body:not(.dark-theme) :focus-visible {
    3. 2-3 soft diagonal light beams drifting very slowly (transform only)
    4. a static film-grain tile (inline SVG feTurbulence)
    plus a spotlight glow behind the hero hex frame (.hero-visual::before).
-   Colours are registered custom properties so the theme toggle cross-fades. */
+   I register the background colours as @property so the theme toggle can
+   interpolate them. An untyped custom property swaps instantly; a typed
+   one eases, which is what the transition on body is doing. */
 @property --bg-top { syntax: "<color>"; inherits: true; initial-value: #0c0c0f; }
 @property --bg-bottom { syntax: "<color>"; inherits: true; initial-value: #050505; }
 @property --bg-halo { syntax: "<color>"; inherits: true; initial-value: rgba(255, 255, 255, 0.035); }

@@ -73,7 +73,10 @@
   </head>
   <body class="dark-theme">
     <script>
-      /* Apply the saved theme before first paint so there is no flash. */
+      // Dark is the default on body. If a previous visit chose light, I
+      // remove the class here, before CSS paints, so the page does not
+      // flash dark and then correct itself. localStorage can throw when
+      // storage is blocked; a failed read keeps the default.
       try {
         if (localStorage.getItem("selected-theme") === "light") {
           document.body.classList.remove("dark-theme");

@@ -7,7 +7,11 @@
   var root = document.documentElement;
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  /*=============== THEME ===============*/
+  /* Theme is one class on body. graphite.css maps it to the colour tokens,
+     so this function never sets a colour itself. The icon and aria-pressed
+     are derived from the class on every sync: dark is the resting state
+     (pressed is false) because that is what the page ships with, and light
+     is the pressed state. */
   var themeButton = document.getElementById("theme-button");
   var DARK = "dark-theme";
 
@@ -26,13 +30,17 @@
   if (themeButton) {
     syncThemeButton();
     themeButton.addEventListener("click", function () {
-      body.classList.add("theme-switched"); /* rings use the full neon start-up from now on */
+      // Sticky for the rest of the visit. First paint uses the short hex
+      // load-in; every later return to dark uses the full neon start-up.
+      body.classList.add("theme-switched");
       body.classList.toggle(DARK);
       var isDark = body.classList.contains(DARK);
       try {
         localStorage.setItem("selected-theme", isDark ? "dark" : "light");
+        // The button does not read this back. syncThemeButton sets the icon
+        // from the class, so a stored icon name cannot disagree with the page.
         localStorage.setItem("selected-icon", isDark ? "ri-sun-line" : "ri-moon-line");
-      } catch (e) {}
+      } catch (e) {} /* storage can throw; the class is already toggled */
       syncThemeButton();
     });
   }
@@ -74,10 +82,11 @@
   }
   if (themeButton) themeButton.addEventListener("click", function () { clearHexReplay(); hexLast = Date.now(); });
 
-  /*=============== FLOWING CONTOURS (light theme) ===============*/
-  /* the WebGL contour animation is fetched only once the light theme is showing and
-     motion is allowed (never in dark mode); until then (or without WebGL2) the static
-     contour tile from the CSS is what you see */
+  /* The contour animation is light-theme only, and I do not fetch it until
+     that theme is actually showing and motion is allowed. Dark mode, reduced
+     motion, no WebGL2, or data-saver keep the static contour tile from CSS.
+     The click handler below is what picks it up if the visitor switches
+     to light after load. */
   var topoFlowLoaded = false;
   function loadTopoFlow() {
     if (topoFlowLoaded || body.classList.contains(DARK) || reduceMotion.matches) return;
@@ -91,6 +100,8 @@
     document.head.appendChild(s);
   }
   function loadTopoFlowWhenIdle() {
+    // After load, then in an idle callback when the browser offers one,
+    // so the shader does not compete with first paint.
     var go = function () { (window.requestIdleCallback || setTimeout)(loadTopoFlow, { timeout: 1500 }); };
     if (document.readyState === "complete") go();
     else window.addEventListener("load", go, { once: true });
