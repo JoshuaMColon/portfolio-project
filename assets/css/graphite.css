@@ -1960,6 +1960,10 @@ body.dark-theme .layer-chips img.icon-mono {
     background 0.4s ease;
 }
 
+/* Vertical pan stays with the browser. A horizontal swipe is handled in
+   project-showcase.js; while the finger is down, --swipe-x nudges every
+   card and the transition below is cut so the follow is not lagging the
+   pointer. On release the transition springs the cards back. */
 .project-stage {
   touch-action: pan-y;
 }
@@ -1969,7 +1973,9 @@ body.dark-theme .layer-chips img.icon-mono {
   outline-offset: 3px;
 }
 
-/* swipe: the cards follow the finger a little, then spring back */
+/* While a touch swipe is in progress the helix follows the finger a little,
+   then springs back. is-dragging kills the transition so the follow is 1:1
+   with --swipe-x; reduced motion drops the transition entirely. */
 .infinite-spiral__item {
   translate: var(--swipe-x, 0px) 0;
   transition: translate 0.35s var(--ease-out);
@@ -2076,7 +2082,10 @@ body.dark-theme .layer-chips img.icon-mono {
     filter 0.4s ease;
 }
 
-/* Light screenshot crossfades in over the dark one on the front card and the picked (selected) card. */
+/* The light screenshot sits at opacity 0 until this copy is at the front
+   or is the one I picked. is-selected and hover also drop the grayscale,
+   so every copy of the current project reads in colour, but only the
+   front and picked copies crossfade to the light frame. */
 .infinite-spiral__image--light {
   opacity: 0;
 }
@@ -2303,7 +2312,10 @@ body.dark-theme .layer-chips img.icon-mono {
   }
 }
 
-/* read more: the description clamps to two lines (set by project-showcase.js) */
+/* read more: project-showcase.js sets max-height from the two-line measure.
+   is-clamped fades the last line so the cut does not look like a hard crop.
+   readmore-instant kills the transition for the resets (new project, resize,
+   font load), where an animation would show the previous project's height. */
 .project-tab-detail .readmore-text {
   overflow: hidden;
   transition: max-height 0.45s var(--ease-out);

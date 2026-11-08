@@ -290,6 +290,8 @@ const projects = {
   },
 };
 
+// textContent, not HTML. The copy is data; a "<" in a sentence should
+// stay a "<", and the renderer should not have to think about it.
 function renderCaseStudy(caseStudy) {
   if (!projectCaseStudyBody || !caseStudy) return;
   const make = (tag, className, text) => {
@@ -321,8 +323,12 @@ function renderCaseStudy(caseStudy) {
   projectCaseStudyBody.replaceChildren(dl);
 }
 
-/* Read more: the detail description clamps to two lines. The toggle only
-   shows when the text really overflows, and selectProject() resets it. */
+// Descriptions clamp to two lines. I measure scrollHeight against
+// line-height * 2 and only show Read more when the text really overflows,
+// with 2px of slop so subpixel rounding does not flash the button.
+// selectProject calls reset(), which collapses and remeasures with the
+// transition off. A width change can reflow the lines; a height change is
+// usually the clamp itself, so the observer ignores those and cannot loop.
 const readMore = (() => {
   const text = projectDetailDescription;
   const toggle = document.getElementById("project-detail-toggle");
@@ -343,7 +349,7 @@ const readMore = (() => {
     toggle.setAttribute("aria-expanded", String(expanded));
     label.textContent = expanded ? "Show less" : "Read more…";
     if (!animate) {
-      void text.offsetHeight; // commit the jump before transitions come back
+      void text.offsetHeight; // flush the jump before the transition comes back
       text.classList.remove("readmore-instant");
     }
   }
@@ -354,11 +360,15 @@ const readMore = (() => {
   });
 
   let lastWidth = 0;
+  // clientWidth, not content box height: the clamp writes max-height and
+  // would otherwise observe its own write.
   new ResizeObserver(() => {
     if (text.clientWidth === lastWidth) return;
     lastWidth = text.clientWidth;
     apply(false);
   }).observe(text);
+  // Line-height is not final until the webfont arrives. Remeasure then,
+  // or a late font swap can leave the clamp short or the button hidden.
   document.fonts?.ready.then(() => apply(false));
 
   return {
@@ -369,25 +379,36 @@ const readMore = (() => {
   };
 })();
 
-/* Projects are picked by clicking a card, the Previous / Next buttons, the
-   left / right arrow keys, or a horizontal swipe on the stack. Scrolling the
-   page never changes the selection. */
+// Card clicks, the prev/next buttons, the arrow keys, and a horizontal
+// swipe all end here. Writing the whole detail column in one place keeps
+// the panel, the accent, and the selected card on the same project.
+// Scrolling the page does not call this. The helix turns on its own;
+// the selection only changes on purpose.
 function selectProject(key) {
   const project = projects[key];
   if (!project) return;
 
   if (projectStage) {
+    // Stage border, glow, and the detail panel all read this one custom
+    // property, so the chrome takes the project's colour without each
+    // element being painted from here.
     projectStage.style.setProperty("--project-accent", project.accent);
   }
   projectSpiral?.querySelectorAll(".infinite-spiral__item").forEach((item) => {
+    // Every copy of this project, not just the one on screen. The helix
+    // is three repeats, and any of them can rotate to the front.
     item.classList.toggle("is-selected", item.dataset.project === key);
   });
+  // The helix listens for this so it can mark the picked copy even when
+  // the animation loop is stopped (reduced motion).
   projectSpiral?.dispatchEvent(new CustomEvent("projectselect"));
 
   if (projectDetailImage) {
     projectDetailImage.src = `${project.images.light}.webp`;
     projectDetailImage.alt = project.imageAlt.light;
-    // replay the fade-in for each newly picked project
+    // The fade-in is a CSS animation on the img. "none" plus a layout read
+    // drops the running one; clearing the inline style lets the stylesheet
+    // animation start over for the new project.
     projectDetailImage.style.animation = "none";
     void projectDetailImage.offsetWidth;
     projectDetailImage.style.animation = "";
@@ -402,7 +423,8 @@ function selectProject(key) {
   projectDetailDescription.textContent = project.description;
   readMore.reset();
   projectDetailLink.href = project.url;
-  /* optional extra links: only projects that set them show these buttons */
+  // demo and repo are optional. No href hides the button. I leave a hidden
+  // href in place; the next project that has one overwrites it.
   [
     [projectDetailDemo, project.demo],
     [projectDetailRepo, project.repo],
@@ -425,6 +447,12 @@ function selectProject(key) {
 
 function initializeProjectSpiral() {
   if (!projectSpiral) return;
+
+  // The stack is a helix driven by one float, `progress` (an index into the
+  // card list). I build three copies of the projects so the helix stays
+  // full as it turns, and so prev/next can bring the nearest copy of the
+  // next project forward instead of spinning the long way around.
+  // layoutSpiral wraps each card's offset into [-half, half) around progress.
 
   const settings = {
     speed: 0.55,
@@ -465,8 +493,9 @@ function initializeProjectSpiral() {
     button.className = "infinite-spiral__button";
     button.type = "button";
     button.setAttribute("aria-label", `Select ${project.title} project`);
-    // Two stacked screenshots: the dark one sits underneath and the light
-    // one fades in on top when the card is at the front or selected.
+    // Two screenshots per card. Dark sits underneath in grayscale; light
+    // crossfades in (CSS) when this copy is at the front or is the one I
+    // picked. That is a focus treatment, separate from the site theme.
     const images = ["dark", "light"].map((mode) =>
       createSpiralImage(project, mode),
     );
@@ -479,7 +508,8 @@ function initializeProjectSpiral() {
     spiralItems.push(item);
   });
 
-  // Warm the cache for every variant so a swap never shows a blank card.
+  // Decode every WebP up front. A card rotating to the front should swap
+  // to colour, not pop in while the image decodes.
   projectKeys.forEach((projectKey) => {
     Object.values(projects[projectKey].images).forEach((base) => {
       const preload = new Image();
@@ -499,6 +529,7 @@ function initializeProjectSpiral() {
     image.addEventListener(
       "error",
       () => {
+        // One shot. If the WebP 404s, the JPEG beside it is the same frame.
         if (!image.src.endsWith(".jpg")) image.src = `${base}.jpg`;
       },
       { once: true },
@@ -515,7 +546,8 @@ function initializeProjectSpiral() {
   let previousTime = performance.now();
   let visible = true;
   let paused = false;
-  // After a pick, ease the clicked card to the front and hold it there a while.
+  // After a pick I ease that card to the front, then hold auto-spin so the
+  // card stays put while the detail panel is being read.
   let targetProgress = null;
   let holdUntil = 0;
   const PICK_HOLD_MS = 8000;
@@ -523,6 +555,7 @@ function initializeProjectSpiral() {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const resizeObserver = new ResizeObserver(layoutSpiral);
   resizeObserver.observe(projectSpiral);
+  // Off screen the helix stops advancing. Resize and selection still layout.
   const intersectionObserver = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
   });
@@ -545,6 +578,9 @@ function initializeProjectSpiral() {
     let nearestSelectedOffset = Infinity;
 
     spiralItems.forEach((item, index) => {
+      // Shortest signed distance from `progress`, in card units. The extra
+      // modulo is there because JS % keeps the sign of the dividend, and a
+      // negative offset has to stay negative to sit above the front card.
       let offset = index - progress;
       offset =
         ((((offset + half) % spiralItems.length) + spiralItems.length) %
@@ -585,16 +621,18 @@ function initializeProjectSpiral() {
       }
     });
 
-    // The card nearest the front shows its light screenshot; only touch the
-    // DOM when the front card actually changes.
+    // The light shot is the .is-front class. I write it only when the
+    // nearest card changes; setting it every frame would be DOM churn,
+    // and the crossfade is a CSS opacity transition that does not need a nudge.
     if (nearestItem !== frontItem) {
       frontItem?.classList.remove("is-front");
       nearestItem?.classList.add("is-front");
       frontItem = nearestItem;
     }
 
-    // The selected project also shows light on one copy: the card that was
-    // clicked, or (for tab/keyboard selection) the copy nearest the front.
+    // is-selected is on every copy of the current project. is-picked is the
+    // one copy that should show the light shot: the card that was clicked,
+    // or, for arrows and swipes, the copy nearest the front.
     if (!pickedItem?.classList.contains("is-selected")) {
       setPickedItem(nearestSelected);
     }
@@ -613,11 +651,15 @@ function initializeProjectSpiral() {
   }
 
   function animate(time) {
+    // Cap the step. A tab left in the background would otherwise dump the
+    // whole hidden interval into one frame and lurch the helix.
     const delta = Math.min((time - previousTime) / 1000, 0.05);
     previousTime = time;
     if (targetProgress !== null) {
       const remaining = targetProgress - progress;
       if (Math.abs(remaining) < 0.002) {
+        // Fold back into one cycle once the ease lands. layout wraps
+        // either way; keeping progress bounded stops it growing for the visit.
         progress =
           ((targetProgress % spiralItems.length) + spiralItems.length) %
           spiralItems.length;
@@ -626,12 +668,18 @@ function initializeProjectSpiral() {
         progress += remaining * Math.min(1, delta * 7);
       }
     } else if (visible && !paused && time > holdUntil && !reducedMotion.matches) {
+      // Auto-spin only while the stack is on screen, not hovered or focused,
+      // and not inside the hold after a pick. Reduced motion never reaches
+      // this loop; layout still runs from resize and projectselect.
       progress = (progress + settings.speed * delta) % spiralItems.length;
     }
     layoutSpiral();
     if (!reducedMotion.matches) frameId = requestAnimationFrame(animate);
   }
 
+  // Hover or keyboard focus pauses the spin so a card can be read and
+  // activated. focusout resumes only once focus has left the stack;
+  // moving between cards inside it stays paused.
   projectSpiral.addEventListener("pointerenter", () => {
     paused = true;
   });
@@ -646,7 +694,8 @@ function initializeProjectSpiral() {
   });
   projectSpiral.addEventListener("click", (event) => {
     if (suppressClick) {
-      // the tap that ended a swipe should not also pick the card under it
+      // pointerup already treated this gesture as a swipe. The click that
+      // follows would select whatever card is now under the finger.
       suppressClick = false;
       event.preventDefault();
       event.stopPropagation();
@@ -673,8 +722,10 @@ function initializeProjectSpiral() {
     );
   }
 
-  /* Step to the previous (-1) or next (+1) project, wrapping around. The copy
-     of that project nearest the front is brought forward. */
+  /* Step -1 or +1 through the project list (not the tripled helix) and wrap.
+     Three DOM copies share a key. I bring forward the one nearest the front,
+     with a 0.01 bias toward the copy already on the side we are traveling,
+     so a tie turns the short way instead of flipping back. */
   function step(direction) {
     const current =
       pickedItem?.dataset.project ||
@@ -687,7 +738,7 @@ function initializeProjectSpiral() {
     let best = candidates[0];
     candidates.forEach((item) => {
       const off = offsetOf(item);
-      // prefer the copy in the direction of travel when two are equally near
+      // 0.01 is smaller than the gap between real copies, so it only breaks ties.
       const score = Math.abs(off) - (Math.sign(off) === direction ? 0.01 : 0);
       const bestOff = offsetOf(best);
       const bestScore =
@@ -700,7 +751,9 @@ function initializeProjectSpiral() {
   document.getElementById("project-prev")?.addEventListener("click", () => step(-1));
   document.getElementById("project-next")?.addEventListener("click", () => step(1));
 
-  // Left / right arrow keys while focus is anywhere in the projects gallery.
+  // Arrows work from anywhere in the gallery: the stage is focusable, and
+  // so is the detail panel. Modified arrows stay with the browser, and I
+  // do not steal them from a text field.
   document.getElementById("project-gallery")?.addEventListener("keydown", (event) => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
@@ -709,9 +762,16 @@ function initializeProjectSpiral() {
     step(event.key === "ArrowRight" ? 1 : -1);
   });
 
-  /* Horizontal swipe on the stack (touch / pen). touch-action: pan-y in the CSS
-     leaves vertical scrolling to the browser; a gesture only counts as a swipe
-     when it is mostly horizontal and travels at least SWIPE_MIN px. */
+  /* Horizontal swipe, touch and pen only, on the stage rather than a single
+     card so the gesture includes the space around the helix. A mouse drag
+     would fight text selection, and desktop already has the buttons and keys.
+     touch-action: pan-y in the CSS leaves vertical scrolling to the browser.
+     I lock the axis once the pointer has moved 8px: horizontal has to beat
+     vertical by 1.2x, otherwise this is a scroll and I never change the card.
+     Past that, the cards follow 35% of the finger, capped at 60px, so a long
+     swipe cannot drag the helix off the stage. A horizontal drag past 8px
+     swallows the following click even when it falls short of SWIPE_MIN: it
+     was a drag, not a tap on the card underneath. */
   const SWIPE_MIN = 40;
   const DRAG_FOLLOW = 0.35;
   let swipe = null;
@@ -723,6 +783,7 @@ function initializeProjectSpiral() {
   }
 
   projectStage.addEventListener("pointerdown", (event) => {
+    // Ignore the mouse, and ignore a second finger. One gesture at a time.
     if (event.pointerType === "mouse" || !event.isPrimary) return;
     swipe = { id: event.pointerId, x: event.clientX, y: event.clientY, axis: null, dx: 0 };
   });
@@ -749,16 +810,20 @@ function initializeProjectSpiral() {
     swipe = null;
     resetDrag();
     if (cancelled || axis !== "x") return;
-    // any horizontal drag is a gesture, not a tap on the card under the finger
+    // Any real horizontal drag is a gesture, not a tap. The click event
+    // still fires after pointerup, so I hold the swallow briefly in case
+    // it arrives late.
     if (Math.abs(dx) > 8) {
       suppressClick = true;
       setTimeout(() => (suppressClick = false), 400);
     }
+    // Finger moving left (dx < 0) advances, the same direction as Next.
     if (Math.abs(dx) >= SWIPE_MIN) step(dx < 0 ? 1 : -1);
   }
 
   projectStage.addEventListener("pointerup", (event) => endSwipe(event, false));
-  // the browser took the gesture over (vertical scroll): never change the card
+  // pointercancel means the browser took the gesture (a vertical scroll).
+  // That must not change the card.
   projectStage.addEventListener("pointercancel", (event) => endSwipe(event, true));
 
   function bringToFront(item) {
@@ -766,6 +831,8 @@ function initializeProjectSpiral() {
     const offset = offsetOf(item);
     holdUntil = performance.now() + PICK_HOLD_MS;
     if (reducedMotion.matches) {
+      // No ease. Put the card at the front on this frame; there is no rAF
+      // loop to finish the job.
       progress = (((progress + offset) % count) + count) % count;
       layoutSpiral();
     } else {
@@ -773,8 +840,8 @@ function initializeProjectSpiral() {
     }
   }
 
-  // Re-run layout on selection so the picked card updates even when the
-  // spiral is not animating (reduced motion).
+  // Selection can happen while the rAF loop is not running. Layout again
+  // so the picked card updates immediately.
   projectSpiral.addEventListener("projectselect", layoutSpiral);
 
   layoutSpiral();
@@ -788,4 +855,7 @@ function initializeProjectSpiral() {
 }
 
 initializeProjectSpiral();
+// First key is Blog Platform, which is also what index.html renders, so
+// this pass wires the accent, the card state, and the case study without
+// appearing to change projects.
 selectProject(Object.keys(projects)[0]);
