@@ -277,7 +277,13 @@
     });
   }
 
-  /*=============== CONTACT FORM (EmailJS) ===============*/
+  /* No API route. The site is static, so the form sends through EmailJS
+     from the browser. The form is novalidate because I want my own status
+     line and focus, not the browser tooltip. If the EmailJS script never
+     arrived, I say so and point at the mailto instead of calling a missing
+     global. The button stays disabled until the request settles, success
+     or failure: the trailing then runs either way, because the error
+     handler does not rethrow. */
   var contactForm = document.getElementById("contact-form");
   var contactName = document.getElementById("contact-name");
   var contactEmail = document.getElementById("contact-email");
@@ -314,6 +320,8 @@
       if (button) button.disabled = true;
       showMessage("Sending…", true);
       window.emailjs
+        // service id, template id, form, public key. The public key is
+        // meant to ship in the page; the template decides what gets emailed.
         .sendForm("service_b9vhgrg", "template_6f0u4a9", "#contact-form", "ImLjIYOOHkAeZtYWM")
         .then(
           function () {

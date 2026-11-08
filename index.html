@@ -706,6 +706,8 @@
               </li>
             </ul>
 
+            <!-- novalidate: site.js writes the status line and moves focus.
+                 The name attributes are the EmailJS template variables. -->
             <form class="frame contact_form" id="contact-form" novalidate>
               <span class="corner tl" aria-hidden="true"></span>
               <span class="corner tr" aria-hidden="true"></span>
@@ -810,6 +812,9 @@
       ><i class="ri-arrow-up-line" aria-hidden="true"></i
     ></a>
 
+    <!-- EmailJS loads before site.js. Both are defer, so order holds.
+         If this script never arrives, the submit handler says so and points
+         at the mailto instead of calling a missing global. -->
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
