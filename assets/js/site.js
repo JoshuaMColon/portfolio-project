@@ -45,11 +45,16 @@
     });
   }
 
-  /*=============== HEX MARK: REPLAY ON SCROLL ===============*/
-  /* the rings around the portrait replay their theme-switch start-up (neon ignite
-     in dark, colour-split glitch burst in both themes) each time the portrait
-     scrolls back into view (>= 55% visible), at most once every 4s. Not on first
-     load (the load-in animation already plays) and never with reduced motion. */
+  /* The rings replay when the portrait scrolls back into view. Dark mode
+     runs the long neon ignite (the same one a theme switch uses). Both
+     themes play one colour-split glitch burst. I wait until the portrait
+     is at least 55% visible, and I will not replay more than once every
+     4 seconds. hexSeen starts null so the first observation only records
+     whether it is in view; a replay needs a later trip from below 55%
+     back up. The load-in animation already covered the first paint.
+     Reduced motion and a hidden tab skip it. The stylesheet also hides
+     the glitch under prefers-reduced-motion; this guard means I do not
+     add the class in the first place. */
   var heroVisual = document.querySelector(".hero-visual");
   var hexTimer = 0;
   var hexLast = 0;
@@ -64,13 +69,16 @@
     hexLast = now;
     clearHexReplay();
     heroVisual.classList.add("hex-reset");
-    void heroVisual.offsetWidth; /* flush so the keyframes restart from 0 */
+    void heroVisual.offsetWidth; /* flush: animation none for one frame, or the keyframes continue instead of starting at 0 */
     heroVisual.classList.remove("hex-reset");
     heroVisual.classList.add("hex-replay");
+    // Longer than the 1.4s ignite and the 1.2s burst (plus its 0.1s delay).
+    // Stripping .hex-replay hands the rings back to the idle 7s glitch loop.
+    // Leave the class on and that one-shot stays the winning animation.
     hexTimer = window.setTimeout(clearHexReplay, 1700);
   }
   if (heroVisual && "IntersectionObserver" in window) {
-    var hexSeen = null; /* null until the first callback: no replay on page load */
+    var hexSeen = null; /* null until the first callback, so load does not count as a replay */
     new IntersectionObserver(
       function (entries) {
         var visible = entries[entries.length - 1].intersectionRatio >= 0.55;
@@ -80,6 +88,8 @@
       { threshold: [0, 0.55] },
     ).observe(heroVisual);
   }
+  // A theme toggle has its own ignite. Cancel a scroll replay and start
+  // the 4s cooldown so the two bursts do not stack.
   if (themeButton) themeButton.addEventListener("click", function () { clearHexReplay(); hexLast = Date.now(); });
 
   /* The contour animation is light-theme only, and I do not fetch it until

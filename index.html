@@ -230,7 +230,9 @@
                 <use class="hx-line" href="#hx-path" />
               </g></g>
             </svg>
-            <!-- glitch: two colour-split copies of the mark, sliced with clip-path in short bursts (CSS only) -->
+            <!-- Two more copies of #hx-path, one per glitch colour. They stay
+                 at opacity 0 until the keyframes slice them with clip-path.
+                 Separate SVGs so the two colours can jump on different frames. -->
             <svg class="hero-hex hex-glitch hex-glitch-a" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><use href="#hx-path" /><use href="#hx-path" transform="translate(200 200) scale(0.85) translate(-200 -200)" opacity="0.75" /><use href="#hx-path" transform="translate(200 200) scale(0.7) translate(-200 -200)" opacity="0.5" /><use href="#hx-path" transform="translate(200 200) scale(0.55) translate(-200 -200)" opacity="0.25" /></svg>
             <svg class="hero-hex hex-glitch hex-glitch-b" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><use href="#hx-path" /><use href="#hx-path" transform="translate(200 200) scale(0.85) translate(-200 -200)" opacity="0.75" /><use href="#hx-path" transform="translate(200 200) scale(0.7) translate(-200 -200)" opacity="0.5" /><use href="#hx-path" transform="translate(200 200) scale(0.55) translate(-200 -200)" opacity="0.25" /></svg>
             <div class="portrait-wrap">
