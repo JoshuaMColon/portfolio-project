@@ -568,7 +568,9 @@ body:not(.dark-theme) .bg-grain {
   animation-play-state: paused;
 }
 
-/* keyboard focus: stop and rest at the start so the real links are in view */
+/* Keyboard focus drops the animation and parks the track at 0, so the
+   real (first) group is the one in view. Hover only pauses; the loop
+   continues from where it was. */
 .live-ticker.is-looping:focus-within .ticker-track {
   animation: none;
   transform: none;

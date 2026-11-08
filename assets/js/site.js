@@ -120,7 +120,9 @@
   if (themeButton) themeButton.addEventListener("click", loadTopoFlow);
   if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", loadTopoFlow);
 
-  /*=============== MOBILE MENU ===============*/
+  /* Opening moves focus to the close button. Closing gives it back to the
+     toggle only when focus is still inside the menu, so I do not pull it
+     away from somewhere else. Escape uses the same path. */
   var navMenu = document.getElementById("nav-menu");
   var navToggle = document.getElementById("nav-toggle");
   var navClose = document.getElementById("nav-close");
@@ -149,7 +151,14 @@
     }
   });
 
-  /*=============== SCROLL: header, active link, scroll-up, progress ===============*/
+  /* One rAF per scroll burst. The listener is passive so it never blocks
+     scrolling. The header picks up its blur past 40px, the back-to-top
+     past 560px. The progress bar is scrollY over (scrollHeight - innerHeight);
+     I force 0 when that range is not positive, so a short page does not
+     divide by zero. The nav marks the last section whose top has reached
+     120px below the top of the viewport. The highlight switches a little
+     before the heading hits the header, and it stays there until the next
+     section reaches that same line. */
   var header = document.getElementById("header");
   var scrollUp = document.getElementById("scroll-up");
   var progress = document.getElementById("scroll-progress");
@@ -189,7 +198,12 @@
   }, { passive: true });
   onScroll();
 
-  /*=============== REVEAL ON SCROLL ===============*/
+  /* Fade-up once, as a block enters. Reduced motion skips this whole block:
+     I never add .reveal, so there is nothing to undo. (The stylesheet also
+     forces .reveal visible, as a backstop.) Sibling cards wait 80ms times
+     their index in the parent. The bottom rootMargin means a block has to
+     clear 40px into the viewport, and 12% of it has to be showing, before
+     it counts. unobserve so a scroll back up does not replay it. */
   if (!reduceMotion.matches && "IntersectionObserver" in window) {
     var targets = document.querySelectorAll(
       ".section-heading, .skills-frame, .offer-card, .project-gallery, " +
@@ -339,11 +353,17 @@
     });
   }
 
-  /*=============== LIVE DEMOS TICKER ===============*/
-  /* Clone the real group until half the track is wider than the viewport,
-     then animate -50% -> 0 (left to right) for a seamless loop. Clones are
-     aria-hidden with tabindex -1 so screen readers and Tab only meet the
-     real links, while pointer taps on a visible copy still open the demo. */
+  /* The track starts as one real group of demo links. I clone it until the
+     track is exactly two view-filling halves, then animate translate from
+     -50% to 0. That distance is one identical half, so the loop has no seam,
+     and the motion runs left to right. Clones are aria-hidden with
+     tabindex -1: a screen reader or Tab only meets the real links, but a
+     tap on a visible copy still navigates, because the anchors are real.
+     Reduced motion, or a width of 0, leaves the single group and the CSS
+     turns the row into a plain horizontal scroller. Duration is half-width
+     over 45, so the speed stays 45px/s on any screen. A resize rebuilds
+     only when the viewport width actually changed; a font swap rebuilds
+     too, because that changes the measured group width. */
   (function () {
     var ticker = document.querySelector(".live-ticker");
     if (!ticker) return;
@@ -373,7 +393,8 @@
       if (!w) return;
       var perHalf = Math.max(1, Math.ceil(viewport.clientWidth / w));
       for (var i = 1; i < perHalf * 2; i++) clone();
-      /* constant speed of ~45px/s whatever the screen width */
+      // Half the track is perHalf groups wide. Dividing that by 45px/s
+      // keeps the speed constant when the clone count changes.
       ticker.style.setProperty("--ticker-duration", Math.round((w * perHalf) / 45) + "s");
       ticker.classList.add("is-looping");
     }
