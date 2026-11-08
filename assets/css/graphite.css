@@ -33,6 +33,10 @@
   );
 }
 
+/* .dark-theme is the whole UI theme. site.js only toggles that class;
+   the tokens below are what the components actually read. Light is the
+   absence of the class, so the script in the head can switch to light
+   by removing it before first paint. */
 body.dark-theme {
   color-scheme: dark;
   --bg: #070707;
@@ -213,7 +217,9 @@ body:not(.dark-theme) :focus-visible {
    3. 2-3 soft diagonal light beams drifting very slowly (transform only)
    4. a static film-grain tile (inline SVG feTurbulence)
    plus a spotlight glow behind the hero hex frame (.hero-visual::before).
-   Colours are registered custom properties so the theme toggle cross-fades. */
+   I register the background colours as @property so the theme toggle can
+   interpolate them. An untyped custom property swaps instantly; a typed
+   one eases, which is what the transition on body is doing. */
 @property --bg-top { syntax: "<color>"; inherits: true; initial-value: #0c0c0f; }
 @property --bg-bottom { syntax: "<color>"; inherits: true; initial-value: #050505; }
 @property --bg-halo { syntax: "<color>"; inherits: true; initial-value: rgba(255, 255, 255, 0.035); }
@@ -562,7 +568,9 @@ body:not(.dark-theme) .bg-grain {
   animation-play-state: paused;
 }
 
-/* keyboard focus: stop and rest at the start so the real links are in view */
+/* Keyboard focus drops the animation and parks the track at 0, so the
+   real (first) group is the one in view. Hover only pauses; the loop
+   continues from where it was. */
 .live-ticker.is-looping:focus-within .ticker-track {
   animation: none;
   transform: none;
@@ -1192,15 +1200,17 @@ body:not(.dark-theme) .hero-visual {
   opacity: var(--hex-glow);
 }
 
-/* Neon flicker-on when the rings light up in dark mode.
-   Pure CSS: the animation starts whenever body gains .dark-theme, so a quick
-   re-toggle simply restarts it, and nothing is held dim afterwards
-   (fill-mode backwards only; the resting state is the normal steady glow).
-   - first load in dark: one short stutter (~0.85s incl. delay)
-   - switching light -> dark (site.js adds .theme-switched): the full ~1.4s start-up
-   Photosensitivity (WCAG 2.3.1): at most 2.5 full-contrast flashes in any
-   1s window; the "buzz" between them only dips to >= 0.92 opacity, which
-   stays above 0.80 relative luminance, so it is not a flash. */
+/* Neon flicker when the rings light up in dark mode.
+   Pure CSS: the animation starts whenever body gains .dark-theme, so a
+   quick re-toggle restarts it, and backwards fill means nothing is left
+   dim afterwards. The rest state is the steady glow.
+   First load in dark is the short stutter (hex-ignite-load, ~0.85s with
+   the delay). A real toggle adds .theme-switched from site.js and gets
+   the full ~1.4s start-up. Scroll-into-view uses that same long ignite
+   through .hex-replay.
+   Photosensitivity (WCAG 2.3.1): I keep it to at most 2.5 full-contrast
+   flashes in any 1s window. The buzz between them only dips to >= 0.92
+   opacity, which stays above 0.80 relative luminance, so it is not a flash. */
 body.dark-theme .hero-hex .hx-layer > g {
   animation: hex-ignite-load 0.7s linear 0.15s backwards;
 }
@@ -1306,11 +1316,14 @@ body:not(.dark-theme) .portrait-wrap::after {
   background: var(--panel);
 }
 
-/* Glitch on the hex mark, after the blog-platform title: two colour-split
-   copies sliced with clip-path inset() and nudged sideways in steps(1) bursts
-   (~0.35s every 7s; a 0.9s loop while hovered). Portfolio spectrum colours:
-   sky + pink in dark, deeper cyan + magenta in light. Overlays are absolutely
-   positioned and only use opacity/transform/clip-path, so nothing shifts. */
+/* Colour-split glitch on the logo rings. Two extra copies (sky and pink,
+   deeper cyan and magenta on the light page) sit on top at opacity 0 until
+   a burst. clip-path inset() shows one horizontal slice, steps(1) jumps
+   it sideways, and the real mark jolts a couple of pixels with it.
+   Idle is a short burst inside a 7s loop. Hover, and the scroll replay,
+   use a denser burst. Only opacity, transform, and clip-path move, so
+   the layout never shifts. screen blend on the dark page, multiply on
+   the light page, so the slices read on both backgrounds. */
 .hex-glitch {
   --glitch-a: #7dd3fc;
   --glitch-b: #f472b6;
@@ -1385,10 +1398,11 @@ body:not(.dark-theme) .hex-glitch {
   94% { transform: translateX(2px); }
 }
 
-/* Scroll replay (site.js): when the portrait scrolls back into view the mark
-   replays its theme-switch start-up: the neon ignite in dark mode plus one
-   colour-split glitch burst in both themes. .hex-reset drops the animations
-   for one frame so the same keyframes restart cleanly every time. */
+/* site.js adds .hex-replay when the portrait scrolls back into view.
+   Dark mode replays the long neon ignite. Both themes play the hover
+   glitch keyframes once. .hex-reset forces animation: none for a frame
+   first; without that flush the second visit would continue the keyframes
+   instead of starting them at 0. */
 .hero-visual.hex-reset .hero-hex,
 .hero-visual.hex-reset .hero-hex .hx-layer > g,
 .hero-visual.hex-reset .hero-hex .hx-layer > g .hx-glow {
@@ -1960,6 +1974,10 @@ body.dark-theme .layer-chips img.icon-mono {
     background 0.4s ease;
 }
 
+/* Vertical pan stays with the browser. A horizontal swipe is handled in
+   project-showcase.js; while the finger is down, --swipe-x nudges every
+   card and the transition below is cut so the follow is not lagging the
+   pointer. On release the transition springs the cards back. */
 .project-stage {
   touch-action: pan-y;
 }
@@ -1969,7 +1987,9 @@ body.dark-theme .layer-chips img.icon-mono {
   outline-offset: 3px;
 }
 
-/* swipe: the cards follow the finger a little, then spring back */
+/* While a touch swipe is in progress the helix follows the finger a little,
+   then springs back. is-dragging kills the transition so the follow is 1:1
+   with --swipe-x; reduced motion drops the transition entirely. */
 .infinite-spiral__item {
   translate: var(--swipe-x, 0px) 0;
   transition: translate 0.35s var(--ease-out);
@@ -2076,7 +2096,10 @@ body.dark-theme .layer-chips img.icon-mono {
     filter 0.4s ease;
 }
 
-/* Light screenshot crossfades in over the dark one on the front card and the picked (selected) card. */
+/* The light screenshot sits at opacity 0 until this copy is at the front
+   or is the one I picked. is-selected and hover also drop the grayscale,
+   so every copy of the current project reads in colour, but only the
+   front and picked copies crossfade to the light frame. */
 .infinite-spiral__image--light {
   opacity: 0;
 }
@@ -2303,7 +2326,10 @@ body.dark-theme .layer-chips img.icon-mono {
   }
 }
 
-/* read more: the description clamps to two lines (set by project-showcase.js) */
+/* read more: project-showcase.js sets max-height from the two-line measure.
+   is-clamped fades the last line so the cut does not look like a hard crop.
+   readmore-instant kills the transition for the resets (new project, resize,
+   font load), where an animation would show the previous project's height. */
 .project-tab-detail .readmore-text {
   overflow: hidden;
   transition: max-height 0.45s var(--ease-out);
@@ -3200,7 +3226,10 @@ body.dark-theme .cursor-contour__glow { display: block; }
     transform: none;
   }
 
-  /* hex rings: no flicker, just a soft fade-in when dark mode turns on */
+  /* Reduced motion: no flicker and no colour-split. Dark mode still fades
+     the rings in once, so the mark appears, it just does not strobe.
+     The glitch copies are removed entirely; site.js also refuses to add
+     .hex-replay while this preference is set. */
   body.dark-theme .hero-hex .hx-layer > g,
   body.dark-theme.theme-switched .hero-hex .hx-layer > g {
     animation: hex-fade-in 0.6s ease backwards !important;
@@ -3212,11 +3241,12 @@ body.dark-theme .cursor-contour__glow { display: block; }
     animation: none !important;
   }
 
-  /* no glitch: hide the colour-split copies and keep the mark still */
+  /* The colour-split copies are the glitch. Hide them outright. */
   .hex-glitch {
     display: none !important;
   }
 
+  /* And hold the mark still. The fade-in above is the only motion left on it. */
   .hero-hex {
     animation: none !important;
   }

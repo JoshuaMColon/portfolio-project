@@ -73,7 +73,10 @@
   </head>
   <body class="dark-theme">
     <script>
-      /* Apply the saved theme before first paint so there is no flash. */
+      // Dark is the default on body. If a previous visit chose light, I
+      // remove the class here, before CSS paints, so the page does not
+      // flash dark and then correct itself. localStorage can throw when
+      // storage is blocked; a failed read keeps the default.
       try {
         if (localStorage.getItem("selected-theme") === "light") {
           document.body.classList.remove("dark-theme");
@@ -227,7 +230,9 @@
                 <use class="hx-line" href="#hx-path" />
               </g></g>
             </svg>
-            <!-- glitch: two colour-split copies of the mark, sliced with clip-path in short bursts (CSS only) -->
+            <!-- Two more copies of #hx-path, one per glitch colour. They stay
+                 at opacity 0 until the keyframes slice them with clip-path.
+                 Separate SVGs so the two colours can jump on different frames. -->
             <svg class="hero-hex hex-glitch hex-glitch-a" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><use href="#hx-path" /><use href="#hx-path" transform="translate(200 200) scale(0.85) translate(-200 -200)" opacity="0.75" /><use href="#hx-path" transform="translate(200 200) scale(0.7) translate(-200 -200)" opacity="0.5" /><use href="#hx-path" transform="translate(200 200) scale(0.55) translate(-200 -200)" opacity="0.25" /></svg>
             <svg class="hero-hex hex-glitch hex-glitch-b" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><use href="#hx-path" /><use href="#hx-path" transform="translate(200 200) scale(0.85) translate(-200 -200)" opacity="0.75" /><use href="#hx-path" transform="translate(200 200) scale(0.7) translate(-200 -200)" opacity="0.5" /><use href="#hx-path" transform="translate(200 200) scale(0.55) translate(-200 -200)" opacity="0.25" /></svg>
             <div class="portrait-wrap">
@@ -701,6 +706,8 @@
               </li>
             </ul>
 
+            <!-- novalidate: site.js writes the status line and moves focus.
+                 The name attributes are the EmailJS template variables. -->
             <form class="frame contact_form" id="contact-form" novalidate>
               <span class="corner tl" aria-hidden="true"></span>
               <span class="corner tr" aria-hidden="true"></span>
@@ -805,6 +812,9 @@
       ><i class="ri-arrow-up-line" aria-hidden="true"></i
     ></a>
 
+    <!-- EmailJS loads before site.js. Both are defer, so order holds.
+         If this script never arrives, the submit handler says so and points
+         at the mailto instead of calling a missing global. -->
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"

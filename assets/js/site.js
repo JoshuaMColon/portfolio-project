@@ -7,7 +7,11 @@
   var root = document.documentElement;
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  /*=============== THEME ===============*/
+  /* Theme is one class on body. graphite.css maps it to the colour tokens,
+     so this function never sets a colour itself. The icon and aria-pressed
+     are derived from the class on every sync: dark is the resting state
+     (pressed is false) because that is what the page ships with, and light
+     is the pressed state. */
   var themeButton = document.getElementById("theme-button");
   var DARK = "dark-theme";
 
@@ -26,22 +30,31 @@
   if (themeButton) {
     syncThemeButton();
     themeButton.addEventListener("click", function () {
-      body.classList.add("theme-switched"); /* rings use the full neon start-up from now on */
+      // Sticky for the rest of the visit. First paint uses the short hex
+      // load-in; every later return to dark uses the full neon start-up.
+      body.classList.add("theme-switched");
       body.classList.toggle(DARK);
       var isDark = body.classList.contains(DARK);
       try {
         localStorage.setItem("selected-theme", isDark ? "dark" : "light");
+        // The button does not read this back. syncThemeButton sets the icon
+        // from the class, so a stored icon name cannot disagree with the page.
         localStorage.setItem("selected-icon", isDark ? "ri-sun-line" : "ri-moon-line");
-      } catch (e) {}
+      } catch (e) {} /* storage can throw; the class is already toggled */
       syncThemeButton();
     });
   }
 
-  /*=============== HEX MARK: REPLAY ON SCROLL ===============*/
-  /* the rings around the portrait replay their theme-switch start-up (neon ignite
-     in dark, colour-split glitch burst in both themes) each time the portrait
-     scrolls back into view (>= 55% visible), at most once every 4s. Not on first
-     load (the load-in animation already plays) and never with reduced motion. */
+  /* The rings replay when the portrait scrolls back into view. Dark mode
+     runs the long neon ignite (the same one a theme switch uses). Both
+     themes play one colour-split glitch burst. I wait until the portrait
+     is at least 55% visible, and I will not replay more than once every
+     4 seconds. hexSeen starts null so the first observation only records
+     whether it is in view; a replay needs a later trip from below 55%
+     back up. The load-in animation already covered the first paint.
+     Reduced motion and a hidden tab skip it. The stylesheet also hides
+     the glitch under prefers-reduced-motion; this guard means I do not
+     add the class in the first place. */
   var heroVisual = document.querySelector(".hero-visual");
   var hexTimer = 0;
   var hexLast = 0;
@@ -56,13 +69,16 @@
     hexLast = now;
     clearHexReplay();
     heroVisual.classList.add("hex-reset");
-    void heroVisual.offsetWidth; /* flush so the keyframes restart from 0 */
+    void heroVisual.offsetWidth; /* flush: animation none for one frame, or the keyframes continue instead of starting at 0 */
     heroVisual.classList.remove("hex-reset");
     heroVisual.classList.add("hex-replay");
+    // Longer than the 1.4s ignite and the 1.2s burst (plus its 0.1s delay).
+    // Stripping .hex-replay hands the rings back to the idle 7s glitch loop.
+    // Leave the class on and that one-shot stays the winning animation.
     hexTimer = window.setTimeout(clearHexReplay, 1700);
   }
   if (heroVisual && "IntersectionObserver" in window) {
-    var hexSeen = null; /* null until the first callback: no replay on page load */
+    var hexSeen = null; /* null until the first callback, so load does not count as a replay */
     new IntersectionObserver(
       function (entries) {
         var visible = entries[entries.length - 1].intersectionRatio >= 0.55;
@@ -72,12 +88,15 @@
       { threshold: [0, 0.55] },
     ).observe(heroVisual);
   }
+  // A theme toggle has its own ignite. Cancel a scroll replay and start
+  // the 4s cooldown so the two bursts do not stack.
   if (themeButton) themeButton.addEventListener("click", function () { clearHexReplay(); hexLast = Date.now(); });
 
-  /*=============== FLOWING CONTOURS (light theme) ===============*/
-  /* the WebGL contour animation is fetched only once the light theme is showing and
-     motion is allowed (never in dark mode); until then (or without WebGL2) the static
-     contour tile from the CSS is what you see */
+  /* The contour animation is light-theme only, and I do not fetch it until
+     that theme is actually showing and motion is allowed. Dark mode, reduced
+     motion, no WebGL2, or data-saver keep the static contour tile from CSS.
+     The click handler below is what picks it up if the visitor switches
+     to light after load. */
   var topoFlowLoaded = false;
   function loadTopoFlow() {
     if (topoFlowLoaded || body.classList.contains(DARK) || reduceMotion.matches) return;
@@ -91,6 +110,8 @@
     document.head.appendChild(s);
   }
   function loadTopoFlowWhenIdle() {
+    // After load, then in an idle callback when the browser offers one,
+    // so the shader does not compete with first paint.
     var go = function () { (window.requestIdleCallback || setTimeout)(loadTopoFlow, { timeout: 1500 }); };
     if (document.readyState === "complete") go();
     else window.addEventListener("load", go, { once: true });
@@ -99,7 +120,9 @@
   if (themeButton) themeButton.addEventListener("click", loadTopoFlow);
   if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", loadTopoFlow);
 
-  /*=============== MOBILE MENU ===============*/
+  /* Opening moves focus to the close button. Closing gives it back to the
+     toggle only when focus is still inside the menu, so I do not pull it
+     away from somewhere else. Escape uses the same path. */
   var navMenu = document.getElementById("nav-menu");
   var navToggle = document.getElementById("nav-toggle");
   var navClose = document.getElementById("nav-close");
@@ -128,7 +151,14 @@
     }
   });
 
-  /*=============== SCROLL: header, active link, scroll-up, progress ===============*/
+  /* One rAF per scroll burst. The listener is passive so it never blocks
+     scrolling. The header picks up its blur past 40px, the back-to-top
+     past 560px. The progress bar is scrollY over (scrollHeight - innerHeight);
+     I force 0 when that range is not positive, so a short page does not
+     divide by zero. The nav marks the last section whose top has reached
+     120px below the top of the viewport. The highlight switches a little
+     before the heading hits the header, and it stays there until the next
+     section reaches that same line. */
   var header = document.getElementById("header");
   var scrollUp = document.getElementById("scroll-up");
   var progress = document.getElementById("scroll-progress");
@@ -168,7 +198,12 @@
   }, { passive: true });
   onScroll();
 
-  /*=============== REVEAL ON SCROLL ===============*/
+  /* Fade-up once, as a block enters. Reduced motion skips this whole block:
+     I never add .reveal, so there is nothing to undo. (The stylesheet also
+     forces .reveal visible, as a backstop.) Sibling cards wait 80ms times
+     their index in the parent. The bottom rootMargin means a block has to
+     clear 40px into the viewport, and 12% of it has to be showing, before
+     it counts. unobserve so a scroll back up does not replay it. */
   if (!reduceMotion.matches && "IntersectionObserver" in window) {
     var targets = document.querySelectorAll(
       ".section-heading, .skills-frame, .offer-card, .project-gallery, " +
@@ -256,7 +291,13 @@
     });
   }
 
-  /*=============== CONTACT FORM (EmailJS) ===============*/
+  /* No API route. The site is static, so the form sends through EmailJS
+     from the browser. The form is novalidate because I want my own status
+     line and focus, not the browser tooltip. If the EmailJS script never
+     arrived, I say so and point at the mailto instead of calling a missing
+     global. The button stays disabled until the request settles, success
+     or failure: the trailing then runs either way, because the error
+     handler does not rethrow. */
   var contactForm = document.getElementById("contact-form");
   var contactName = document.getElementById("contact-name");
   var contactEmail = document.getElementById("contact-email");
@@ -293,6 +334,8 @@
       if (button) button.disabled = true;
       showMessage("Sending…", true);
       window.emailjs
+        // service id, template id, form, public key. The public key is
+        // meant to ship in the page; the template decides what gets emailed.
         .sendForm("service_b9vhgrg", "template_6f0u4a9", "#contact-form", "ImLjIYOOHkAeZtYWM")
         .then(
           function () {
@@ -310,11 +353,17 @@
     });
   }
 
-  /*=============== LIVE DEMOS TICKER ===============*/
-  /* Clone the real group until half the track is wider than the viewport,
-     then animate -50% -> 0 (left to right) for a seamless loop. Clones are
-     aria-hidden with tabindex -1 so screen readers and Tab only meet the
-     real links, while pointer taps on a visible copy still open the demo. */
+  /* The track starts as one real group of demo links. I clone it until the
+     track is exactly two view-filling halves, then animate translate from
+     -50% to 0. That distance is one identical half, so the loop has no seam,
+     and the motion runs left to right. Clones are aria-hidden with
+     tabindex -1: a screen reader or Tab only meets the real links, but a
+     tap on a visible copy still navigates, because the anchors are real.
+     Reduced motion, or a width of 0, leaves the single group and the CSS
+     turns the row into a plain horizontal scroller. Duration is half-width
+     over 45, so the speed stays 45px/s on any screen. A resize rebuilds
+     only when the viewport width actually changed; a font swap rebuilds
+     too, because that changes the measured group width. */
   (function () {
     var ticker = document.querySelector(".live-ticker");
     if (!ticker) return;
@@ -344,7 +393,8 @@
       if (!w) return;
       var perHalf = Math.max(1, Math.ceil(viewport.clientWidth / w));
       for (var i = 1; i < perHalf * 2; i++) clone();
-      /* constant speed of ~45px/s whatever the screen width */
+      // Half the track is perHalf groups wide. Dividing that by 45px/s
+      // keeps the speed constant when the clone count changes.
       ticker.style.setProperty("--ticker-duration", Math.round((w * perHalf) / 45) + "s");
       ticker.classList.add("is-looping");
     }
